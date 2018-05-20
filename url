@@ -1,0 +1,24 @@
+
+localhost:8000/phonebill3?source=11997870978&period=2
+
+
+    {
+        "id": 11,
+        "timestamp": "2018-05-20T17:17:35.796017-03:00",
+        "call_id": 111,
+        "source": "11997870978",
+        "destination": "11996295422"
+    },
+
+
+
+    {
+        "id": 3,
+        "timestamp": "2018-05-20T17:17:36.796017-03:00",
+        "call_id_id": 111
+    },
+
+
+
+
+EndRecord.objects.select_related('call_id').filter(call_id__source='11997870978')
