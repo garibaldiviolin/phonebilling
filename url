@@ -22,3 +22,28 @@ localhost:8000/phonebill3?source=11997870978&period=2
 
 
 EndRecord.objects.select_related('call_id').filter(call_id__source='11997870978')
+
+
+20:01 - 23:30
+
+20:00 - 20:59 - x
+21:00 - 21:59 - x
+22:00 - 22:59 - 0
+
+
+
+21:41 - 21:59
+22:00 - 22:12
+
+
+
+aux_hora = comeco
+se aux_hora < 22 ou o aux_hora <= 5:
+    
+
+
+
+enquanto o aux_hora < fim do periodo:
+
+    se o periodo > 1 hora
+        se o aux_hora + 

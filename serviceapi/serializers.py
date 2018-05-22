@@ -1,9 +1,10 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import serializers
-from serviceapi.models import StartRecord, EndRecord
+from serviceapi.models import StartRecord, EndRecord, RecordCost
 from datetime import datetime
 from django.utils import timezone
 from rest_framework.response import Response
+from utils import *
 import pdb
 
 class DateTimeTzAwareField(serializers.DateTimeField):
@@ -16,7 +17,11 @@ class StartRecordSerializer(serializers.HyperlinkedModelSerializer):
 
     #timestamp = DateTimeTzAwareField()
     #timestamp = serializers.DateTimeField(format='iso-8601')
+    id = serializers.IntegerField()
     timestamp = serializers.DateTimeField()
+    call_id = serializers.IntegerField()
+    source = serializers.CharField()
+    destination = serializers.CharField()
 
     class Meta:
         model = StartRecord
@@ -26,20 +31,38 @@ class StartRecordSerializer(serializers.HyperlinkedModelSerializer):
         """
         Check that the start is before the stop.
         """
-        #pdb.set_trace()
         if data['source'].isdigit() == False:
             raise serializers.ValidationError("Source must have only numbers")
         elif len(data['source']) != 11 and len(data['source']) != 12:
             raise serializers.ValidationError("Source must have 10 or 11 digits")
+
+        if data['destination'].isdigit() == False:
+            raise serializers.ValidationError("Destination must have only numbers")
+        elif len(data['destination']) != 11 and len(data['destination']) != 12:
+            raise serializers.ValidationError("Destination must have 10 or 11 digits")
+
+        if data['source'] == data['destination']:
+            raise serializers.ValidationError("Source and destination must have different values")
+
         return data
+
+    def create(self, validated_data):
+        start_record = StartRecord()
+        start_record.id = validated_data['id']
+        start_record.timestamp = validated_data['timestamp'].replace(tzinfo=timezone.utc)
+        start_record.call_id = validated_data['call_id']
+        start_record.source = validated_data['source']
+        start_record.destination = validated_data['destination']
+        start_record.save()
+        return start_record
 
 
 class EndRecordSerializer(serializers.HyperlinkedModelSerializer):
 
     #timestamp = DateTimeTzAwareField()
     id = serializers.IntegerField()
-    call_id_id = serializers.IntegerField()
     timestamp = serializers.DateTimeField()
+    call_id_id = serializers.IntegerField()
 
     class Meta:
         model = EndRecord
@@ -60,7 +83,6 @@ class EndRecordSerializer(serializers.HyperlinkedModelSerializer):
 
         start_record = StartRecord.objects.get(call_id=data['call_id_id'])
         end_timestamp = data['timestamp'].replace(tzinfo=timezone.utc)
-        pdb.set_trace()
         if start_record is None:
             raise serializers.ValidationError("Please insert the call start before the end")
         elif start_record.timestamp >= end_timestamp:
@@ -68,14 +90,28 @@ class EndRecordSerializer(serializers.HyperlinkedModelSerializer):
 
         return data
 
-    '''def create(self, validated_data):
+    def create(self, validated_data):
+        id = validated_data['id']
         timestamp = validated_data['timestamp']
         call_id_id = validated_data['call_id_id']
         end_record = EndRecord()
+        end_record.id = id
         end_record.timestamp = timestamp
         end_record.call_id_id = call_id_id
         end_record.save()
-        return end_record'''
+
+        start_record = StartRecord.objects.get(call_id=call_id_id)
+
+        cost = calculate_call_cost(start_record.timestamp, end_record.timestamp)
+
+        record_cost = RecordCost()
+        record_cost.call_id = end_record
+        record_cost.cost = cost
+        record_cost.save()
+
+        pdb.set_trace()
+
+        return end_record
 
 class PhoneBillSerializer(serializers.Serializer):
 
@@ -87,23 +123,18 @@ class PhoneBillSerializer(serializers.Serializer):
 
     def create(self, validated_data):
 
-        #pdb.set_trace()
         #call_id_id = validated_data['call_id_id']
         #end_record = EndRecord.objects.create(call_id_id=24, **validated_data)
         end_record = EndRecord.objects.all()
         serializer = EndRecordSerializer(end_record, many=True)
-        pdb.set_trace()
         return Response(serializer.data)
 
     def list(self):
-
-        #pdb.set_trace()
 
         serializer_class = PhoneBillSerializer
         #http_method_names = ['post']
 
         source = self.request.query_params.get('source', None)
-        pdb.set_trace()
         if source is not None:
             #queryset = Answer.objects.filter(question_id=1).select_related()
             comments = EndRecord.objects.filter(call_id=source).select_related('call_id')
@@ -112,7 +143,7 @@ class PhoneBillSerializer(serializers.Serializer):
 
         return comments
 
-class TwoPhoneBillSerializer(serializers.Serializer):
+class PhoneBillSerializer(serializers.Serializer):
 
     destination = serializers.CharField(max_length=100)
     start_date = serializers.CharField(max_length=100)
