@@ -28,7 +28,6 @@ class EndRecordViewSet(viewsets.ModelViewSet):
 class PhoneBillViewSet(viewsets.ViewSetMixin, ListAPIView):
 
     serializer_class = PhoneBillSerializer
-    paginate_by = 20
     queryset = RecordCost.objects.all()
 
     def get_queryset(self):
@@ -38,11 +37,12 @@ class PhoneBillViewSet(viewsets.ViewSetMixin, ListAPIView):
 
         results = {}
 
-        if (source is not None) and (period is not None):
+        if (source is not None):
 
             queryset = RecordCost.objects.select_related('call_id__call_id') \
                 .filter(call_id__call_id__source=source) \
-                .filter(call_id__call_id__timestamp=period)
+                .filter(call_id__timestamp=period) \
+                .order_by('call_id_id')
 
             results = list()
             for record_cost in queryset:

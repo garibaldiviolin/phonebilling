@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
 from django.contrib.auth.models import User, Group
 from rest_framework import serializers
 from serviceapi.models import StartRecord, EndRecord, RecordCost

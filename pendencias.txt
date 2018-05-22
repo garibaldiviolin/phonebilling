@@ -1,1 +1,36 @@
+- Organizar os imports
+- Incluir conteúdo no Tests.py
+- Gerar readme
+- Filtro por período no PhoneBillViewSet
+- Gerar aplicação com uma só tabela em vez de três, e confirmar com a empresa se é permitido
+- Remover todos os comentários e organizar o código
+- Renomear as chaves estrangeiras dos models
+- Estilizar o código
+- Montar o requirements.txt 
+-
+
+
+
+
+
+- Tem uma ideia melhor para calcular o valor desses períodos?
+- Responder {} quando não foi encontrado um registro é uma boa? Ou seria melhor retornar um ret_code com um valor para o client?
+- Onde declarar constantes, defines, funções comuns, por exemplo def preenche_espacos()? Num .py separado?
+- Comentários. como é o mais comuns em aplicações python?
+- Como testar desempenho do rest?
+- Chave estrangeira das tabelas StartRecord e EndRecord. Está correto?
+- É comum usar um nome de tabela diferente para cada model, ou é melhor deixar o padrão?
+- Avaliar mensagens de commit no GIT. qual o padrão a ser utilizado.
+- Melhor ou não usar timezone nesse caso?
+- padrão de nomes de projetos e aplicativos no django
+- Tem algum framework tão completo quanto o django? Quais outras ferramentas são usadas na cargobr?
 - 
+
+
+
+
+
+Ao entregar
+
+- desabilitar debug no settings.py
+-
