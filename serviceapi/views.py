@@ -11,7 +11,7 @@ from django.http import HttpResponse, JsonResponse
 from rest_framework.decorators import detail_route
 from rest_framework.decorators import api_view
 from rest_framework.generics import ListAPIView
-from utils import calculate_call_cost
+from serviceapi.utils import calculate_call_cost
 import pdb
 
 
@@ -26,28 +26,29 @@ class EndRecordViewSet(viewsets.ModelViewSet):
     queryset = EndRecord.objects.all().order_by('-call_id')
     serializer_class = EndRecordSerializer
 
-class PhoneBillViewSet(ListAPIView):
+class PhoneBillViewSet(viewsets.ViewSetMixin, ListAPIView):
 
     serializer_class = PhoneBillSerializer
     paginate_by = 20
-    queryset = EndRecord.objects.all()
+    queryset = RecordCost.objects.all()
 
     def get_queryset(self):
 
         source = self.request.query_params.get('source')
         period = self.request.query_params.get('period')
 
-        results = EndRecord.objects.all()
+        results = {}
 
-        pdb.set_trace()
-
-        if source is not None and period is not None:
+        if (source is not None) and (period is not None):
 
             #queryset_a = StartRecord.objects.filter(source=source)
             #queryset_b = EndRecord.objects.filter(call_id=queryset_a)
 
+            pdb.set_trace()
+
             queryset = RecordCost.objects.select_related('call_id__call_id') \
-                .filter(call_id__call_id__source=source)
+                .filter(call_id__call_id__source=source) \
+                .filter(call_id__call_id__timestamp=period)
 
             '''results_list = list(chain(queryset_a, queryset_b))
 
@@ -87,5 +88,6 @@ class PhoneBillViewSet(ListAPIView):
                     'duration': duration,
                     'price': formatted_price, 
                 })
+                return results
 
         return results
