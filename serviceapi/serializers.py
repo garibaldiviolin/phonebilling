@@ -5,7 +5,6 @@ from datetime import datetime
 from django.utils import timezone
 from rest_framework.response import Response
 from serviceapi.utils import *
-import pdb
 
 class DateTimeTzAwareField(serializers.DateTimeField):
 
@@ -15,8 +14,6 @@ class DateTimeTzAwareField(serializers.DateTimeField):
 
 class StartRecordSerializer(serializers.HyperlinkedModelSerializer):
 
-    #timestamp = DateTimeTzAwareField()
-    #timestamp = serializers.DateTimeField(format='iso-8601')
     id = serializers.IntegerField()
     timestamp = serializers.DateTimeField()
     call_id = serializers.IntegerField()
@@ -28,9 +25,6 @@ class StartRecordSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('id','timestamp','call_id', 'source', 'destination')
 
     def validate(self, data):
-        """
-        Check that the start is before the stop.
-        """
         if data['source'].isdigit() == False:
             raise serializers.ValidationError("Source must have only numbers")
         elif len(data['source']) != 11 and len(data['source']) != 12:
@@ -59,7 +53,6 @@ class StartRecordSerializer(serializers.HyperlinkedModelSerializer):
 
 class EndRecordSerializer(serializers.HyperlinkedModelSerializer):
 
-    #timestamp = DateTimeTzAwareField()
     id = serializers.IntegerField()
     timestamp = serializers.DateTimeField()
     call_id_id = serializers.IntegerField()
@@ -69,10 +62,6 @@ class EndRecordSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('id','timestamp','call_id_id')
 
     def validate(self, data):
-
-        """
-        Check that the start is before the stop.
-        """
 
         record_exist_1 = EndRecord.objects.filter(id=data['id'])
         record_exist_2 = EndRecord.objects.filter(call_id_id=data['call_id_id'])
@@ -109,39 +98,7 @@ class EndRecordSerializer(serializers.HyperlinkedModelSerializer):
         record_cost.cost = cost
         record_cost.save()
 
-        pdb.set_trace()
-
         return end_record
-
-class PhoneBillSerializer(serializers.Serializer):
-
-    #call_id_id = serializers.IntegerField()
-
-    class Meta:
-        model = EndRecord
-        fields = ('call_id_id',)
-
-    def create(self, validated_data):
-
-        #call_id_id = validated_data['call_id_id']
-        #end_record = EndRecord.objects.create(call_id_id=24, **validated_data)
-        end_record = EndRecord.objects.all()
-        serializer = EndRecordSerializer(end_record, many=True)
-        return Response(serializer.data)
-
-    def list(self):
-
-        serializer_class = PhoneBillSerializer
-        #http_method_names = ['post']
-
-        source = self.request.query_params.get('source', None)
-        if source is not None:
-            #queryset = Answer.objects.filter(question_id=1).select_related()
-            comments = EndRecord.objects.filter(call_id=source).select_related('call_id')
-        else:
-            comments = EndRecord.objects.all().select_related('call_id')
-
-        return comments
 
 class PhoneBillSerializer(serializers.Serializer):
 

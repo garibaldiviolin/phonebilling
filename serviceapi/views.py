@@ -12,7 +12,6 @@ from rest_framework.decorators import detail_route
 from rest_framework.decorators import api_view
 from rest_framework.generics import ListAPIView
 from serviceapi.utils import calculate_call_cost
-import pdb
 
 
 class StartRecordViewSet(viewsets.ModelViewSet):
@@ -41,28 +40,9 @@ class PhoneBillViewSet(viewsets.ViewSetMixin, ListAPIView):
 
         if (source is not None) and (period is not None):
 
-            #queryset_a = StartRecord.objects.filter(source=source)
-            #queryset_b = EndRecord.objects.filter(call_id=queryset_a)
-
-            pdb.set_trace()
-
             queryset = RecordCost.objects.select_related('call_id__call_id') \
                 .filter(call_id__call_id__source=source) \
                 .filter(call_id__call_id__timestamp=period)
-
-            '''results_list = list(chain(queryset_a, queryset_b))
-
-            sorted_list = sorted(results_list, key=lambda instance: -instance.call_id)
-
-            results = list()
-            for entry in sorted_list:
-                item_type = entry.__class__.__name__.lower()
-                if isinstance(entry, StartRecord):
-                    serializer = StartRecordSerializer(entry)
-                if isinstance(entry, EndRecord):
-                    serializer = EndRecordSerializer(entry)
-
-                results.append({'item_type': item_type, 'data': serializer.data})'''
 
             results = list()
             for record_cost in queryset:
@@ -77,10 +57,8 @@ class PhoneBillViewSet(viewsets.ViewSetMixin, ListAPIView):
                 s = delta.seconds % 60 # seconds
                 duration = '%dh%02dm%02ds' % (h, m, s)
 
-                #pdb.set_trace()
                 formatted_price = ('R$ %0.2f' % record_cost.cost).replace('.',',')
 
-                #results.append({'item_type': item_type, 'data': serializer.data})
                 results.append({
                     'destination': destination,
                     'start_date': record_start_time.strftime('%d/%m/%Y'),

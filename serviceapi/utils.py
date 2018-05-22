@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-import pdb
 import datetime
 
 STANDING_CALL_CHARGE = 0.36
@@ -36,7 +35,6 @@ def calculate_call_cost(start_time, end_time):
         # check if duration is greater than 1 hour
         if (delta_time.seconds / 60) >= 1:
 
-            #pdb.set_trace()
             condition_a = aux_time + datetime.timedelta(seconds=60) < \
                 no_cost_period_start
             condition_b = aux_time + datetime.timedelta(seconds=60) > \
