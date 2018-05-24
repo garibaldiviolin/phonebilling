@@ -21,8 +21,15 @@ DESTINATION_NUMBER = 9993468278
 class GetAllStartRecordsTest(TestCase):
     """ Test module for GET all puppies API """
 
+    start_record = list()
+
+    StartRecord.objects.create(
+        id=1, timestamp=datetime.datetime(2016, 2, 29, 12, 0, 0, 0, timezone.utc), call_id=70, source=SOURCE_NUMBER, destination=DESTINATION_NUMBER)
+    StartRecord.objects.create(
+        id=2, timestamp=datetime.datetime(2017, 12, 12, 15, 7, 13, 0, timezone.utc), call_id=71, source=SOURCE_NUMBER, destination=DESTINATION_NUMBER)
+
     def setUp(self):
-        StartRecord.objects.create(
+        '''StartRecord.objects.create(
             id=1, timestamp=datetime.datetime(2016, 2, 29, 12, 0, 0, 0, timezone.utc), call_id=70, source=SOURCE_NUMBER, destination=DESTINATION_NUMBER)
         StartRecord.objects.create(
             id=2, timestamp=datetime.datetime(2017, 12, 12, 15, 7, 13, 0, timezone.utc), call_id=71, source=SOURCE_NUMBER, destination=DESTINATION_NUMBER)
@@ -54,15 +61,17 @@ class GetAllStartRecordsTest(TestCase):
         EndRecord.objects.create(
             id=7, timestamp=datetime.datetime(2017, 12, 12, 15, 12, 56, 0, timezone.utc), call_id_id=76)
         EndRecord.objects.create(
-            id=8, timestamp=datetime.datetime(2018, 3, 1, 22, 10, 56, 0, timezone.utc), call_id_id=77)
+            id=8, timestamp=datetime.datetime(2018, 3, 1, 22, 10, 56, 0, timezone.utc), call_id_id=77)'''
+
+
 
     def test_get_all_records(self):
         # get API response
         response = client.get("/startrecord/")
-        pdb.set_trace()
+        #pdb.set_trace()
 
         # get data from db
-        puppies = StartRecord.objects.all()
+        start_record = StartRecord.objects.all()
         serializer = StartRecordSerializer(StartRecord, many=True)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, serializer.data)
