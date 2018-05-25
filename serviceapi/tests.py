@@ -48,6 +48,34 @@ class GetAllStartRecordsTest(TestCase):
         list_start.append(StartRecord(
             id=8, timestamp=datetime.datetime(2018, 2, 28, 21, 57, 13, 0, timezone.utc), call_id=77, source=SOURCE_NUMBER, destination=DESTINATION_NUMBER))
 
+        list_start.reverse()
+
+        for start_record in list_start:
+            start_record.save()
+
+    def test_get_all_start_records(self):
+        # get API response
+        response = client.get("/startrecord/")
+
+        # get data from db
+        start_record = StartRecord.objects.all().order_by('-call_id')
+
+        serializer_list = StartRecordSerializer(list_start, many=True)
+        serializer_db = StartRecordSerializer(start_record, many=True)
+
+        with open('D:\\out.txt', 'w') as f:
+            print('serializer_list: ', serializer_list.data, file=f)
+            print('serializer_db: ', serializer_db.data, file=f)
+            print('response: ', response.data, file=f)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEquals(response.data, serializer_list.data)
+        self.assertEquals(response.data, serializer_db.data)
+
+class GetAllStartRecordsTest(TestCase):
+
+    def setUp(self):
+
         list_end.append(EndRecord(
             id=1, timestamp=datetime.datetime(2016, 2, 29, 14, 0, 0, 0, timezone.utc), call_id_id=70))
         list_end.append(EndRecord(
@@ -65,24 +93,20 @@ class GetAllStartRecordsTest(TestCase):
         list_end.append(EndRecord(
             id=8, timestamp=datetime.datetime(2018, 3, 1, 22, 10, 56, 0, timezone.utc), call_id_id=77))
 
-        list_start.reverse()
         list_end.reverse()
-
-        for start_record in list_start:
-            start_record.save()
 
         for end_record in list_end:
             end_record.save()
 
-    def test_get_all_start_records(self):
+    def test_get_all_end_records(self):
         # get API response
-        response = client.get("/startrecord/")
+        response = client.get("/endrecord/")
 
         # get data from db
-        start_record = StartRecord.objects.all().order_by('-call_id')
+        end_record = EndRecord.objects.all().order_by('-call_id')
 
-        serializer_list = StartRecordSerializer(list_start, many=True)
-        serializer_db = StartRecordSerializer(start_record, many=True)
+        serializer_list = EndRecordSerializer(list_end, many=True)
+        serializer_db = EndRecordSerializer(end_record, many=True)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEquals(response.data, serializer_list.data)
