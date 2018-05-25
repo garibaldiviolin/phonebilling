@@ -1,19 +1,16 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from datetime import datetime
+
+from django.utils import timezone
 from django.contrib.auth.models import User, Group
 from rest_framework import serializers
-from serviceapi.models import StartRecord, EndRecord, RecordCost
-from datetime import datetime
-from django.utils import timezone
 from rest_framework.response import Response
+
+from serviceapi.models import StartRecord, EndRecord, CostRecord
 from serviceapi.utils import *
 
-class DateTimeTzAwareField(serializers.DateTimeField):
-
-    def to_native(self, value):
-        value = timezone.localtime(value)
-        return super(DateTimeTzAwareField, self).to_native(value)
 
 class StartRecordSerializer(serializers.HyperlinkedModelSerializer):
 

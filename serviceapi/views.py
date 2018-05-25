@@ -1,18 +1,18 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from serviceapi.models import StartRecord, EndRecord
-from rest_framework import viewsets
-from serviceapi.serializers import *
-from serviceapi.serializers import PhoneBillSerializer
-from itertools import chain
 from operator import attrgetter
+from itertools import chain
+
 from django.http import HttpResponse, JsonResponse
-from rest_framework.decorators import detail_route
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, detail_route
 from rest_framework.generics import ListAPIView
-from serviceapi.utils import *
-import pdb
+from rest_framework import viewsets
+
+from serviceapi.models import StartRecord, EndRecord, CostRecord
+from serviceapi.serializers import StartRecordSerializer, EndRecordSerializer, \
+    PhoneBillSerializer
+from serviceapi.utils import calculate_call_cost
 
 
 class StartRecordViewSet(viewsets.ModelViewSet):
@@ -28,7 +28,7 @@ class EndRecordViewSet(viewsets.ModelViewSet):
 class PhoneBillViewSet(viewsets.ViewSetMixin, ListAPIView):
 
     serializer_class = PhoneBillSerializer
-    queryset = RecordCost.objects.all()
+    queryset = CostRecord.objects.all()
 
     def get_queryset(self):
 
@@ -85,8 +85,6 @@ class PhoneBillViewSet(viewsets.ViewSetMixin, ListAPIView):
             start_period_date = end_period_date.replace(month=int(month_period)-1)
 
         if source is not None:
-
-            pdb.set_trace()
 
             queryset = RecordCost.objects.select_related('call_id__call_id') \
                 .filter(call_id__call_id__source=source) \
