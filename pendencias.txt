@@ -2,7 +2,6 @@
 - Organizar os imports
 - Incluir conteúdo no Tests.py
 - Gerar readme
-- Filtro por período no PhoneBillViewSet
 - Gerar aplicação com uma só tabela em vez de três, e confirmar com a empresa se é permitido
 - Remover todos os comentários e organizar o código
 - Renomear as chaves estrangeiras dos models

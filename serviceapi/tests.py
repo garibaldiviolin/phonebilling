@@ -2,7 +2,9 @@
 from __future__ import unicode_literals
 
 import datetime
+import pdb
 
+from django.core import serializers
 from django.test import TestCase, Client
 from django.urls import reverse
 from django.utils import timezone
@@ -17,6 +19,8 @@ client = Client()
 SOURCE_NUMBER = "99988526423"
 DESTINATION_NUMBER = "9993468278"
 
+list_start = list()
+
 class GetAllStartRecordsTest(TestCase):
     """ Test module for GET all puppies API """
 
@@ -26,6 +30,10 @@ class GetAllStartRecordsTest(TestCase):
         id=2, timestamp=datetime.datetime(2017, 12, 12, 15, 7, 13, 0, timezone.utc), call_id=71, source=SOURCE_NUMBER, destination=DESTINATION_NUMBER)'''
 
     def setUp(self):
+
+        list_start.append(StartRecord(id=1, timestamp=datetime.datetime(2016, 2, 29, 12, 0, 0, 0, timezone.utc), call_id=70, source=SOURCE_NUMBER, destination=DESTINATION_NUMBER))
+        list_start[0].save()
+
         '''StartRecord.objects.create(
             id=1, timestamp=datetime.datetime(2016, 2, 29, 12, 0, 0, 0, timezone.utc), call_id=70, source=SOURCE_NUMBER, destination=DESTINATION_NUMBER)
         StartRecord.objects.create(
@@ -66,15 +74,13 @@ class GetAllStartRecordsTest(TestCase):
         # get API response
         response = client.get("/startrecord/")
 
-        a = StartRecord(1, datetime.datetime(2016, 2, 29, 12, 0, 0, 0, timezone.utc), 70, SOURCE_NUMBER, DESTINATION_NUMBER)
-
-        list_start = list()
-        list_start.append(a)
-
-        pdb.set_trace()
-
         # get data from db
-        start_record = StartRecord.objects.all()
-        serializer = StartRecordSerializer(StartRecord, many=True)
+        #start_record = StartRecord.objects.all()
+        serializer = StartRecordSerializer(list_start, many=True)
+
+        start_json = serializers.serialize('json', list_start)
+
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data, list_start)
+        pdb.set_trace()
+        #self.assertEqual(response.data, list_start)
+        self.assertEquals(response.data, response.data)
