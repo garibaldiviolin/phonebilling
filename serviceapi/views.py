@@ -4,15 +4,16 @@ from __future__ import unicode_literals
 from operator import attrgetter
 from itertools import chain
 
+from django.utils import timezone
 from django.http import HttpResponse, JsonResponse
 from rest_framework.decorators import api_view, detail_route
 from rest_framework.generics import ListAPIView
 from rest_framework import viewsets
 
-from serviceapi.models import StartRecord, EndRecord, CostRecord
+from serviceapi.models import StartRecord, EndRecord
 from serviceapi.serializers import StartRecordSerializer, EndRecordSerializer, \
     PhoneBillSerializer
-from serviceapi.utils import calculate_call_cost
+from serviceapi.utils import *
 
 
 class StartRecordViewSet(viewsets.ModelViewSet):
@@ -27,8 +28,8 @@ class EndRecordViewSet(viewsets.ModelViewSet):
 
 class PhoneBillViewSet(viewsets.ViewSetMixin, ListAPIView):
 
+    queryset = EndRecord.objects.all()
     serializer_class = PhoneBillSerializer
-    queryset = CostRecord.objects.all()
 
     def get_queryset(self):
 
@@ -74,38 +75,38 @@ class PhoneBillViewSet(viewsets.ViewSetMixin, ListAPIView):
             end_period_date = start_period_date.replace(month=int(month_period)+1)
 
         else:
-            end_period_date = datetime.now()
-            end_period_date = period_date.replace(
+            end_period_date = datetime.datetime.now()
+            end_period_date = end_period_date.replace(
                     day=1,
                     hour=0,
                     minute=0,
                     second=0)
 
-            #start_period_date = end_period_date - datetime.timedelta (month=1)
-            start_period_date = end_period_date.replace(month=int(month_period)-1)
+            month_period = end_period_date.month
+            start_period_date = end_period_date.replace(month=month_period-1)
 
         if source is not None:
 
-            queryset = RecordCost.objects.select_related('call_id__call_id') \
-                .filter(call_id__call_id__source=source) \
-                .filter(call_id__call_id__timestamp__gte=start_period_date) \
-                .filter(call_id__timestamp__lt=end_period_date) \
+            queryset = EndRecord.objects.select_related('call_id') \
+                .filter(call_id__source=source) \
+                .filter(call_id__timestamp__gte=start_period_date) \
+                .filter(timestamp__lt=end_period_date) \
                 .order_by('call_id_id')
 
             results = list()
-            for record_cost in queryset:
+            for end_record in queryset:
 
-                destination = record_cost.call_id.call_id.destination
+                destination = end_record.call_id.destination
 
-                record_start_time = record_cost.call_id.call_id.timestamp
-                record_end_time = record_cost.call_id.timestamp
+                record_start_time = end_record.call_id.timestamp
+                record_end_time = end_record.timestamp
                 delta = record_end_time - record_start_time
                 h = delta.seconds / 3600  # hours
                 m = delta.seconds / 60  # minutes
                 s = delta.seconds % 60 # seconds
                 duration = '%dh%02dm%02ds' % (h, m, s)
 
-                formatted_price = ('R$ %0.2f' % record_cost.cost).replace('.',',')
+                formatted_price = ('R$ %0.2f' % end_record.cost).replace('.',',')
 
                 results.append({
                     'destination': destination,
