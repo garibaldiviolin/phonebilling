@@ -93,7 +93,7 @@ class EndRecordSerializer(serializers.HyperlinkedModelSerializer):
 
         cost = calculate_call_cost(start_record.timestamp, end_record.timestamp)
 
-        record_cost = RecordCost()
+        record_cost = CostRecord()
         record_cost.call_id = end_record
         record_cost.cost = cost
         record_cost.save()
