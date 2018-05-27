@@ -599,48 +599,50 @@ class GetPhoneBillTest(TestCase):
         StartRecord.objects.all().delete()
         EndRecord.objects.all().delete()
 
-        list_start = list()
-        list_start.append(StartRecord(
+        print('Ultimo teste')
+
+        self.list_start = list()
+        self.list_start.append(StartRecord(
             id=2, timestamp=datetime.datetime(2017, 12, 12, 15, 7, 13, 0, timezone.utc), call_id=71, source=SOURCE_NUMBER, destination=DESTINATION_NUMBER))
-        list_start.append(StartRecord(
+        self.list_start.append(StartRecord(
             id=3, timestamp=datetime.datetime(2017, 12, 12, 22, 47, 56, 0, timezone.utc), call_id=72, source=SOURCE_NUMBER, destination=DESTINATION_NUMBER))
-        list_start.append(StartRecord(
+        self.list_start.append(StartRecord(
             id=4, timestamp=datetime.datetime(2017, 12, 12, 21, 57, 13, 0, timezone.utc), call_id=73, source=SOURCE_NUMBER, destination=DESTINATION_NUMBER))
-        list_start.append(StartRecord(
+        self.list_start.append(StartRecord(
             id=5, timestamp=datetime.datetime(2017, 12, 12, 4, 57, 13, 0, timezone.utc), call_id=74, source=SOURCE_NUMBER, destination=DESTINATION_NUMBER))
-        list_start.append(StartRecord(
+        self.list_start.append(StartRecord(
             id=6, timestamp=datetime.datetime(2017, 12, 12, 21, 57, 13, 0, timezone.utc), call_id=75, source=SOURCE_NUMBER, destination=DESTINATION_NUMBER))
-        list_start.append(StartRecord(
+        self.list_start.append(StartRecord(
             id=7, timestamp=datetime.datetime(2017, 12, 12, 15, 7, 58, 0, timezone.utc), call_id=76, source=SOURCE_NUMBER, destination=DESTINATION_NUMBER))
 
-        list_end = list()
-        list_end.append(EndRecord(
+        self.list_end = list()
+        self.list_end.append(EndRecord(
             id=2, timestamp=datetime.datetime(2017, 12, 12, 15, 14, 56, 0, timezone.utc), call_id_id=71, cost=0.99))
-        list_end.append(EndRecord(
+        self.list_end.append(EndRecord(
             id=3, timestamp=datetime.datetime(2017, 12, 12, 22, 50, 56, 0, timezone.utc), call_id_id=72, cost=0.36))
-        list_end.append(EndRecord(
+        self.list_end.append(EndRecord(
             id=4, timestamp=datetime.datetime(2017, 12, 12, 22, 10, 56, 0, timezone.utc), call_id_id=73, cost=0.54))
-        list_end.append(EndRecord(
+        self.list_end.append(EndRecord(
             id=5, timestamp=datetime.datetime(2017, 12, 12, 6, 10, 56, 0, timezone.utc), call_id_id=74, cost=1.26))
-        list_end.append(EndRecord(
+        self.list_end.append(EndRecord(
             id=6, timestamp=datetime.datetime(2017, 12, 13, 22, 10, 56, 0, timezone.utc), call_id_id=75, cost=86.94))
-        list_end.append(EndRecord(
+        self.list_end.append(EndRecord(
             id=7, timestamp=datetime.datetime(2017, 12, 12, 15, 12, 56, 0, timezone.utc), call_id_id=76, cost=0.72))
 
         self.bill_list = list()
-        for i in range(len(list_end)):
+        for i in range(len(self.list_end)):
 
-            destination = list_start[i].destination
+            destination = self.list_start[i].destination
 
-            record_start_time = list_start[i].timestamp
-            record_end_time = list_end[i].timestamp
+            record_start_time = self.list_start[i].timestamp
+            record_end_time = self.list_end[i].timestamp
             delta = record_end_time - record_start_time
             h = delta.seconds / 3600  # hours
             m = delta.seconds / 60  # minutes
             s = delta.seconds % 60 # seconds
             duration = '%dh%02dm%02ds' % (h, m, s)
 
-            formatted_price = ('R$ %0.2f' % list_end[i].cost).replace('.',',')
+            formatted_price = ('R$ %0.2f' % self.list_end[i].cost).replace('.',',')
 
             self.bill_list.append(PhoneBill(
                 destination=destination,
@@ -653,7 +655,7 @@ class GetPhoneBillTest(TestCase):
     def test_get_valid_single_end_record(self):
         # get API response
 
-        for start_record in list_start:
+        for start_record in self.list_start:
 
             serializer_post = {
                 'id': start_record.id,
@@ -670,7 +672,7 @@ class GetPhoneBillTest(TestCase):
             )
             self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
-        for end_record in list_end:
+        for end_record in self.list_end:
             serializer_post = {
                 'id': end_record.id,
                 'timestamp': str(end_record.timestamp),
