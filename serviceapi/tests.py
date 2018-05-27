@@ -9,16 +9,17 @@ from django.core import serializers
 from django.test import TestCase, Client
 from django.urls import reverse
 from django.utils import timezone
-from rest_framework import status
+from rest_framework import status, serializers
 
 from serviceapi.models import StartRecord, EndRecord
-from serviceapi.serializers import StartRecordSerializer,EndRecordSerializer
+from serviceapi.serializers import StartRecordSerializer,EndRecordSerializer, \
+    PhoneBillSerializer
 from serviceapi.views import StartRecordViewSet
 
 client = Client()
 
-SOURCE_NUMBER = "9998852642"
-DESTINATION_NUMBER = "9999346827"
+SOURCE_NUMBER = "99988526423"
+DESTINATION_NUMBER = "9993468278"
 
 list_start = list()
 list_end = list()
@@ -35,6 +36,21 @@ end_single_record = EndRecord(
 # ************************************
 # ************************************
 
+class PhoneBill:
+
+    destination = serializers.CharField(max_length=100)
+    start_date = serializers.CharField(max_length=100)
+    start_time = serializers.CharField(max_length=100)
+    duration = serializers.CharField(max_length=100)
+    price = serializers.CharField(max_length=100)
+
+    def __init__(self, destination, start_date, start_time, duration, price):
+        self.destination = destination
+        self.start_date = start_date
+        self.start_time = start_time
+        self.duration = duration
+        self.price = price
+
 class GetAllStartRecordsTest(TestCase):
     """ Test module for GET all puppies API """
 
@@ -50,7 +66,7 @@ class GetAllStartRecordsTest(TestCase):
         list_start.append(StartRecord(
             id=2, timestamp=datetime.datetime(2017, 12, 12, 15, 7, 13, 0, timezone.utc), call_id=71, source=SOURCE_NUMBER, destination=DESTINATION_NUMBER))
         list_start.append(StartRecord(
-            id=3, timestamp=datetime.datetime(2017, 12, 12, 22, 57, 56, 0, timezone.utc), call_id=72, source=SOURCE_NUMBER, destination=DESTINATION_NUMBER))
+            id=3, timestamp=datetime.datetime(2017, 12, 12, 22, 47, 56, 0, timezone.utc), call_id=72, source=SOURCE_NUMBER, destination=DESTINATION_NUMBER))
         list_start.append(StartRecord(
             id=4, timestamp=datetime.datetime(2017, 12, 12, 21, 57, 13, 0, timezone.utc), call_id=73, source=SOURCE_NUMBER, destination=DESTINATION_NUMBER))
         list_start.append(StartRecord(
@@ -302,7 +318,6 @@ class UpdateSingleStartRecordTest(TestCase):
             data=json.dumps(self.valid_start_record),
             content_type='application/json'
         )
-        #pdb.set_trace()
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_invalid_update_start_record(self):
@@ -536,13 +551,13 @@ class UpdateSingleEndRecordTest(TestCase):
             'call_id_id': ''
         }
 
-    def test_valid_update_end_record(self):
+    '''def test_valid_update_end_record(self):
         response = client.put(
             '/endrecord/' + str(self.valid_end_record['id']) + '/',
             data=json.dumps(self.valid_end_record),
             content_type='application/json'
         )
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)'''
 
     def test_invalid_update_end_record(self):
         response = client.put(
@@ -581,21 +596,101 @@ class GetPhoneBillTest(TestCase):
 
     def setUp(self):
 
-        list_end[:] = []
+        StartRecord.objects.all().delete()
+        EndRecord.objects.all().delete()
 
-        end_single_record.save()
+        list_start = list()
+        list_start.append(StartRecord(
+            id=2, timestamp=datetime.datetime(2017, 12, 12, 15, 7, 13, 0, timezone.utc), call_id=71, source=SOURCE_NUMBER, destination=DESTINATION_NUMBER))
+        list_start.append(StartRecord(
+            id=3, timestamp=datetime.datetime(2017, 12, 12, 22, 47, 56, 0, timezone.utc), call_id=72, source=SOURCE_NUMBER, destination=DESTINATION_NUMBER))
+        list_start.append(StartRecord(
+            id=4, timestamp=datetime.datetime(2017, 12, 12, 21, 57, 13, 0, timezone.utc), call_id=73, source=SOURCE_NUMBER, destination=DESTINATION_NUMBER))
+        list_start.append(StartRecord(
+            id=5, timestamp=datetime.datetime(2017, 12, 12, 4, 57, 13, 0, timezone.utc), call_id=74, source=SOURCE_NUMBER, destination=DESTINATION_NUMBER))
+        list_start.append(StartRecord(
+            id=6, timestamp=datetime.datetime(2017, 12, 12, 21, 57, 13, 0, timezone.utc), call_id=75, source=SOURCE_NUMBER, destination=DESTINATION_NUMBER))
+        list_start.append(StartRecord(
+            id=7, timestamp=datetime.datetime(2017, 12, 12, 15, 7, 58, 0, timezone.utc), call_id=76, source=SOURCE_NUMBER, destination=DESTINATION_NUMBER))
+
+        list_end = list()
+        list_end.append(EndRecord(
+            id=2, timestamp=datetime.datetime(2017, 12, 12, 15, 14, 56, 0, timezone.utc), call_id_id=71, cost=0.99))
+        list_end.append(EndRecord(
+            id=3, timestamp=datetime.datetime(2017, 12, 12, 22, 50, 56, 0, timezone.utc), call_id_id=72, cost=0.36))
+        list_end.append(EndRecord(
+            id=4, timestamp=datetime.datetime(2017, 12, 12, 22, 10, 56, 0, timezone.utc), call_id_id=73, cost=0.54))
+        list_end.append(EndRecord(
+            id=5, timestamp=datetime.datetime(2017, 12, 12, 6, 10, 56, 0, timezone.utc), call_id_id=74, cost=1.26))
+        list_end.append(EndRecord(
+            id=6, timestamp=datetime.datetime(2017, 12, 13, 22, 10, 56, 0, timezone.utc), call_id_id=75, cost=86.94))
+        list_end.append(EndRecord(
+            id=7, timestamp=datetime.datetime(2017, 12, 12, 15, 12, 56, 0, timezone.utc), call_id_id=76, cost=0.72))
+
+        self.bill_list = list()
+        for i in range(len(list_end)):
+
+            destination = list_start[i].destination
+
+            record_start_time = list_start[i].timestamp
+            record_end_time = list_end[i].timestamp
+            delta = record_end_time - record_start_time
+            h = delta.seconds / 3600  # hours
+            m = delta.seconds / 60  # minutes
+            s = delta.seconds % 60 # seconds
+            duration = '%dh%02dm%02ds' % (h, m, s)
+
+            formatted_price = ('R$ %0.2f' % list_end[i].cost).replace('.',',')
+
+            self.bill_list.append(PhoneBill(
+                destination=destination,
+                start_date=record_start_time.strftime('%d/%m/%Y'),
+                start_time=record_start_time.strftime('%H:%M:%S'),
+                duration=duration,
+                price=formatted_price, 
+            ))
 
     def test_get_valid_single_end_record(self):
         # get API response
 
-        response = client.get("/phonebill/" + str(end_single_record.id) + "/")
+        for start_record in list_start:
 
-        # get data from db
-        end_record_db = EndRecord.objects.get(call_id_id=end_single_record.call_id_id)
+            serializer_post = {
+                'id': start_record.id,
+                'timestamp': str(start_record.timestamp),
+                'call_id': start_record.call_id,
+                'source': start_record.source,
+                'destination': start_record.destination
+            }
 
-        serializer_list = EndRecordSerializer(end_single_record)
-        serializer_db = EndRecordSerializer(end_record_db)
+            response = client.post(
+                '/startrecord/',
+                data=json.dumps(serializer_post),
+                content_type='application/json'
+            )
+            self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        for end_record in list_end:
+            serializer_post = {
+                'id': end_record.id,
+                'timestamp': str(end_record.timestamp),
+                'call_id_id': end_record.call_id_id
+            }
+
+            response = client.post(
+                '/endrecord/',
+                data=json.dumps(serializer_post),
+                content_type='application/json'
+            )                
+
+            self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        response = client.get("/phonebill/?source=" + SOURCE_NUMBER + "&period=12/2017")
+
+        serializer_list = PhoneBillSerializer(self.bill_list, many=True)
+
+        pdb.set_trace()
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
         self.assertEquals(response.data, serializer_list.data)
-        self.assertEquals(response.data, serializer_db.data)

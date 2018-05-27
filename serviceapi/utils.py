@@ -20,6 +20,17 @@ NO_COST_PERIOD_END_HOUR = 5
 NO_COST_PERIOD_END_MINUTE = 59
 NO_COST_PERIOD_END_SECOND = 59
 
+def subtract_one_month(date):
+    dt1 = date.replace(day=1)
+    dt2 = dt1 - datetime.timedelta(days=1)
+    dt3 = dt2.replace(day=1)
+    return dt3
+
+def add_one_month(date):
+    dt1 = date + datetime.timedelta(days=31)
+    dt2 = dt1.replace(day=1)
+    return dt2
+
 def calculate_call_cost(start_time, end_time):
 
     aux_time = start_time

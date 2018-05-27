@@ -71,8 +71,8 @@ class PhoneBillViewSet(viewsets.ViewSetMixin, ListAPIView):
                 0,
                 timezone.utc
             )
-            #start_period_date = end_period_date + datetime.timedelta (month=1)
-            end_period_date = start_period_date.replace(month=int(month_period)+1)
+            end_period_date = add_one_month(start_period_date)
+            #end_period_date = start_period_date.replace(month=int(month_period)+1)
 
         else:
             end_period_date = datetime.datetime.now()
@@ -82,8 +82,8 @@ class PhoneBillViewSet(viewsets.ViewSetMixin, ListAPIView):
                     minute=0,
                     second=0)
 
-            month_period = end_period_date.month
-            start_period_date = end_period_date.replace(month=month_period-1)
+            start_period_date = subtract_one_month(end_period_date)
+            #start_period_date = end_period_date.replace(month=month_period-1)
 
         if source is not None:
 
@@ -115,6 +115,5 @@ class PhoneBillViewSet(viewsets.ViewSetMixin, ListAPIView):
                     'duration': duration,
                     'price': formatted_price, 
                 })
-                return results
 
         return results

@@ -2,7 +2,6 @@
 from __future__ import unicode_literals
 
 from datetime import datetime
-import pdb
 
 from django.utils import timezone
 from django.contrib.auth.models import User, Group
@@ -63,7 +62,6 @@ class EndRecordSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('id','timestamp','call_id_id')
 
     def validate(self, data):
-
         start_record = StartRecord.objects.get(call_id=data['call_id_id'])
         end_timestamp = data['timestamp'].replace(tzinfo=timezone.utc)
         if start_record is None:
@@ -89,21 +87,19 @@ class EndRecordSerializer(serializers.HyperlinkedModelSerializer):
 
         return end_record
 
-    def update(self, validated_data):
-        id = validated_data['id']
-        timestamp = validated_data['timestamp']
-        call_id_id = validated_data['call_id_id']
-        end_record = EndRecord()
-        end_record.id = id
-        end_record.timestamp = timestamp
-        end_record.call_id_id = call_id_id
+    def update(self, end_record, validated_data):
 
-        start_record = StartRecord.objects.get(call_id=call_id_id)
+        end_record.id = validated_data['id']
+        end_record.timestamp = validated_data['timestamp']
+        end_record.call_id_id = validated_data['call_id_id']
+
+        start_record = StartRecord.objects.get(call_id=end_record.call_id_id)
+
         end_record.cost = calculate_call_cost(start_record.timestamp, end_record.timestamp)
 
         end_record.save()
 
-        return end_record
+        return validated_data
         
 
 class PhoneBillSerializer(serializers.Serializer):
