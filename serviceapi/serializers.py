@@ -9,6 +9,7 @@ from serviceapi.utils import *
 
 
 class StartRecordSerializer(serializers.HyperlinkedModelSerializer):
+    ''' Represents the serializer for the call start record '''
 
     id = serializers.IntegerField()
     timestamp = serializers.DateTimeField()
@@ -53,6 +54,7 @@ class StartRecordSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class EndRecordSerializer(serializers.HyperlinkedModelSerializer):
+    ''' Represents the serializer for the call end record '''
 
     id = serializers.IntegerField()
     timestamp = serializers.DateTimeField()
@@ -112,6 +114,7 @@ class EndRecordSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class PhoneBillSerializer(serializers.Serializer):
+    ''' Represents the serializer that returns the detailed bill '''
 
     destination = serializers.CharField(max_length=100)
     start_date = serializers.CharField(max_length=100)

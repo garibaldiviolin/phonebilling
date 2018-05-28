@@ -5,6 +5,7 @@ from django.db import models
 
 
 class StartRecord(models.Model):
+    ''' Represents the start call record received from the REST API'''
     id = models.BigIntegerField(primary_key=True, unique=True)
     timestamp = models.DateTimeField()
     call_id = models.BigIntegerField(unique=True)
@@ -13,6 +14,9 @@ class StartRecord(models.Model):
 
 
 class EndRecord(models.Model):
+    ''' Represents the end call record received from the REST API.
+    It also stores the calculated cost of the call
+    '''
     id = models.BigIntegerField(primary_key=True, unique=True)
     timestamp = models.DateTimeField()
     call_id = models.ForeignKey(
