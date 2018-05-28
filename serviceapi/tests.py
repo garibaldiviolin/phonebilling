@@ -491,10 +491,6 @@ class GetSingleInvalidEndRecordTest(TestCase):
 
         response = client.get("/endrecord/9999/")
 
-        # get data from db
-        end_record_db = EndRecord.objects.get(
-            call_id_id=end_single_record.call_id_id)
-
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
 

@@ -70,7 +70,9 @@ class EndRecordSerializer(serializers.HyperlinkedModelSerializer):
                 ValidationError("Please insert the call start before the end")
         elif start_record.timestamp >= end_timestamp:
             raise serializers.ValidationError(
-                "The call end timestamp must be greater than call start timestamp")
+                "The call end timestamp must be"
+                "greater than call start timestamp"
+            )
 
         return data
 
@@ -84,7 +86,9 @@ class EndRecordSerializer(serializers.HyperlinkedModelSerializer):
         end_record.call_id_id = call_id_id
 
         start_record = StartRecord.objects.get(call_id=call_id_id)
-        end_record.cost = calculate_call_cost(start_record.timestamp, end_record.timestamp)
+        end_record.cost = calculate_call_cost(
+            start_record.timestamp, end_record.timestamp
+        )
 
         end_record.save()
 
@@ -98,12 +102,14 @@ class EndRecordSerializer(serializers.HyperlinkedModelSerializer):
 
         start_record = StartRecord.objects.get(call_id=end_record.call_id_id)
 
-        end_record.cost = calculate_call_cost(start_record.timestamp, end_record.timestamp)
+        end_record.cost = calculate_call_cost(
+            start_record.timestamp, end_record.timestamp
+        )
 
         end_record.save()
 
         return validated_data
-        
+
 
 class PhoneBillSerializer(serializers.Serializer):
 
