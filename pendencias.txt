@@ -1,3 +1,4 @@
+- adicionar log na aplicacao
 - Instalar python 3.5 e migrar o projeto
 - Organizar os imports
 - Incluir conteúdo no Tests.py
