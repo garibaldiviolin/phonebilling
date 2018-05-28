@@ -7,34 +7,57 @@ import pdb
 
 from django.core import serializers
 from django.test import TestCase, Client
-from django.urls import reverse
 from django.utils import timezone
-from rest_framework import status, serializers
+from rest_framework import status
 
 from serviceapi.models import StartRecord, EndRecord
-from serviceapi.serializers import StartRecordSerializer,EndRecordSerializer, \
-    PhoneBillSerializer
-from serviceapi.views import StartRecordViewSet
+from serviceapi.serializers import StartRecordSerializer, \
+    EndRecordSerializer, PhoneBillSerializer
 
 client = Client()
 
 SOURCE_NUMBER = "99988526423"
 DESTINATION_NUMBER = "9993468278"
 
+START_TIME_1 = datetime.datetime(2016, 2, 29, 12, 0, 0, 0, timezone.utc)
+START_TIME_2 = datetime.datetime(2017, 12, 12, 15, 7, 13, 0, timezone.utc)
+START_TIME_3 = datetime.datetime(2017, 12, 12, 22, 47, 56, 0, timezone.utc)
+START_TIME_4 = datetime.datetime(2017, 12, 12, 21, 57, 13, 0, timezone.utc)
+START_TIME_5 = datetime.datetime(2017, 12, 12, 4, 57, 13, 0, timezone.utc)
+START_TIME_6 = datetime.datetime(2017, 12, 12, 21, 57, 13, 0, timezone.utc)
+START_TIME_7 = datetime.datetime(2017, 12, 12, 15, 7, 58, 0, timezone.utc)
+START_TIME_8 = datetime.datetime(2018, 2, 28, 21, 57, 13, 0, timezone.utc)
+
+END_TIME_1 = datetime.datetime(2016, 2, 29, 14, 0, 0, 0, timezone.utc)
+END_TIME_2 = datetime.datetime(2017, 12, 12, 15, 14, 56, 0, timezone.utc)
+END_TIME_3 = datetime.datetime(2017, 12, 12, 22, 50, 56, 0, timezone.utc)
+END_TIME_4 = datetime.datetime(2017, 12, 12, 22, 10, 56, 0, timezone.utc)
+END_TIME_5 = datetime.datetime(2017, 12, 12, 6, 10, 56, 0, timezone.utc)
+END_TIME_6 = datetime.datetime(2017, 12, 13, 22, 10, 56, 0, timezone.utc)
+END_TIME_7 = datetime.datetime(2017, 12, 12, 15, 12, 56, 0, timezone.utc)
+END_TIME_8 = datetime.datetime(2018, 3, 1, 22, 10, 56, 0, timezone.utc)
+END_TIME_9 = datetime.datetime(2016, 3, 1, 12, 0, 1, 0, timezone.utc)
+END_TIME_10 = datetime.datetime(2016, 2, 29, 12, 0, 0, 1, timezone.utc)
+
 list_start = list()
 list_end = list()
 
 start_single_record = StartRecord(
-    id=1, timestamp=datetime.datetime(2016, 2, 29, 12, 0, 0, 0, timezone.utc), call_id=70, source=SOURCE_NUMBER, destination=DESTINATION_NUMBER)
+    id=1, timestamp=START_TIME_1,
+    call_id=70, source=SOURCE_NUMBER, destination=DESTINATION_NUMBER
+)
 
 end_single_record = EndRecord(
-    id=1, timestamp=datetime.datetime(2016, 2, 29, 14, 0, 0, 0, timezone.utc), call_id_id=70, cost=0)
+    id=1, timestamp=END_TIME_1,
+    call_id_id=70, cost=0
+)
 
 # ************************************
 # ************************************
 # Start Record Tests
 # ************************************
 # ************************************
+
 
 class PhoneBill:
 
@@ -51,32 +74,44 @@ class PhoneBill:
         self.duration = duration
         self.price = price
 
+
 class GetAllStartRecordsTest(TestCase):
     """ Test module for GET all puppies API """
-
-    '''StartRecord.objects.create(
-        id=1, timestamp=datetime.datetime(2016, 2, 29, 12, 0, 0, 0, timezone.utc), call_id=70, source=SOURCE_NUMBER, destination=DESTINATION_NUMBER)
-    StartRecord.objects.create(
-        id=2, timestamp=datetime.datetime(2017, 12, 12, 15, 7, 13, 0, timezone.utc), call_id=71, source=SOURCE_NUMBER, destination=DESTINATION_NUMBER)'''
 
     def setUp(self):
 
         list_start.append(StartRecord(
-            id=1, timestamp=datetime.datetime(2016, 2, 29, 12, 0, 0, 0, timezone.utc), call_id=70, source=SOURCE_NUMBER, destination=DESTINATION_NUMBER))
+            id=1, timestamp=START_TIME_1, call_id=70,
+            source=SOURCE_NUMBER, destination=DESTINATION_NUMBER
+        ))
         list_start.append(StartRecord(
-            id=2, timestamp=datetime.datetime(2017, 12, 12, 15, 7, 13, 0, timezone.utc), call_id=71, source=SOURCE_NUMBER, destination=DESTINATION_NUMBER))
+            id=2, timestamp=START_TIME_2, call_id=71,
+            source=SOURCE_NUMBER, destination=DESTINATION_NUMBER
+        ))
         list_start.append(StartRecord(
-            id=3, timestamp=datetime.datetime(2017, 12, 12, 22, 47, 56, 0, timezone.utc), call_id=72, source=SOURCE_NUMBER, destination=DESTINATION_NUMBER))
+            id=3, timestamp=START_TIME_3, call_id=72,
+            source=SOURCE_NUMBER, destination=DESTINATION_NUMBER
+        ))
         list_start.append(StartRecord(
-            id=4, timestamp=datetime.datetime(2017, 12, 12, 21, 57, 13, 0, timezone.utc), call_id=73, source=SOURCE_NUMBER, destination=DESTINATION_NUMBER))
+            id=4, timestamp=START_TIME_4, call_id=73,
+            source=SOURCE_NUMBER, destination=DESTINATION_NUMBER
+        ))
         list_start.append(StartRecord(
-            id=5, timestamp=datetime.datetime(2017, 12, 12, 4, 57, 13, 0, timezone.utc), call_id=74, source=SOURCE_NUMBER, destination=DESTINATION_NUMBER))
+            id=5, timestamp=START_TIME_5, call_id=74,
+            source=SOURCE_NUMBER, destination=DESTINATION_NUMBER
+        ))
         list_start.append(StartRecord(
-            id=6, timestamp=datetime.datetime(2017, 12, 12, 21, 57, 13, 0, timezone.utc), call_id=75, source=SOURCE_NUMBER, destination=DESTINATION_NUMBER))
+            id=6, timestamp=START_TIME_6, call_id=75,
+            source=SOURCE_NUMBER, destination=DESTINATION_NUMBER
+        ))
         list_start.append(StartRecord(
-            id=7, timestamp=datetime.datetime(2017, 12, 12, 15, 7, 58, 0, timezone.utc), call_id=76, source=SOURCE_NUMBER, destination=DESTINATION_NUMBER))
+            id=7, timestamp=START_TIME_7, call_id=76,
+            source=SOURCE_NUMBER, destination=DESTINATION_NUMBER
+        ))
         list_start.append(StartRecord(
-            id=8, timestamp=datetime.datetime(2018, 2, 28, 21, 57, 13, 0, timezone.utc), call_id=77, source=SOURCE_NUMBER, destination=DESTINATION_NUMBER))
+            id=8, timestamp=START_TIME_8, call_id=77,
+            source=SOURCE_NUMBER, destination=DESTINATION_NUMBER
+        ))
 
         list_start.reverse()
 
@@ -110,10 +145,12 @@ class GetSingleValidStartRecordTest(TestCase):
     def test_get_valid_single_start_record(self):
         # get API response
 
-        response = client.get("/startrecord/" + str(start_single_record.id) + "/")
+        response = client.get(
+            "/startrecord/" + str(start_single_record.id) + "/")
 
         # get data from db
-        start_record_db = StartRecord.objects.get(call_id=start_single_record.call_id)
+        start_record_db = StartRecord.objects.get(
+            call_id=start_single_record.call_id)
 
         serializer_list = StartRecordSerializer(start_single_record)
         serializer_db = StartRecordSerializer(start_record_db)
@@ -136,12 +173,6 @@ class GetSingleInvalidStartRecordTest(TestCase):
 
         response = client.get("/startrecord/9999/")
 
-        # get data from db
-        start_record_db = StartRecord.objects.get(call_id=start_single_record.call_id)
-
-        serializer_list = StartRecordSerializer(start_single_record)
-        serializer_db = StartRecordSerializer(start_record_db)
-
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
 
@@ -151,7 +182,8 @@ class CreateNewStartRecordTest(TestCase):
     def setUp(self):
         self.valid_startrecord = {
             'id': 10,
-            'timestamp': str(datetime.datetime(2016, 2, 29, 12, 0, 0, 0, timezone.utc)),
+            'timestamp':
+                str(START_TIME_1),
             'call_id': 5,
             'source': '11912124425',
             'destination': '11991251242'
@@ -161,7 +193,8 @@ class CreateNewStartRecordTest(TestCase):
 
         self.start_record_list.append({
             'id': 'A',
-            'timestamp': str(datetime.datetime(2016, 2, 29, 12, 0, 0, 0, timezone.utc)),
+            'timestamp':
+                str(START_TIME_1),
             'call_id': 5,
             'source': '11912124425',
             'destination': '11991251242'
@@ -169,7 +202,8 @@ class CreateNewStartRecordTest(TestCase):
 
         self.start_record_list.append({
             'id': '',
-            'timestamp': str(datetime.datetime(2016, 2, 29, 12, 0, 0, 0, timezone.utc)),
+            'timestamp':
+                str(START_TIME_1),
             'call_id': 5,
             'source': '11912124425',
             'destination': '11991251242'
@@ -193,7 +227,8 @@ class CreateNewStartRecordTest(TestCase):
 
         self.start_record_list.append({
             'id': 3,
-            'timestamp': str(datetime.datetime(2016, 2, 29, 12, 0, 0, 0, timezone.utc)),
+            'timestamp':
+                str(START_TIME_1),
             'call_id': 'B',
             'source': '11912124425',
             'destination': '11991251242'
@@ -201,7 +236,8 @@ class CreateNewStartRecordTest(TestCase):
 
         self.start_record_list.append({
             'id': 3,
-            'timestamp': str(datetime.datetime(2016, 2, 29, 12, 0, 0, 0, timezone.utc)),
+            'timestamp':
+                str(START_TIME_1),
             'call_id': '',
             'source': '11912124425',
             'destination': '11991251242'
@@ -209,7 +245,8 @@ class CreateNewStartRecordTest(TestCase):
 
         self.start_record_list.append({
             'id': 4,
-            'timestamp': str(datetime.datetime(2016, 2, 29, 12, 0, 0, 0, timezone.utc)),
+            'timestamp':
+                str(START_TIME_1),
             'call_id': 5,
             'source': '119121244',
             'destination': '11991251242'
@@ -217,7 +254,8 @@ class CreateNewStartRecordTest(TestCase):
 
         self.start_record_list.append({
             'id': 4,
-            'timestamp': str(datetime.datetime(2016, 2, 29, 12, 0, 0, 0, timezone.utc)),
+            'timestamp':
+                str(START_TIME_1),
             'call_id': 5,
             'source': '',
             'destination': '11991251242'
@@ -225,7 +263,8 @@ class CreateNewStartRecordTest(TestCase):
 
         self.start_record_list.append({
             'id': 5,
-            'timestamp': str(datetime.datetime(2016, 2, 29, 12, 0, 0, 0, timezone.utc)),
+            'timestamp':
+                str(START_TIME_1),
             'call_id': 5,
             'source': 'A1912124425',
             'destination': '11991251242'
@@ -233,7 +272,8 @@ class CreateNewStartRecordTest(TestCase):
 
         self.start_record_list.append({
             'id': 5,
-            'timestamp': str(datetime.datetime(2016, 2, 29, 12, 0, 0, 0, timezone.utc)),
+            'timestamp':
+                str(START_TIME_1),
             'call_id': 5,
             'source': '',
             'destination': '11991251242'
@@ -241,7 +281,8 @@ class CreateNewStartRecordTest(TestCase):
 
         self.start_record_list.append({
             'id': 6,
-            'timestamp': str(datetime.datetime(2016, 2, 29, 12, 0, 0, 0, timezone.utc)),
+            'timestamp':
+                str(START_TIME_1),
             'call_id': 5,
             'source': '11912124425',
             'destination': '119912512'
@@ -249,7 +290,8 @@ class CreateNewStartRecordTest(TestCase):
 
         self.start_record_list.append({
             'id': 7,
-            'timestamp': str(datetime.datetime(2016, 2, 29, 12, 0, 0, 0, timezone.utc)),
+            'timestamp':
+                str(START_TIME_1),
             'call_id': 5,
             'source': '11912124425',
             'destination': 'B1991251242'
@@ -257,7 +299,8 @@ class CreateNewStartRecordTest(TestCase):
 
         self.start_record_list.append({
             'id': 7,
-            'timestamp': str(datetime.datetime(2016, 2, 29, 12, 0, 0, 0, timezone.utc)),
+            'timestamp':
+                str(START_TIME_1),
             'call_id': 5,
             'source': '11912124425',
             'destination': ''
@@ -286,19 +329,25 @@ class UpdateSingleStartRecordTest(TestCase):
     """ Test module for updating an existing puppy record """
 
     def setUp(self):
-        
+
         self.list_start = list()
         self.list_start.append(StartRecord(
-            id=1, timestamp=datetime.datetime(2016, 2, 29, 12, 0, 0, 0, timezone.utc), call_id=70, source=SOURCE_NUMBER, destination=DESTINATION_NUMBER))
+            id=1, timestamp=START_TIME_1,
+            call_id=70, source=SOURCE_NUMBER,
+            destination=DESTINATION_NUMBER
+        ))
         self.list_start.append(StartRecord(
-            id=2, timestamp=datetime.datetime(2017, 12, 12, 15, 7, 13, 0, timezone.utc), call_id=71, source=SOURCE_NUMBER, destination=DESTINATION_NUMBER))
+            id=2, timestamp=START_TIME_2,
+            call_id=71, source=SOURCE_NUMBER,
+            destination=DESTINATION_NUMBER
+        ))
 
         for self.start_record in self.list_start:
             self.start_record.save()
 
         self.valid_start_record = {
             'id': 1,
-            'timestamp': str(datetime.datetime(2016, 2, 29, 12, 0, 0, 0, timezone.utc)),
+            'timestamp': str(START_TIME_1),
             'call_id': 73,
             'source': SOURCE_NUMBER,
             'destination': DESTINATION_NUMBER
@@ -306,7 +355,7 @@ class UpdateSingleStartRecordTest(TestCase):
 
         self.invalid_start_record = {
             'id': 2,
-            'timestamp': str(datetime.datetime(2016, 2, 29, 12, 0, 0, 0, timezone.utc)),
+            'timestamp': str(START_TIME_1),
             'call_id': '',
             'source': SOURCE_NUMBER,
             'destination': DESTINATION_NUMBER
@@ -334,9 +383,13 @@ class DeleteSingleStartRecordTest(TestCase):
     def setUp(self):
         self.list_start = list()
         self.list_start.append(StartRecord(
-            id=1, timestamp=datetime.datetime(2016, 2, 29, 12, 0, 0, 0, timezone.utc), call_id=70, source=SOURCE_NUMBER, destination=DESTINATION_NUMBER))
+            id=1, timestamp=START_TIME_1, call_id=70,
+            source=SOURCE_NUMBER, destination=DESTINATION_NUMBER
+        ))
         self.list_start.append(StartRecord(
-            id=2, timestamp=datetime.datetime(2017, 12, 12, 15, 7, 13, 0, timezone.utc), call_id=71, source=SOURCE_NUMBER, destination=DESTINATION_NUMBER))
+            id=2, timestamp=START_TIME_2, call_id=71,
+            source=SOURCE_NUMBER, destination=DESTINATION_NUMBER
+        ))
 
         for self.start_record in self.list_start:
             self.start_record.save()
@@ -363,21 +416,21 @@ class GetAllEndRecordsTest(TestCase):
     def setUp(self):
 
         list_end.append(EndRecord(
-            id=1, timestamp=datetime.datetime(2016, 2, 29, 14, 0, 0, 0, timezone.utc), call_id_id=70, cost=0))
+            id=1, timestamp=END_TIME_1, call_id_id=70, cost=0))
         list_end.append(EndRecord(
-            id=2, timestamp=datetime.datetime(2017, 12, 12, 15, 14, 56, 0, timezone.utc), call_id_id=71, cost=0))
+            id=2, timestamp=END_TIME_2, call_id_id=71, cost=0))
         list_end.append(EndRecord(
-            id=3, timestamp=datetime.datetime(2017, 12, 12, 22, 50, 56, 0, timezone.utc), call_id_id=72, cost=0))
+            id=3, timestamp=END_TIME_3, call_id_id=72, cost=0))
         list_end.append(EndRecord(
-            id=4, timestamp=datetime.datetime(2017, 12, 12, 22, 10, 56, 0, timezone.utc), call_id_id=73, cost=0))
+            id=4, timestamp=END_TIME_4, call_id_id=73, cost=0))
         list_end.append(EndRecord(
-            id=5, timestamp=datetime.datetime(2017, 12, 12, 6, 10, 56, 0, timezone.utc), call_id_id=74, cost=0))
+            id=5, timestamp=END_TIME_4, call_id_id=74, cost=0))
         list_end.append(EndRecord(
-            id=6, timestamp=datetime.datetime(2017, 12, 13, 22, 10, 56, 0, timezone.utc), call_id_id=75, cost=0))
+            id=6, timestamp=END_TIME_4, call_id_id=75, cost=0))
         list_end.append(EndRecord(
-            id=7, timestamp=datetime.datetime(2017, 12, 12, 15, 12, 56, 0, timezone.utc), call_id_id=76, cost=0))
+            id=7, timestamp=END_TIME_7, call_id_id=76, cost=0))
         list_end.append(EndRecord(
-            id=8, timestamp=datetime.datetime(2018, 3, 1, 22, 10, 56, 0, timezone.utc), call_id_id=77, cost=0))
+            id=8, timestamp=END_TIME_8, call_id_id=77, cost=0))
 
         list_end.reverse()
 
@@ -414,7 +467,8 @@ class GetSingleValidEndRecordTest(TestCase):
         response = client.get("/endrecord/" + str(end_single_record.id) + "/")
 
         # get data from db
-        end_record_db = EndRecord.objects.get(call_id_id=end_single_record.call_id_id)
+        end_record_db = EndRecord.objects.get(
+            call_id_id=end_single_record.call_id_id)
 
         serializer_list = EndRecordSerializer(end_single_record)
         serializer_db = EndRecordSerializer(end_record_db)
@@ -438,10 +492,8 @@ class GetSingleInvalidEndRecordTest(TestCase):
         response = client.get("/endrecord/9999/")
 
         # get data from db
-        end_record_db = EndRecord.objects.get(call_id_id=end_single_record.call_id_id)
-
-        serializer_list = EndRecordSerializer(end_single_record)
-        serializer_db = EndRecordSerializer(end_record_db)
+        end_record_db = EndRecord.objects.get(
+            call_id_id=end_single_record.call_id_id)
 
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
@@ -451,11 +503,13 @@ class CreateNewEndRecordTest(TestCase):
 
     def setUp(self):
         StartRecord.objects.create(
-            id=10, timestamp=datetime.datetime(2016, 2, 29, 12, 0, 0, 0, timezone.utc), call_id=5, source=SOURCE_NUMBER, destination=DESTINATION_NUMBER)
+            id=10, timestamp=START_TIME_1, call_id=5,
+            source=SOURCE_NUMBER, destination=DESTINATION_NUMBER
+        )
 
         self.valid_endrecord = {
             'id': 10,
-            'timestamp': str(datetime.datetime(2016, 2, 29, 12, 0, 0, 1, timezone.utc)),
+            'timestamp': str(END_TIME_10),
             'call_id_id': 5
         }
 
@@ -463,13 +517,13 @@ class CreateNewEndRecordTest(TestCase):
 
         self.end_record_list.append({
             'id': 'A',
-            'timestamp': str(datetime.datetime(2016, 2, 29, 12, 0, 0, 0, timezone.utc)),
+            'timestamp': str(START_TIME_1),
             'call_id_id': 5
         })
 
         self.end_record_list.append({
             'id': '',
-            'timestamp': str(datetime.datetime(2016, 2, 29, 12, 0, 0, 0, timezone.utc)),
+            'timestamp': str(START_TIME_1),
             'call_id_id': 5
         })
 
@@ -487,13 +541,13 @@ class CreateNewEndRecordTest(TestCase):
 
         self.end_record_list.append({
             'id': 3,
-            'timestamp': str(datetime.datetime(2016, 2, 29, 12, 0, 0, 0, timezone.utc)),
+            'timestamp': str(START_TIME_1),
             'call_id_id': 'B'
         })
 
         self.end_record_list.append({
             'id': 3,
-            'timestamp': str(datetime.datetime(2016, 2, 29, 12, 0, 0, 0, timezone.utc)),
+            'timestamp': str(START_TIME_1),
             'call_id_id': ''
         })
 
@@ -523,15 +577,19 @@ class UpdateSingleEndRecordTest(TestCase):
 
         self.list_start = list()
         self.list_start.append(StartRecord(
-            id=1, timestamp=datetime.datetime(2016, 2, 29, 12, 0, 0, 0, timezone.utc), call_id=70, source=SOURCE_NUMBER, destination=DESTINATION_NUMBER))
+            id=1, timestamp=START_TIME_1, call_id=70,
+            source=SOURCE_NUMBER, destination=DESTINATION_NUMBER
+        ))
         self.list_start.append(StartRecord(
-            id=2, timestamp=datetime.datetime(2017, 12, 12, 15, 7, 13, 0, timezone.utc), call_id=71, source=SOURCE_NUMBER, destination=DESTINATION_NUMBER))
-        
+            id=2, timestamp=START_TIME_2, call_id=71,
+            source=SOURCE_NUMBER, destination=DESTINATION_NUMBER
+        ))
+
         self.list_end = list()
         self.list_end.append(EndRecord(
-            id=1, timestamp=datetime.datetime(2016, 3, 1, 12, 0, 1, 0, timezone.utc), call_id_id=70, cost=0))
+            id=1, timestamp=END_TIME_9, call_id_id=70, cost=0))
         self.list_end.append(EndRecord(
-            id=2, timestamp=datetime.datetime(2017, 12, 12, 15, 7, 13, 0, timezone.utc), call_id_id=71, cost=0))
+            id=2, timestamp=START_TIME_2, call_id_id=71, cost=0))
 
         for self.start_record in self.list_start:
             self.start_record.save()
@@ -541,13 +599,13 @@ class UpdateSingleEndRecordTest(TestCase):
 
         self.valid_end_record = {
             'id': 1,
-            'timestamp': str(datetime.datetime(2016, 3, 1, 12, 0, 1, 0, timezone.utc)),
+            'timestamp': str(END_TIME_9),
             'call_id_id': 70
         }
 
         self.invalid_end_record = {
             'id': 2,
-            'timestamp': str(datetime.datetime(2016, 2, 29, 12, 0, 0, 0, timezone.utc)),
+            'timestamp': str(START_TIME_1),
             'call_id_id': ''
         }
 
@@ -573,9 +631,9 @@ class DeleteSingleEndRecordTest(TestCase):
     def setUp(self):
         self.list_end = list()
         self.list_end.append(EndRecord(
-            id=1, timestamp=datetime.datetime(2016, 2, 29, 12, 0, 0, 0, timezone.utc), call_id_id=70, cost=0))
+            id=1, timestamp=START_TIME_1, call_id_id=70, cost=0))
         self.list_end.append(EndRecord(
-            id=2, timestamp=datetime.datetime(2017, 12, 12, 15, 7, 13, 0, timezone.utc), call_id_id=71, cost=0))
+            id=2, timestamp=START_TIME_2, call_id_id=71, cost=0))
 
         for self.end_record in self.list_end:
             self.end_record.save()
@@ -603,31 +661,49 @@ class GetPhoneBillTest(TestCase):
 
         self.list_start = list()
         self.list_start.append(StartRecord(
-            id=2, timestamp=datetime.datetime(2017, 12, 12, 15, 7, 13, 0, timezone.utc), call_id=71, source=SOURCE_NUMBER, destination=DESTINATION_NUMBER))
+            id=2, timestamp=START_TIME_2, call_id=71,
+            source=SOURCE_NUMBER, destination=DESTINATION_NUMBER
+        ))
         self.list_start.append(StartRecord(
-            id=3, timestamp=datetime.datetime(2017, 12, 12, 22, 47, 56, 0, timezone.utc), call_id=72, source=SOURCE_NUMBER, destination=DESTINATION_NUMBER))
+            id=3, timestamp=START_TIME_3, call_id=72,
+            source=SOURCE_NUMBER, destination=DESTINATION_NUMBER
+        ))
         self.list_start.append(StartRecord(
-            id=4, timestamp=datetime.datetime(2017, 12, 12, 21, 57, 13, 0, timezone.utc), call_id=73, source=SOURCE_NUMBER, destination=DESTINATION_NUMBER))
+            id=4, timestamp=START_TIME_4, call_id=73,
+            source=SOURCE_NUMBER, destination=DESTINATION_NUMBER
+        ))
         self.list_start.append(StartRecord(
-            id=5, timestamp=datetime.datetime(2017, 12, 12, 4, 57, 13, 0, timezone.utc), call_id=74, source=SOURCE_NUMBER, destination=DESTINATION_NUMBER))
+            id=5, timestamp=START_TIME_5, call_id=74,
+            source=SOURCE_NUMBER, destination=DESTINATION_NUMBER
+        ))
         self.list_start.append(StartRecord(
-            id=6, timestamp=datetime.datetime(2017, 12, 12, 21, 57, 13, 0, timezone.utc), call_id=75, source=SOURCE_NUMBER, destination=DESTINATION_NUMBER))
+            id=6, timestamp=START_TIME_4, call_id=75,
+            source=SOURCE_NUMBER, destination=DESTINATION_NUMBER
+        ))
         self.list_start.append(StartRecord(
-            id=7, timestamp=datetime.datetime(2017, 12, 12, 15, 7, 58, 0, timezone.utc), call_id=76, source=SOURCE_NUMBER, destination=DESTINATION_NUMBER))
+            id=7, timestamp=START_TIME_7, call_id=76,
+            source=SOURCE_NUMBER, destination=DESTINATION_NUMBER
+        ))
 
         self.list_end = list()
         self.list_end.append(EndRecord(
-            id=2, timestamp=datetime.datetime(2017, 12, 12, 15, 14, 56, 0, timezone.utc), call_id_id=71, cost=0.99))
+            id=2, timestamp=END_TIME_2, call_id_id=71, cost=0.99
+        ))
         self.list_end.append(EndRecord(
-            id=3, timestamp=datetime.datetime(2017, 12, 12, 22, 50, 56, 0, timezone.utc), call_id_id=72, cost=0.36))
+            id=3, timestamp=END_TIME_3, call_id_id=72, cost=0.36
+        ))
         self.list_end.append(EndRecord(
-            id=4, timestamp=datetime.datetime(2017, 12, 12, 22, 10, 56, 0, timezone.utc), call_id_id=73, cost=0.54))
+            id=4, timestamp=END_TIME_4, call_id_id=73, cost=0.54
+        ))
         self.list_end.append(EndRecord(
-            id=5, timestamp=datetime.datetime(2017, 12, 12, 6, 10, 56, 0, timezone.utc), call_id_id=74, cost=1.26))
+            id=5, timestamp=END_TIME_4, call_id_id=74, cost=1.26
+        ))
         self.list_end.append(EndRecord(
-            id=6, timestamp=datetime.datetime(2017, 12, 13, 22, 10, 56, 0, timezone.utc), call_id_id=75, cost=86.94))
+            id=6, timestamp=END_TIME_4, call_id_id=75, cost=86.94
+        ))
         self.list_end.append(EndRecord(
-            id=7, timestamp=datetime.datetime(2017, 12, 12, 15, 12, 56, 0, timezone.utc), call_id_id=76, cost=0.72))
+            id=7, timestamp=END_TIME_7, call_id_id=76, cost=0.72
+        ))
 
         self.bill_list = list()
         for i in range(len(self.list_end)):
@@ -639,17 +715,18 @@ class GetPhoneBillTest(TestCase):
             delta = record_end_time - record_start_time
             h = delta.seconds / 3600  # hours
             m = delta.seconds / 60  # minutes
-            s = delta.seconds % 60 # seconds
+            s = delta.seconds % 60  # seconds
             duration = '%dh%02dm%02ds' % (h, m, s)
 
-            formatted_price = ('R$ %0.2f' % self.list_end[i].cost).replace('.',',')
+            formatted_price = ('R$ %0.2f' % self.list_end[
+                               i].cost).replace('.', ',')
 
             self.bill_list.append(PhoneBill(
                 destination=destination,
                 start_date=record_start_time.strftime('%d/%m/%Y'),
                 start_time=record_start_time.strftime('%H:%M:%S'),
                 duration=duration,
-                price=formatted_price, 
+                price=formatted_price,
             ))
 
     def test_get_valid_single_end_record(self):
@@ -683,11 +760,12 @@ class GetPhoneBillTest(TestCase):
                 '/endrecord/',
                 data=json.dumps(serializer_post),
                 content_type='application/json'
-            )                
+            )
 
             self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
-        response = client.get("/phonebill/?source=" + SOURCE_NUMBER + "&period=12/2017")
+        response = client.get("/phonebill/?source=" +
+                              SOURCE_NUMBER + "&period=12/2017")
 
         serializer_list = PhoneBillSerializer(self.bill_list, many=True)
 

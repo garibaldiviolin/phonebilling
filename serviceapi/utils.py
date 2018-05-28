@@ -2,8 +2,6 @@
 from __future__ import unicode_literals
 
 import datetime
-from django.utils import timezone
-import pdb
 
 PERIOD_FORMAT_ERROR = "The period must have the following format: mm/yyyy"
 MONTH_PERIOD_FORMAT_ERROR = "The month's period sent is not valid"
@@ -22,16 +20,19 @@ NO_COST_PERIOD_END_HOUR = 6
 NO_COST_PERIOD_END_MINUTE = 0
 NO_COST_PERIOD_END_SECOND = 0
 
+
 def subtract_one_month(date):
     dt1 = date.replace(day=1)
     dt2 = dt1 - datetime.timedelta(days=1)
     dt3 = dt2.replace(day=1)
     return dt3
 
+
 def add_one_month(date):
     dt1 = date + datetime.timedelta(days=31)
     dt2 = dt1.replace(day=1)
     return dt2
+
 
 def calculate_call_cost(start_time, end_time):
 
@@ -40,23 +41,25 @@ def calculate_call_cost(start_time, end_time):
     # initial charge
     call_cost = STANDING_CALL_CHARGE
 
-    print('start_time - ' + start_time.strftime("%Y-%m-%d %H:%M:%S") \
-        + ' - end_time - ' + end_time.strftime("%Y-%m-%d %H:%M:%S"))
-
     while aux_time < end_time:
 
         delta_left_time = end_time - aux_time
         delta_seconds = delta_left_time.seconds
 
-        no_cost_period_start = aux_time.replace(hour=NO_COST_PERIOD_START_HOUR,
-                minute=NO_COST_PERIOD_START_MINUTE,
-                second=NO_COST_PERIOD_START_SECOND)
-        no_cost_period_end = aux_time.replace(hour=NO_COST_PERIOD_END_HOUR,
-                minute=NO_COST_PERIOD_END_MINUTE,
-                second=NO_COST_PERIOD_END_SECOND)
+        no_cost_period_start = aux_time.replace(
+            hour=NO_COST_PERIOD_START_HOUR,
+            minute=NO_COST_PERIOD_START_MINUTE,
+            second=NO_COST_PERIOD_START_SECOND
+        )
+        no_cost_period_end = aux_time.replace(
+            hour=NO_COST_PERIOD_END_HOUR,
+            minute=NO_COST_PERIOD_END_MINUTE,
+            second=NO_COST_PERIOD_END_SECOND
+        )
 
         if aux_time > no_cost_period_end:
-            no_cost_period_end = no_cost_period_end + datetime.timedelta(days=1)
+            no_cost_period_end = no_cost_period_end \
+                + datetime.timedelta(days=1)
 
         if (delta_seconds / 60) < 1:
             return call_cost
@@ -79,14 +82,6 @@ def calculate_call_cost(start_time, end_time):
                 aux_seconds = delta_seconds
             else:
                 aux_seconds = delta_free_time.seconds
-
-        #if (aux_seconds > 1000):
-        #    pdb.set_trace()
-
-        if start_time == datetime.datetime(2017, 12, 12, 4, 57, 13, 0, timezone.utc):
-            print('aux_time' + aux_time.strftime("%Y-%m-%d %H:%M:%S"))
-            print('call_cost=%0.2f' % (call_cost,))
-            pdb.set_trace()
 
         aux_time = aux_time + datetime.timedelta(seconds=aux_seconds)
 

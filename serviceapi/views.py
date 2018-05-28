@@ -1,18 +1,14 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from operator import attrgetter
-from itertools import chain
 
 from django.utils import timezone
-from django.http import HttpResponse, JsonResponse
-from rest_framework.decorators import api_view, detail_route
 from rest_framework.generics import ListAPIView
 from rest_framework import viewsets
 
 from serviceapi.models import StartRecord, EndRecord
-from serviceapi.serializers import StartRecordSerializer, EndRecordSerializer, \
-    PhoneBillSerializer
+from serviceapi.serializers import StartRecordSerializer, \
+    EndRecordSerializer, PhoneBillSerializer
 from serviceapi.utils import *
 
 
@@ -21,10 +17,12 @@ class StartRecordViewSet(viewsets.ModelViewSet):
     queryset = StartRecord.objects.all().order_by('-call_id')
     serializer_class = StartRecordSerializer
 
+
 class EndRecordViewSet(viewsets.ModelViewSet):
 
     queryset = EndRecord.objects.all().order_by('-call_id')
     serializer_class = EndRecordSerializer
+
 
 class PhoneBillViewSet(viewsets.ViewSetMixin, ListAPIView):
 
@@ -49,13 +47,13 @@ class PhoneBillViewSet(viewsets.ViewSetMixin, ListAPIView):
             month_period = period[0:2]
             year_period = period[3:8]
 
-            if month_period.isdigit() == False:
+            if month_period.isdigit() is False:
                 results.append({
                     'month_period': MONTH_PERIOD_FORMAT_ERROR
                 })
                 return results
 
-            if year_period.isdigit() == False:
+            if year_period.isdigit() is False:
                 results.append({
                     'year_period': YEAR_PERIOD_FORMAT_ERROR
                 })
@@ -64,26 +62,25 @@ class PhoneBillViewSet(viewsets.ViewSetMixin, ListAPIView):
             start_period_date = datetime.datetime(
                 int(year_period),
                 int(month_period),
-                1, # days
-                0, # hours
-                0, # minutes
-                0, # seconds
+                1,  # days
+                0,  # hours
+                0,  # minutes
+                0,  # seconds
                 0,
                 timezone.utc
             )
             end_period_date = add_one_month(start_period_date)
-            #end_period_date = start_period_date.replace(month=int(month_period)+1)
 
         else:
             end_period_date = datetime.datetime.now()
             end_period_date = end_period_date.replace(
-                    day=1,
-                    hour=0,
-                    minute=0,
-                    second=0)
+                day=1,
+                hour=0,
+                minute=0,
+                second=0
+            )
 
             start_period_date = subtract_one_month(end_period_date)
-            #start_period_date = end_period_date.replace(month=month_period-1)
 
         if source is not None:
 
@@ -103,17 +100,18 @@ class PhoneBillViewSet(viewsets.ViewSetMixin, ListAPIView):
                 delta = record_end_time - record_start_time
                 h = delta.seconds / 3600  # hours
                 m = delta.seconds / 60  # minutes
-                s = delta.seconds % 60 # seconds
+                s = delta.seconds % 60  # seconds
                 duration = '%dh%02dm%02ds' % (h, m, s)
 
-                formatted_price = ('R$ %0.2f' % end_record.cost).replace('.',',')
+                formatted_price = ('R$ %0.2f' % end_record.cost). \
+                    replace('.', ',')
 
                 results.append({
                     'destination': destination,
                     'start_date': record_start_time.strftime('%d/%m/%Y'),
                     'start_time': record_start_time.strftime('%H:%M:%S'),
                     'duration': duration,
-                    'price': formatted_price, 
+                    'price': formatted_price
                 })
 
         return results

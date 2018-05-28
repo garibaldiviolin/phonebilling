@@ -24,7 +24,7 @@
 - Melhor ou não usar timezone nesse caso?
 - padrão de nomes de projetos e aplicativos no django
 - Tem algum framework tão completo quanto o django? Quais outras ferramentas são usadas na cargobr?
-- Dividir o arquivo tests.py em multiplos arquivos? 
+- Dividir o arquivo tests.py em multiplos arquivos?
 -
 
 
