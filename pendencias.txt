@@ -1,3 +1,4 @@
+- mudar os endpoints endrecord e startrecord para um só. Parece que o pedido no README.md é esse.
 - verifica se o get_queryset no views esta elegante
 - adicionar log na aplicacao
 - Instalar python 3.5 e migrar o projeto
