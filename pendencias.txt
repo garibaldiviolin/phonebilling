@@ -1,3 +1,4 @@
+- verifica se o get_queryset no views esta elegante
 - adicionar log na aplicacao
 - Instalar python 3.5 e migrar o projeto
 - Organizar os imports

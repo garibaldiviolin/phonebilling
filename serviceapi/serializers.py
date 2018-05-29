@@ -22,6 +22,11 @@ class StartRecordSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('id', 'timestamp', 'call_id', 'source', 'destination')
 
     def validate(self, data):
+        ''' Validate if source and destination are numbers, check
+        their length (must be 10 or 11 digits), and also if they are
+        two different phone numbers.
+        '''
+
         if data['source'].isdigit() is False:
             raise serializers.ValidationError("Source must have only numbers")
         elif len(data['source']) != 10 and len(data['source']) != 11:
@@ -65,6 +70,11 @@ class EndRecordSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('id', 'timestamp', 'call_id_id')
 
     def validate(self, data):
+        ''' Validate if the start record exist before saving the end
+        record. It also checks if the end record's timestamp is later
+        than the start record's timestamp
+        '''
+
         start_record = StartRecord.objects.get(call_id=data['call_id_id'])
         end_timestamp = data['timestamp'].replace(tzinfo=timezone.utc)
         if start_record is None:
