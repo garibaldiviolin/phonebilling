@@ -1,11 +1,89 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import pdb
+
 from django.utils import timezone
 from rest_framework import serializers
 
 from serviceapi.models import StartRecord, EndRecord
 from serviceapi.utils import *
+
+
+class CallRecordSerializer(serializers.HyperlinkedModelSerializer):
+    ''' Represents the serializer for the call start record '''
+
+    id = serializers.IntegerField()
+    timestamp = serializers.DateTimeField()
+    call_id = serializers.IntegerField()
+    type = serializers.CharField()
+
+    class Meta:
+        model = EndRecord
+        fields = ('id', 'timestamp', 'call_id')
+
+    def validate(self, data):
+        ''' Validate if source and destination are numbers, check
+        their length (must be 10 or 11 digits), and also if they are
+        two different phone numbers.
+        '''
+
+        pdb.set_trace()
+
+        if data['type'] != RecordType.START and \
+                data['type'] != RecordType.START:
+            raise serializers.ValidationError('Type must be 1 or 2')
+
+        if data['source'].isdigit() is False:
+            raise serializers.ValidationError("Source must have only numbers")
+        elif len(data['source']) != 10 and len(data['source']) != 11:
+            raise serializers. \
+                ValidationError("Source must have 10 or 11 digits")
+
+        if data['destination'].isdigit() is False:
+            raise serializers. \
+                ValidationError("Destination must have only numbers")
+        elif len(data['destination']) != 10 and len(data['destination']) != 11:
+            raise serializers. \
+                ValidationError("Destination must have 10 or 11 digits")
+
+        if data['source'] == data['destination']:
+            raise serializers.ValidationError(
+                "Source and destination must have different values")
+
+        return data
+
+    def create(self, validated_data):
+
+        pdb.set_trace()
+
+        if validated_data['type'] == RecordType.START:
+            start_record = StartRecord()
+            start_record.id = validated_data['id']
+            start_record.timestamp = validated_data['timestamp']. \
+                replace(tzinfo=timezone.utc)
+            start_record.call_id = validated_data['call_id']
+            start_record.source = validated_data['source']
+            start_record.destination = validated_data['destination']
+            start_record.save()
+            return start_record
+        else:  # RecordType.END
+            id = validated_data['id']
+            timestamp = validated_data['timestamp']
+            call_id_id = validated_data['call_id_id']
+            end_record = EndRecord()
+            end_record.id = id
+            end_record.timestamp = timestamp
+            end_record.call_id_id = call_id_id
+
+            start_record = StartRecord.objects.get(call_id=call_id_id)
+            end_record.cost = calculate_call_cost(
+                start_record.timestamp, end_record.timestamp
+            )
+
+            end_record.save()
+
+            return end_record
 
 
 class StartRecordSerializer(serializers.HyperlinkedModelSerializer):

@@ -7,8 +7,14 @@ from rest_framework import viewsets
 
 from serviceapi.models import StartRecord, EndRecord
 from serviceapi.serializers import StartRecordSerializer, \
-    EndRecordSerializer, PhoneBillSerializer
+    EndRecordSerializer, PhoneBillSerializer, CallRecordSerializer
 from serviceapi.utils import *
+
+
+class CallRecordViewSet(viewsets.ModelViewSet):
+
+    queryset = EndRecord.objects.all().order_by('-call_id')
+    serializer_class = CallRecordSerializer
 
 
 class StartRecordViewSet(viewsets.ModelViewSet):

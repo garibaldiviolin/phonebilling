@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 import datetime
+from enum import Enum
 
 PERIOD_FORMAT_ERROR = "The period must have the following format: mm/yyyy"
 MONTH_PERIOD_FORMAT_ERROR = "The month's period sent is not valid"
@@ -22,6 +23,11 @@ FREE_PERIOD_END_SECOND = 0
 
 BASE_PERIOD = 60  # currently, the base period is 1 minute (60 seconds)
 PERIOD_COST = 0.09  # currently, the base period cost is R$ 0,09
+
+
+class RecordType(Enum):
+    START = 1
+    END = 2
 
 
 def subtract_one_month(date):
