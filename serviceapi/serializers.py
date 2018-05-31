@@ -6,21 +6,23 @@ import pdb
 from django.utils import timezone
 from rest_framework import serializers
 
-from serviceapi.models import StartRecord, EndRecord
+from serviceapi.models import StartRecord, EndRecord, CallRecord
 from serviceapi.utils import *
 
 
-class CallRecordSerializer(serializers.HyperlinkedModelSerializer):
+class CallRecordSerializer(serializers.Serializer):
     ''' Represents the serializer for the call start record '''
 
     id = serializers.IntegerField()
     timestamp = serializers.DateTimeField()
-    call_id = serializers.IntegerField()
-    type = serializers.CharField()
+    call_id_id = serializers.IntegerField()
+    type = serializers.IntegerField()
+    source = serializers.CharField()
+    destination = serializers.CharField()
 
     class Meta:
         model = EndRecord
-        fields = ('id', 'timestamp', 'call_id')
+        fields = ('id', 'timestamp', 'call_id_id', 'type', 'source', 'destination')
 
     def validate(self, data):
         ''' Validate if source and destination are numbers, check
@@ -30,26 +32,27 @@ class CallRecordSerializer(serializers.HyperlinkedModelSerializer):
 
         pdb.set_trace()
 
-        if data['type'] != RecordType.START and \
-                data['type'] != RecordType.START:
+        if data['type'] != RecordType.START.value and \
+                data['type'] != RecordType.END.value:
             raise serializers.ValidationError('Type must be 1 or 2')
 
-        if data['source'].isdigit() is False:
-            raise serializers.ValidationError("Source must have only numbers")
-        elif len(data['source']) != 10 and len(data['source']) != 11:
-            raise serializers. \
-                ValidationError("Source must have 10 or 11 digits")
+        if data['type'] == RecordType.START.value:
+            if data['source'].isdigit() is False:
+                raise serializers.ValidationError("Source must have only numbers")
+            elif len(data['source']) != 10 and len(data['source']) != 11:
+                raise serializers. \
+                    ValidationError("Source must have 10 or 11 digits")
 
-        if data['destination'].isdigit() is False:
-            raise serializers. \
-                ValidationError("Destination must have only numbers")
-        elif len(data['destination']) != 10 and len(data['destination']) != 11:
-            raise serializers. \
-                ValidationError("Destination must have 10 or 11 digits")
+            if data['destination'].isdigit() is False:
+                raise serializers. \
+                    ValidationError("Destination must have only numbers")
+            elif len(data['destination']) != 10 and len(data['destination']) != 11:
+                raise serializers. \
+                    ValidationError("Destination must have 10 or 11 digits")
 
-        if data['source'] == data['destination']:
-            raise serializers.ValidationError(
-                "Source and destination must have different values")
+            if data['source'] == data['destination']:
+                raise serializers.ValidationError(
+                    "Source and destination must have different values")
 
         return data
 
@@ -57,16 +60,21 @@ class CallRecordSerializer(serializers.HyperlinkedModelSerializer):
 
         pdb.set_trace()
 
-        if validated_data['type'] == RecordType.START:
+        if validated_data['type'] == RecordType.START.value:
             start_record = StartRecord()
             start_record.id = validated_data['id']
             start_record.timestamp = validated_data['timestamp']. \
                 replace(tzinfo=timezone.utc)
-            start_record.call_id = validated_data['call_id']
+            start_record.call_id = validated_data['call_id_id']
             start_record.source = validated_data['source']
             start_record.destination = validated_data['destination']
             start_record.save()
-            return start_record
+
+            end_record = EndRecord()
+            end_record.id = start_record.id
+            end_record.timestamp = start_record.timestamp
+            end_record.call_id_id = start_record.call_id 
+            return end_record
         else:  # RecordType.END
             id = validated_data['id']
             timestamp = validated_data['timestamp']

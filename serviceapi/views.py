@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import pdb
+
 from django.utils import timezone
 from rest_framework.generics import ListAPIView
 from rest_framework import viewsets
 
-from serviceapi.models import StartRecord, EndRecord
+from serviceapi.models import StartRecord, EndRecord, CallRecord
 from serviceapi.serializers import StartRecordSerializer, \
     EndRecordSerializer, PhoneBillSerializer, CallRecordSerializer
 from serviceapi.utils import *
@@ -56,7 +58,7 @@ class PhoneBillViewSet(viewsets.ViewSetMixin, ListAPIView):
             })
             return results
 
-        if source.is_digit() is False:
+        if source.isdigit() is False:
             results.append({
                 'source': 'the field must only contain digits'
             })
