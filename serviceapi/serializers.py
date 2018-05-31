@@ -15,22 +15,20 @@ class CallRecordSerializer(serializers.Serializer):
 
     id = serializers.IntegerField()
     timestamp = serializers.DateTimeField()
-    call_id_id = serializers.IntegerField()
+    call_id = serializers.IntegerField()
     type = serializers.IntegerField()
-    source = serializers.CharField()
-    destination = serializers.CharField()
+    source = serializers.CharField(required=False)
+    destination = serializers.CharField(required=False)
 
-    class Meta:
-        model = EndRecord
-        fields = ('id', 'timestamp', 'call_id_id', 'type', 'source', 'destination')
+    def get_validation_exclusions(self):
+        exclusions = super(FavoriteListSerializer, self).get_validation_exclusions()
+        return exclusions + ['source'] + ['destination']
 
     def validate(self, data):
         ''' Validate if source and destination are numbers, check
         their length (must be 10 or 11 digits), and also if they are
         two different phone numbers.
         '''
-
-        pdb.set_trace()
 
         if data['type'] != RecordType.START.value and \
                 data['type'] != RecordType.END.value:
@@ -58,27 +56,24 @@ class CallRecordSerializer(serializers.Serializer):
 
     def create(self, validated_data):
 
-        pdb.set_trace()
-
         if validated_data['type'] == RecordType.START.value:
+
             start_record = StartRecord()
             start_record.id = validated_data['id']
             start_record.timestamp = validated_data['timestamp']. \
                 replace(tzinfo=timezone.utc)
-            start_record.call_id = validated_data['call_id_id']
+            start_record.call_id = validated_data['call_id']
             start_record.source = validated_data['source']
             start_record.destination = validated_data['destination']
             start_record.save()
 
-            end_record = EndRecord()
-            end_record.id = start_record.id
-            end_record.timestamp = start_record.timestamp
-            end_record.call_id_id = start_record.call_id 
-            return end_record
+            return start_record
+
         else:  # RecordType.END
+
             id = validated_data['id']
             timestamp = validated_data['timestamp']
-            call_id_id = validated_data['call_id_id']
+            call_id_id = validated_data['call_id']
             end_record = EndRecord()
             end_record.id = id
             end_record.timestamp = timestamp

@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 import datetime
 from enum import Enum
+import pdb
 
 PERIOD_FORMAT_ERROR = "The period must have the following format: mm/yyyy"
 MONTH_PERIOD_FORMAT_ERROR = "The month's period sent is not valid"
@@ -92,9 +93,8 @@ def calculate_call_cost(start_time, end_time):
                 aux_seconds = delta_seconds
             else:
                 aux_seconds = delta_charge_time.seconds
-            call_cost += (aux_seconds / BASE_PERIOD) * PERIOD_COST
-        # don't charge
-        else:
+            call_cost += (aux_seconds // BASE_PERIOD) * PERIOD_COST
+        else:  # don't charge
             delta_free_time = free_period_end - aux_time
             if (delta_free_time >= delta_left_time):
                 aux_seconds = delta_seconds

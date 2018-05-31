@@ -6,6 +6,7 @@ import pdb
 from django.utils import timezone
 from rest_framework.generics import ListAPIView
 from rest_framework import viewsets
+from rest_framework.response import Response
 
 from serviceapi.models import StartRecord, EndRecord, CallRecord
 from serviceapi.serializers import StartRecordSerializer, \
@@ -13,10 +14,95 @@ from serviceapi.serializers import StartRecordSerializer, \
 from serviceapi.utils import *
 
 
-class CallRecordViewSet(viewsets.ModelViewSet):
+class CallRecordViewSet(viewsets.ViewSet):
 
-    queryset = EndRecord.objects.all().order_by('-call_id')
+    #queryset = EndRecord.objects.all().order_by('-call_id')
     serializer_class = CallRecordSerializer
+
+    def list(self, request):
+        ''' Returns the call records (start and end types) '''
+
+        results = {}
+
+        queryset_a = StartRecord.objects.all().order_by('call_id')
+        queryset_b = EndRecord.objects.all().order_by('call_id_id')
+
+        # Builds the response list
+        results = list()
+        for end_record in queryset_b:
+
+            # Appends the REST fields to the result
+            results.append({
+                'id': end_record.id,
+                'timestamp': str(end_record.timestamp),
+                'call_id': end_record.call_id_id,
+                'type': RecordType.END.value,
+                'source': '',
+                'destination': ''
+            })
+
+        for start_record in queryset_a:
+
+            # Appends the REST fields to the result
+            results.append({
+                'id': start_record.id,
+                'timestamp': str(start_record.timestamp),
+                'call_id': start_record.call_id,
+                'type': RecordType.START.value,
+                'source': start_record.source,
+                'destination': start_record.destination
+            })
+
+        return Response(results)
+
+    def retrieve(self, request, pk):
+        ''' Returns the call records (start and end types) '''
+
+        results = {}
+
+        queryset_a = StartRecord.objects.filter(id=pk).order_by('call_id')
+        queryset_b = EndRecord.objects.filter(id=pk).order_by('call_id_id')
+
+        # Builds the response list
+        results = list()
+        for end_record in queryset_b:
+
+            # Appends the REST fields to the result
+            results.append({
+                'id': end_record.id,
+                'timestamp': str(end_record.timestamp),
+                'call_id': end_record.call_id_id,
+                'type': RecordType.END.value,
+                'source': '',
+                'destination': ''
+            })
+
+        for start_record in queryset_a:
+
+            # Appends the REST fields to the result
+            results.append({
+                'id': start_record.id,
+                'timestamp': str(start_record.timestamp),
+                'call_id': start_record.call_id,
+                'type': RecordType.START.value,
+                'source': start_record.source,
+                'destination': start_record.destination
+            })
+
+        return Response(results)
+
+    def create(self, request):
+        ''' Returns the call records (start and end types) '''
+
+        results = {}
+
+        serializer = CallRecordSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+        else:
+            pdb.set_trace()
+
+        return Response(results)
 
 
 class StartRecordViewSet(viewsets.ModelViewSet):
@@ -47,8 +133,6 @@ class PhoneBillViewSet(viewsets.ViewSetMixin, ListAPIView):
         period = self.request.query_params.get('period')
 
         results = {}
-
-        pdb.set_trace()
 
         # Check if source is present, and if contains
         # 10 or 11 digits
