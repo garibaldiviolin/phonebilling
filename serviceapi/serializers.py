@@ -21,7 +21,8 @@ class CallRecordSerializer(serializers.Serializer):
     destination = serializers.CharField(required=False)
 
     def get_validation_exclusions(self):
-        exclusions = super(FavoriteListSerializer, self).get_validation_exclusions()
+        exclusions = super(FavoriteListSerializer, self). \
+            get_validation_exclusions()
         return exclusions + ['source'] + ['destination']
 
     def validate(self, data):
@@ -36,7 +37,8 @@ class CallRecordSerializer(serializers.Serializer):
 
         if data['type'] == RecordType.START.value:
             if data['source'].isdigit() is False:
-                raise serializers.ValidationError("Source must have only numbers")
+                raise serializers. \
+                    ValidationError("Source must have only numbers")
             elif len(data['source']) != 10 and len(data['source']) != 11:
                 raise serializers. \
                     ValidationError("Source must have 10 or 11 digits")
@@ -44,13 +46,25 @@ class CallRecordSerializer(serializers.Serializer):
             if data['destination'].isdigit() is False:
                 raise serializers. \
                     ValidationError("Destination must have only numbers")
-            elif len(data['destination']) != 10 and len(data['destination']) != 11:
+            elif len(data['destination']) != 10 and \
+                    len(data['destination']) != 11:
                 raise serializers. \
                     ValidationError("Destination must have 10 or 11 digits")
 
             if data['source'] == data['destination']:
                 raise serializers.ValidationError(
                     "Source and destination must have different values")
+        else:  # end record
+            start_record = StartRecord.objects.get(call_id=data['call_id'])
+            end_timestamp = data['timestamp'].replace(tzinfo=timezone.utc)
+            if start_record is None:
+                raise serializers.ValidationError("Please insert the call"
+                                                    "start before the end")
+            elif start_record.timestamp >= end_timestamp:
+                raise serializers.ValidationError(
+                    "The call end timestamp must be"
+                    "greater than call start timestamp"
+                )
 
         return data
 

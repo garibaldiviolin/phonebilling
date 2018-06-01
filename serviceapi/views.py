@@ -7,8 +7,9 @@ from django.utils import timezone
 from rest_framework.generics import ListAPIView
 from rest_framework import viewsets
 from rest_framework.response import Response
+from rest_framework import status
 
-from serviceapi.models import StartRecord, EndRecord, CallRecord
+from serviceapi.models import StartRecord, EndRecord
 from serviceapi.serializers import StartRecordSerializer, \
     EndRecordSerializer, PhoneBillSerializer, CallRecordSerializer
 from serviceapi.utils import *
@@ -16,7 +17,6 @@ from serviceapi.utils import *
 
 class CallRecordViewSet(viewsets.ViewSet):
 
-    #queryset = EndRecord.objects.all().order_by('-call_id')
     serializer_class = CallRecordSerializer
 
     def list(self, request):
@@ -24,8 +24,8 @@ class CallRecordViewSet(viewsets.ViewSet):
 
         results = {}
 
-        queryset_a = StartRecord.objects.all().order_by('call_id')
-        queryset_b = EndRecord.objects.all().order_by('call_id_id')
+        queryset_a = StartRecord.objects.all().order_by('-call_id')
+        queryset_b = EndRecord.objects.all().order_by('-call_id_id')
 
         # Builds the response list
         results = list()
@@ -65,6 +65,9 @@ class CallRecordViewSet(viewsets.ViewSet):
 
         # Builds the response list
         results = list()
+        if (len(queryset_a) < 1 and len(queryset_a) < 1):
+            return Response(results, status=status.HTTP_404_NOT_FOUND)
+
         for end_record in queryset_b:
 
             # Appends the REST fields to the result
@@ -99,10 +102,36 @@ class CallRecordViewSet(viewsets.ViewSet):
         serializer = CallRecordSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
+            return Response(results, status=status.HTTP_201_CREATED)
         else:
-            pdb.set_trace()
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
-        return Response(results)
+    def update(self, request, pk):
+        ''' Returns the call records (start and end types) '''
+
+        results = {}
+
+        pdb.set_trace()
+
+        serializer = CallRecordSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(results, status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+    def destroy(self, request, pk):
+
+        results = {}
+
+        queryset_a = StartRecord.objects.filter(id=pk)
+        queryset_b = EndRecord.objects.filter(id=pk)
+        if len(queryset_a) < 1 and len(queryset_b) < 1:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        else:
+            queryset_a.delete()
+            queryset_b.delete()
+            return Response(results, status=status.HTTP_204_NO_CONTENT)
 
 
 class StartRecordViewSet(viewsets.ModelViewSet):
