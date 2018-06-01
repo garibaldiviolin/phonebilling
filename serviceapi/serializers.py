@@ -6,7 +6,7 @@ import pdb
 from django.utils import timezone
 from rest_framework import serializers
 
-from serviceapi.models import StartRecord, EndRecord, CallRecord
+from serviceapi.models import StartRecord, EndRecord
 from serviceapi.utils import *
 
 
@@ -55,12 +55,18 @@ class CallRecordSerializer(serializers.Serializer):
                 raise serializers.ValidationError(
                     "Source and destination must have different values")
         else:  # end record
-            start_record = StartRecord.objects.get(call_id=data['call_id'])
+            queryset = StartRecord.objects.filter(call_id=data['call_id'])
+
+            if len(queryset) < 1:
+                raise serializers.ValidationError(
+                    "Please insert the call start before the end"
+                )
+
+            start_record = queryset[0]
+
             end_timestamp = data['timestamp'].replace(tzinfo=timezone.utc)
-            if start_record is None:
-                raise serializers.ValidationError("Please insert the call"
-                                                    "start before the end")
-            elif start_record.timestamp >= end_timestamp:
+
+            if start_record.timestamp >= end_timestamp:
                 raise serializers.ValidationError(
                     "The call end timestamp must be"
                     "greater than call start timestamp"

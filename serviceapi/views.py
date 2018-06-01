@@ -65,7 +65,7 @@ class CallRecordViewSet(viewsets.ViewSet):
 
         # Builds the response list
         results = list()
-        if (len(queryset_a) < 1 and len(queryset_a) < 1):
+        if (len(queryset_a) < 1 and len(queryset_b) < 1):
             return Response(results, status=status.HTTP_404_NOT_FOUND)
 
         for end_record in queryset_b:
@@ -110,8 +110,6 @@ class CallRecordViewSet(viewsets.ViewSet):
         ''' Returns the call records (start and end types) '''
 
         results = {}
-
-        pdb.set_trace()
 
         serializer = CallRecordSerializer(data=request.data)
         if serializer.is_valid():

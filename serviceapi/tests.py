@@ -151,7 +151,8 @@ class GetSingleValidStartRecordTest(TestCase):
 
     def test_get_single_valid_start_record(self):
         # get API response
-        response = client.get("/callrecord/%d/" % (self.start_record.id,))
+
+        response = client.get('/callrecord/' + str(self.start_record.id) + '/')
 
         serializer = CallRecordSerializer(self.serialized_list, many=True)
 
@@ -469,28 +470,28 @@ class GetAllEndRecordsTest(TestCase):
         self.list_end = list()
 
         self.list_end.append(EndRecord(
-            id=1, timestamp=END_TIME_1, call_id=70
+            id=1, timestamp=END_TIME_1, call_id_id=70, cost=0.22
         ))
         self.list_end.append(EndRecord(
-            id=2, timestamp=END_TIME_2, call_id=71
+            id=2, timestamp=END_TIME_2, call_id_id=71, cost=0.99
         ))
         self.list_end.append(EndRecord(
-            id=3, timestamp=END_TIME_3, call_id=72
+            id=3, timestamp=END_TIME_3, call_id_id=72, cost=0.26
         ))
         self.list_end.append(EndRecord(
-            id=4, timestamp=END_TIME_4, call_id=73
+            id=4, timestamp=END_TIME_4, call_id_id=73, cost=0.54
         ))
         self.list_end.append(EndRecord(
-            id=5, timestamp=END_TIME_5, call_id=74
+            id=5, timestamp=END_TIME_5, call_id_id=74, cost=1.26
         ))
         self.list_end.append(EndRecord(
-            id=6, timestamp=END_TIME_6, call_id=75
+            id=6, timestamp=END_TIME_6, call_id_id=75, cost=86.94
         ))
         self.list_end.append(EndRecord(
-            id=7, timestamp=END_TIME_7, call_id=76
+            id=7, timestamp=END_TIME_7, call_id_id=76, cost=0.72
         ))
         self.list_end.append(EndRecord(
-            id=8, timestamp=END_TIME_8, call_id=77
+            id=8, timestamp=END_TIME_8, call_id_id=77, cost=0.22
         ))
 
         self.list_end.reverse()
@@ -502,8 +503,10 @@ class GetAllEndRecordsTest(TestCase):
             self.serialized_list.append({
                 'id': end_record.id,
                 'timestamp': str(end_record.timestamp),
-                'call_id': end_record.call_id,
-                'type': RecordType.END.value
+                'call_id': end_record.call_id_id,
+                'type': RecordType.END.value,
+                'source': '',
+                'destination': ''
             })
             end_record.save()
 
@@ -522,25 +525,26 @@ class GetSingleValidEndRecordTest(TestCase):
 
     def setUp(self):
 
-        self.list_end = list()
-
         self.end_record = EndRecord(
-            id=1, timestamp=END_TIME_1, call_id=70
+            id=1, timestamp=END_TIME_1, call_id_id=70, cost=0.22
         )
+        self.end_record.save()
 
         # saves the objects and creates the list to match the service response
         self.serialized_list = list()
+
         self.serialized_list.append({
             'id': self.end_record.id,
             'timestamp': str(self.end_record.timestamp),
-            'call_id': self.end_record.call_id,
-            'type': RecordType.END.value
+            'call_id': self.end_record.call_id_id,
+            'type': RecordType.END.value,
+            'source': '',
+            'destination': ''
         })
-        self.end_record.save()
 
     def test_get_single_valid_end_record(self):
         # get API response
-        response = client.get("/callrecord/%d/" % (self.end_record.id,))
+        response = client.get('/callrecord/' + str(self.end_record.id) + '/')
 
         serializer = CallRecordSerializer(self.serialized_list, many=True)
 
@@ -556,7 +560,7 @@ class GetSingleInvalidEndRecordTest(TestCase):
         self.list_end = list()
 
         self.end_record = EndRecord(
-            id=1, timestamp=END_TIME_1, call_id=70
+            id=1, timestamp=END_TIME_1, call_id_id=70, cost=0.22
         )
 
         # saves the objects and creates the list to match the service response
@@ -564,8 +568,10 @@ class GetSingleInvalidEndRecordTest(TestCase):
         self.serialized_list.append({
             'id': self.end_record.id,
             'timestamp': str(self.end_record.timestamp),
-            'call_id': self.end_record.call_id,
-            'type': RecordType.END.value
+            'call_id': self.end_record.call_id_id,
+            'type': RecordType.END.value,
+            'source': '',
+            'destination': ''
         })
         self.end_record.save()
 
@@ -620,10 +626,10 @@ class CreateNewEndRecordTest(TestCase):
             start_record.save()
 
         self.valid_endrecord = {
-            'id': 10,
+            'id': 1,
             'timestamp':
                 str(END_TIME_1),
-            'call_id': 5,
+            'call_id': 70,
             'type': RecordType.END.value
         }
 
@@ -633,7 +639,7 @@ class CreateNewEndRecordTest(TestCase):
             'id': 'A',
             'timestamp':
                 str(END_TIME_1),
-            'call_id': 5,
+            'call_id': 70,
             'type': RecordType.END.value
         })
 
@@ -641,26 +647,26 @@ class CreateNewEndRecordTest(TestCase):
             'id': '',
             'timestamp':
                 str(END_TIME_1),
-            'call_id': 5,
+            'call_id': 70,
             'type': RecordType.END.value
         })
 
         self.end_record_list.append({
-            'id': 2,
+            'id': 1,
             'timestamp': '9999-99-99T99:99:99Z',
-            'call_id': 5,
+            'call_id': 70,
             'type': RecordType.END.value
         })
 
         self.end_record_list.append({
-            'id': 2,
+            'id': 1,
             'timestamp': '',
-            'call_id': 5,
+            'call_id': 70,
             'type': RecordType.END.value
         })
 
         self.end_record_list.append({
-            'id': 3,
+            'id': 1,
             'timestamp':
                 str(END_TIME_1),
             'call_id': 'B',
@@ -668,7 +674,7 @@ class CreateNewEndRecordTest(TestCase):
         })
 
         self.end_record_list.append({
-            'id': 3,
+            'id': 1,
             'timestamp':
                 str(END_TIME_1),
             'call_id': '',
@@ -676,51 +682,19 @@ class CreateNewEndRecordTest(TestCase):
         })
 
         self.end_record_list.append({
-            'id': 3,
+            'id': 1,
             'timestamp':
                 str(END_TIME_1),
-            'call_id': 5,
+            'call_id': 70,
             'type': ''
         })
 
         self.end_record_list.append({
-            'id': 3,
+            'id': 1,
             'timestamp':
                 str(END_TIME_1),
-            'call_id': 5,
+            'call_id': 70,
             'type': 'B'
-        })
-
-        self.end_record_list.append({
-            'id': 4,
-            'timestamp':
-                str(END_TIME_1),
-            'call_id': 5,
-            'type': RecordType.END.value
-        })
-
-        self.end_record_list.append({
-            'id': 4,
-            'timestamp':
-                str(END_TIME_1),
-            'call_id': 5,
-            'type': RecordType.END.value
-        })
-
-        self.end_record_list.append({
-            'id': 5,
-            'timestamp':
-                str(END_TIME_1),
-            'call_id': 5,
-            'type': RecordType.END.value
-        })
-
-        self.end_record_list.append({
-            'id': 5,
-            'timestamp':
-                str(END_TIME_1),
-            'call_id': 5,
-            'type': RecordType.END.value
         })
 
     def test_create_valid_end_record(self):
@@ -762,10 +736,10 @@ class UpdateSingleEndRecordTest(TestCase):
 
         self.list_end = list()
         self.list_end.append(EndRecord(
-            id=1, timestamp=END_TIME_1, call_id=70
+            id=1, timestamp=END_TIME_1, call_id_id=70, cost=0.22
         ))
         self.list_end.append(EndRecord(
-            id=2, timestamp=END_TIME_2, call_id=71
+            id=2, timestamp=END_TIME_2, call_id_id=71, cost=0.22
         ))
 
         for self.end_record in self.list_end:
@@ -774,7 +748,7 @@ class UpdateSingleEndRecordTest(TestCase):
         self.valid_end_record = {
             'id': 1,
             'timestamp': str(END_TIME_1),
-            'call_id': 73,
+            'call_id': 70,
             'type': RecordType.END.value
         }
 
@@ -807,10 +781,10 @@ class DeleteSingleEndRecordTest(TestCase):
     def setUp(self):
         self.list_end = list()
         self.list_end.append(EndRecord(
-            id=1, timestamp=END_TIME_1, call_id_id=70
+            id=1, timestamp=END_TIME_1, call_id_id=70, cost=0.33
         ))
         self.list_end.append(EndRecord(
-            id=2, timestamp=END_TIME_2, call_id_id=71
+            id=2, timestamp=END_TIME_2, call_id_id=71, cost=0.44
         ))
 
         for self.end_record in self.list_end:
