@@ -25,7 +25,7 @@ class CallRecordViewSet(viewsets.ViewSet):
         results = {}
 
         queryset_a = StartRecord.objects.all().order_by('-call_id')
-        queryset_b = EndRecord.objects.all().order_by('-call_id_id')
+        queryset_b = EndRecord.objects.all().order_by('-start')
 
         # Builds the response list
         results = list()
@@ -35,10 +35,8 @@ class CallRecordViewSet(viewsets.ViewSet):
             results.append({
                 'id': end_record.id,
                 'timestamp': str(end_record.timestamp),
-                'call_id': end_record.call_id_id,
-                'type': RecordType.END.value,
-                'source': '',
-                'destination': ''
+                'call_id': end_record.call_id,
+                'type': RecordType.END.value
             })
 
         for start_record in queryset_a:
@@ -61,7 +59,7 @@ class CallRecordViewSet(viewsets.ViewSet):
         results = {}
 
         queryset_a = StartRecord.objects.filter(id=pk).order_by('call_id')
-        queryset_b = EndRecord.objects.filter(id=pk).order_by('call_id_id')
+        queryset_b = EndRecord.objects.filter(id=pk).order_by('start')
 
         # Builds the response list
         results = list()
@@ -74,10 +72,8 @@ class CallRecordViewSet(viewsets.ViewSet):
             results.append({
                 'id': end_record.id,
                 'timestamp': str(end_record.timestamp),
-                'call_id': end_record.call_id_id,
-                'type': RecordType.END.value,
-                'source': '',
-                'destination': ''
+                'call_id': end_record.call_id,
+                'type': RecordType.END.value
             })
 
         for start_record in queryset_a:
@@ -97,12 +93,10 @@ class CallRecordViewSet(viewsets.ViewSet):
     def create(self, request):
         ''' Returns the call records (start and end types) '''
 
-        results = {}
-
         serializer = CallRecordSerializer(data=request.data)
-        if serializer.is_valid():
+        if serializer.is_valid(raise_exception=True):
             serializer.save()
-            return Response(results, status=status.HTTP_201_CREATED)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
@@ -149,7 +143,7 @@ class PhoneBillViewSet(viewsets.ViewSetMixin, ListAPIView):
     queryset = EndRecord.objects.all()
     serializer_class = PhoneBillSerializer
 
-    def get_queryset(self):
+    def list(self, request):
         ''' Returns the bill based on the parameters sent in the URL
         (source and period parameters, using HTTP GET method).
         If the period parameter (optional) is not present than the
@@ -159,27 +153,25 @@ class PhoneBillViewSet(viewsets.ViewSetMixin, ListAPIView):
         source = self.request.query_params.get('source')
         period = self.request.query_params.get('period')
 
-        results = {}
+        results = list()
 
-        # Check if source is present, and if contains
-        # 10 or 11 digits
         if source is None:
             results.append({
                 'source': 'the field is necessary'
             })
-            return results
+            return Response(results, status=status.HTTP_400_BAD_REQUEST)
 
         if source.isdigit() is False:
             results.append({
                 'source': 'the field must only contain digits'
             })
-            return results
+            return Response(results, status=status.HTTP_400_BAD_REQUEST)
 
         if len(source) != 10 and len(source) != 11:
             results.append({
                 'source': 'the field must contain 10 or 11 digits'
             })
-            return results
+            return Response(results, status=status.HTTP_400_BAD_REQUEST)
 
         # If period was sent, validates the parameter
         # The period must have a slash between month and year
@@ -190,7 +182,7 @@ class PhoneBillViewSet(viewsets.ViewSetMixin, ListAPIView):
                 results.append({
                     'period': PERIOD_FORMAT_ERROR
                 })
-                return results
+                return Response(results, status=status.HTTP_400_BAD_REQUEST)
 
             month_period = period[0:2]
             year_period = period[3:8]
@@ -199,13 +191,13 @@ class PhoneBillViewSet(viewsets.ViewSetMixin, ListAPIView):
                 results.append({
                     'month_period': MONTH_PERIOD_FORMAT_ERROR
                 })
-                return results
+                return Response(results, status=status.HTTP_400_BAD_REQUEST)
 
             if year_period.isdigit() is False:
                 results.append({
                     'year_period': YEAR_PERIOD_FORMAT_ERROR
                 })
-                return results
+                return Response(results, status=status.HTTP_400_BAD_REQUEST)
 
             start_period_date = datetime.datetime(
                 int(year_period),
@@ -230,19 +222,19 @@ class PhoneBillViewSet(viewsets.ViewSetMixin, ListAPIView):
 
             start_period_date = subtract_one_month(end_period_date)
 
-        queryset = EndRecord.objects.select_related('call_id') \
-            .filter(call_id__source=source) \
-            .filter(call_id__timestamp__gte=start_period_date) \
+        queryset = EndRecord.objects.select_related('start') \
+            .filter(start__source=source) \
+            .filter(start__timestamp__gte=start_period_date) \
             .filter(timestamp__lt=end_period_date) \
-            .order_by('call_id_id')
+            .order_by('start__call_id')
 
         # Builds the response list
         results = list()
         for end_record in queryset:
 
-            destination = end_record.call_id.destination
+            destination = end_record.start.destination
 
-            record_start_time = end_record.call_id.timestamp
+            record_start_time = end_record.start.timestamp
             record_end_time = end_record.timestamp
             delta = record_end_time - record_start_time
             h = delta.seconds / 3600  # hours
@@ -262,4 +254,4 @@ class PhoneBillViewSet(viewsets.ViewSetMixin, ListAPIView):
                 'price': formatted_price
             })
 
-        return results
+        return Response(results, status=status.HTTP_200_OK)
