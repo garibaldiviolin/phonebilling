@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-import pdb
-
 from django.utils import timezone
 from rest_framework.generics import ListAPIView
 from rest_framework import viewsets

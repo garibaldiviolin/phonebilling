@@ -31,31 +31,33 @@ class CallRecordSerializer(serializers.Serializer):
 
         if data['type'] != RecordType.START.value and \
                 data['type'] != RecordType.END.value:
-            raise serializers.ValidationError('Type must be 1 or 2')
+            raise serializers.ValidationError({'type': 'Type must be 1 or 2'})
+
+        if validate_datetime(data['timestamp']) is False:
+            raise serializers.ValidationError({
+                "timestamp":
+                "Incorrect data format, should be yyyy/mm/ddThh:MM:ssZ"
+            })
 
         if data['type'] == RecordType.START.value:
             if data['source'].isdigit() is False:
-                raise serializers. \
-                    ValidationError({
-                        "source": "Source must have only numbers"
-                    })
+                raise serializers.ValidationError({
+                    "source": "Source must have only numbers"
+                })
             elif len(data['source']) != 10 and len(data['source']) != 11:
-                raise serializers. \
-                    ValidationError({
-                        "source": "Source must have 10 or 11 digits"
-                    })
+                raise serializers.ValidationError({
+                    "source": "Source must have 10 or 11 digits"
+                })
 
             if data['destination'].isdigit() is False:
-                raise serializers. \
-                    ValidationError({
-                        "destination": "Destination must have only numbers"
-                    })
+                raise serializers.ValidationError({
+                    "destination": "Destination must have only numbers"
+                })
             elif len(data['destination']) != 10 and \
                     len(data['destination']) != 11:
-                raise serializers. \
-                    ValidationError({
-                        "destination": "Destination must have 10 or 11 digits"
-                    })
+                raise serializers.ValidationError({
+                    "destination": "Destination must have 10 or 11 digits"
+                })
 
             if data['source'] == data['destination']:
                 raise serializers.ValidationError({
