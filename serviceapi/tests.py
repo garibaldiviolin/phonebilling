@@ -20,6 +20,24 @@ client = Client()
 SOURCE_NUMBER = "99988526423"
 DESTINATION_NUMBER = "9993468278"
 
+ID_1 = 1
+ID_2 = 2
+ID_3 = 3
+ID_4 = 4
+ID_5 = 5
+ID_6 = 6
+ID_7 = 7
+ID_8 = 8
+
+CALL_ID_1 = 70
+CALL_ID_2 = 71
+CALL_ID_3 = 72
+CALL_ID_4 = 73
+CALL_ID_5 = 74
+CALL_ID_6 = 75
+CALL_ID_7 = 76
+CALL_ID_8 = 77
+
 START_TIME_1 = datetime.datetime(2016, 2, 29, 12, 0, 0, 0, timezone.utc)
 START_TIME_2 = datetime.datetime(2017, 12, 12, 15, 7, 13, 0, timezone.utc)
 START_TIME_3 = datetime.datetime(2017, 12, 12, 22, 47, 56, 0, timezone.utc)
@@ -68,35 +86,35 @@ class GetAllStartRecordsTest(TestCase):
         self.list_start = list()
 
         self.list_start.append(StartRecord(
-            id=1, timestamp=START_TIME_1, call_id=70,
+            id=ID_1, timestamp=START_TIME_1, call_id=CALL_ID_1,
             source=SOURCE_NUMBER, destination=DESTINATION_NUMBER
         ))
         self.list_start.append(StartRecord(
-            id=2, timestamp=START_TIME_2, call_id=71,
+            id=ID_2, timestamp=START_TIME_2, call_id=CALL_ID_2,
             source=SOURCE_NUMBER, destination=DESTINATION_NUMBER
         ))
         self.list_start.append(StartRecord(
-            id=3, timestamp=START_TIME_3, call_id=72,
+            id=ID_3, timestamp=START_TIME_3, call_id=CALL_ID_3,
             source=SOURCE_NUMBER, destination=DESTINATION_NUMBER
         ))
         self.list_start.append(StartRecord(
-            id=4, timestamp=START_TIME_4, call_id=73,
+            id=ID_4, timestamp=START_TIME_4, call_id=CALL_ID_4,
             source=SOURCE_NUMBER, destination=DESTINATION_NUMBER
         ))
         self.list_start.append(StartRecord(
-            id=5, timestamp=START_TIME_5, call_id=74,
+            id=ID_5, timestamp=START_TIME_5, call_id=CALL_ID_5,
             source=SOURCE_NUMBER, destination=DESTINATION_NUMBER
         ))
         self.list_start.append(StartRecord(
-            id=6, timestamp=START_TIME_6, call_id=75,
+            id=ID_6, timestamp=START_TIME_6, call_id=CALL_ID_6,
             source=SOURCE_NUMBER, destination=DESTINATION_NUMBER
         ))
         self.list_start.append(StartRecord(
-            id=7, timestamp=START_TIME_7, call_id=76,
+            id=ID_7, timestamp=START_TIME_7, call_id=CALL_ID_7,
             source=SOURCE_NUMBER, destination=DESTINATION_NUMBER
         ))
         self.list_start.append(StartRecord(
-            id=8, timestamp=START_TIME_8, call_id=77,
+            id=ID_8, timestamp=START_TIME_8, call_id=CALL_ID_8,
             source=SOURCE_NUMBER, destination=DESTINATION_NUMBER
         ))
 
@@ -134,7 +152,7 @@ class GetSingleValidStartRecordTest(TestCase):
         self.list_start = list()
 
         self.start_record = StartRecord(
-            id=1, timestamp=START_TIME_1, call_id=70,
+            id=ID_1, timestamp=START_TIME_1, call_id=CALL_ID_1,
             source=SOURCE_NUMBER, destination=DESTINATION_NUMBER
         )
 
@@ -171,7 +189,7 @@ class GetSingleInvalidStartRecordTest(TestCase):
         self.list_start = list()
 
         self.start_record = StartRecord(
-            id=1, timestamp=START_TIME_1, call_id=70,
+            id=ID_1, timestamp=START_TIME_1, call_id=CALL_ID_1,
             source=SOURCE_NUMBER, destination=DESTINATION_NUMBER
         )
 
@@ -383,13 +401,13 @@ class UpdateSingleStartRecordTest(TestCase):
 
         self.list_start = list()
         self.list_start.append(StartRecord(
-            id=1, timestamp=START_TIME_1,
-            call_id=70, source=SOURCE_NUMBER,
+            id=ID_1, timestamp=START_TIME_1,
+            call_id=CALL_ID_1, source=SOURCE_NUMBER,
             destination=DESTINATION_NUMBER
         ))
         self.list_start.append(StartRecord(
-            id=2, timestamp=START_TIME_2,
-            call_id=71, source=SOURCE_NUMBER,
+            id=ID_2, timestamp=START_TIME_2,
+            call_id=CALL_ID_2, source=SOURCE_NUMBER,
             destination=DESTINATION_NUMBER
         ))
 
@@ -436,11 +454,11 @@ class DeleteSingleStartRecordTest(TestCase):
     def setUp(self):
         self.list_start = list()
         self.list_start.append(StartRecord(
-            id=1, timestamp=START_TIME_1, call_id=70,
+            id=ID_1, timestamp=START_TIME_1, call_id=CALL_ID_1,
             source=SOURCE_NUMBER, destination=DESTINATION_NUMBER
         ))
         self.list_start.append(StartRecord(
-            id=2, timestamp=START_TIME_2, call_id=71,
+            id=ID_2, timestamp=START_TIME_2, call_id=CALL_ID_2,
             source=SOURCE_NUMBER, destination=DESTINATION_NUMBER
         ))
 
@@ -473,28 +491,28 @@ class GetAllEndRecordsTest(TestCase):
         self.list_end = list()
 
         self.list_end.append(EndRecord(
-            id=1, timestamp=END_TIME_1, start_id=70, cost=0.22
+            id=ID_1, timestamp=END_TIME_1, start_id=CALL_ID_1, cost=0.22
         ))
         self.list_end.append(EndRecord(
-            id=2, timestamp=END_TIME_2, start_id=71, cost=0.99
+            id=ID_2, timestamp=END_TIME_2, start_id=CALL_ID_2, cost=0.99
         ))
         self.list_end.append(EndRecord(
-            id=3, timestamp=END_TIME_3, start_id=72, cost=0.26
+            id=ID_3, timestamp=END_TIME_3, start_id=CALL_ID_3, cost=0.26
         ))
         self.list_end.append(EndRecord(
-            id=4, timestamp=END_TIME_4, start_id=73, cost=0.54
+            id=ID_4, timestamp=END_TIME_4, start_id=CALL_ID_4, cost=0.54
         ))
         self.list_end.append(EndRecord(
-            id=5, timestamp=END_TIME_5, start_id=74, cost=1.26
+            id=ID_5, timestamp=END_TIME_5, start_id=CALL_ID_5, cost=1.26
         ))
         self.list_end.append(EndRecord(
-            id=6, timestamp=END_TIME_6, start_id=75, cost=86.94
+            id=ID_6, timestamp=END_TIME_6, start_id=CALL_ID_6, cost=86.94
         ))
         self.list_end.append(EndRecord(
-            id=7, timestamp=END_TIME_7, start_id=76, cost=0.72
+            id=ID_7, timestamp=END_TIME_7, start_id=CALL_ID_7, cost=0.72
         ))
         self.list_end.append(EndRecord(
-            id=8, timestamp=END_TIME_8, start_id=77, cost=0.22
+            id=ID_8, timestamp=END_TIME_8, start_id=CALL_ID_8, cost=0.22
         ))
 
         self.list_end.reverse()
@@ -517,8 +535,6 @@ class GetAllEndRecordsTest(TestCase):
 
         serializer = CallRecordSerializer(self.serialized_list, many=True)
 
-        pdb.set_trace()
-
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEquals(response.data, serializer.data)
 
@@ -529,7 +545,7 @@ class GetSingleValidEndRecordTest(TestCase):
     def setUp(self):
 
         self.end_record = EndRecord(
-            id=1, timestamp=END_TIME_1, start_id=70, cost=0.22
+            id=ID_1, timestamp=END_TIME_1, start_id=CALL_ID_1, cost=0.22
         )
         self.end_record.save()
 
@@ -561,7 +577,7 @@ class GetSingleInvalidEndRecordTest(TestCase):
         self.list_end = list()
 
         self.end_record = EndRecord(
-            id=1, timestamp=END_TIME_1, start_id=70, cost=0.22
+            id=ID_1, timestamp=END_TIME_1, start_id=CALL_ID_1, cost=0.22
         )
 
         # saves the objects and creates the list to match the service response
@@ -589,35 +605,35 @@ class CreateNewEndRecordTest(TestCase):
         self.list_start = list()
 
         self.list_start.append(StartRecord(
-            id=1, timestamp=START_TIME_1, call_id=70,
+            id=ID_1, timestamp=START_TIME_1, call_id=CALL_ID_1,
             source=SOURCE_NUMBER, destination=DESTINATION_NUMBER
         ))
         self.list_start.append(StartRecord(
-            id=2, timestamp=START_TIME_2, call_id=71,
+            id=ID_2, timestamp=START_TIME_2, call_id=CALL_ID_2,
             source=SOURCE_NUMBER, destination=DESTINATION_NUMBER
         ))
         self.list_start.append(StartRecord(
-            id=3, timestamp=START_TIME_3, call_id=72,
+            id=ID_3, timestamp=START_TIME_3, call_id=CALL_ID_3,
             source=SOURCE_NUMBER, destination=DESTINATION_NUMBER
         ))
         self.list_start.append(StartRecord(
-            id=4, timestamp=START_TIME_4, call_id=73,
+            id=ID_4, timestamp=START_TIME_4, call_id=CALL_ID_4,
             source=SOURCE_NUMBER, destination=DESTINATION_NUMBER
         ))
         self.list_start.append(StartRecord(
-            id=5, timestamp=START_TIME_5, call_id=74,
+            id=ID_5, timestamp=START_TIME_5, call_id=CALL_ID_5,
             source=SOURCE_NUMBER, destination=DESTINATION_NUMBER
         ))
         self.list_start.append(StartRecord(
-            id=6, timestamp=START_TIME_6, call_id=75,
+            id=ID_6, timestamp=START_TIME_6, call_id=CALL_ID_6,
             source=SOURCE_NUMBER, destination=DESTINATION_NUMBER
         ))
         self.list_start.append(StartRecord(
-            id=7, timestamp=START_TIME_7, call_id=76,
+            id=ID_7, timestamp=START_TIME_7, call_id=CALL_ID_7,
             source=SOURCE_NUMBER, destination=DESTINATION_NUMBER
         ))
         self.list_start.append(StartRecord(
-            id=8, timestamp=START_TIME_8, call_id=77,
+            id=ID_8, timestamp=START_TIME_8, call_id=CALL_ID_8,
             source=SOURCE_NUMBER, destination=DESTINATION_NUMBER
         ))
 
@@ -722,11 +738,11 @@ class UpdateSingleEndRecordTest(TestCase):
         self.list_start = list()
 
         self.list_start.append(StartRecord(
-            id=1, timestamp=START_TIME_1, call_id=70,
+            id=ID_1, timestamp=START_TIME_1, call_id=CALL_ID_1,
             source=SOURCE_NUMBER, destination=DESTINATION_NUMBER
         ))
         self.list_start.append(StartRecord(
-            id=2, timestamp=START_TIME_2, call_id=71,
+            id=ID_2, timestamp=START_TIME_2, call_id=CALL_ID_2,
             source=SOURCE_NUMBER, destination=DESTINATION_NUMBER
         ))
 
@@ -735,10 +751,10 @@ class UpdateSingleEndRecordTest(TestCase):
 
         self.list_end = list()
         self.list_end.append(EndRecord(
-            id=1, timestamp=END_TIME_1, start_id=70, cost=0.22
+            id=ID_1, timestamp=END_TIME_1, start_id=CALL_ID_1, cost=0.22
         ))
         self.list_end.append(EndRecord(
-            id=2, timestamp=END_TIME_2, start_id=71, cost=0.22
+            id=ID_2, timestamp=END_TIME_2, start_id=CALL_ID_2, cost=0.22
         ))
 
         for self.end_record in self.list_end:
@@ -780,10 +796,10 @@ class DeleteSingleEndRecordTest(TestCase):
     def setUp(self):
         self.list_end = list()
         self.list_end.append(EndRecord(
-            id=1, timestamp=END_TIME_1, start_id=70, cost=0.33
+            id=ID_1, timestamp=END_TIME_1, start_id=CALL_ID_1, cost=0.33
         ))
         self.list_end.append(EndRecord(
-            id=2, timestamp=END_TIME_2, start_id=71, cost=0.44
+            id=ID_2, timestamp=END_TIME_2, start_id=CALL_ID_2, cost=0.44
         ))
 
         for self.end_record in self.list_end:
