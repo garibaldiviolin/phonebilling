@@ -191,19 +191,6 @@ class GetSingleInvalidStartRecordTest(TestCase):
             id=ID_1, timestamp=START_TIME_1, call_id=CALL_ID_1,
             source=SOURCE_NUMBER, destination=DESTINATION_NUMBER
         )
-
-        # saves the objects and creates the list to match the service response
-        self.serialized_list = list()
-        self.serialized_list.append({
-            'id': self.start_record.id,
-            'timestamp': self.start_record.timestamp.strftime(
-                TIMESTAMP_FORMAT
-            ),
-            'call_id': self.start_record.call_id,
-            'type': RecordType.START.value,
-            'source': self.start_record.source,
-            'destination': self.start_record.destination
-        })
         self.start_record.save()
 
     def test_get_single_invalid_start_record(self):
@@ -250,6 +237,15 @@ class CreateNewStartRecordTest(TestCase):
         })
 
         self.start_record_list.append({
+            'timestamp':
+                START_TIME_1.strftime(TIMESTAMP_FORMAT),
+            'call_id': 5,
+            'type': RecordType.START.value,
+            'source': '11912124425',
+            'destination': '11991251242'
+        })
+
+        self.start_record_list.append({
             'id': 2,
             'timestamp': '9999-99-99T99:99:99Z',
             'call_id': 5,
@@ -263,6 +259,33 @@ class CreateNewStartRecordTest(TestCase):
             'timestamp': '',
             'call_id': 5,
             'type': RecordType.START.value,
+            'source': '11912124425',
+            'destination': '11991251242'
+        })
+
+        self.start_record_list.append({
+            'id': 2,
+            'call_id': 5,
+            'type': RecordType.START.value,
+            'source': '11912124425',
+            'destination': '11991251242'
+        })
+
+        self.start_record_list.append({
+            'id': 3,
+            'timestamp':
+                START_TIME_1.strftime(TIMESTAMP_FORMAT),
+            'call_id': 5,
+            'type': 0,
+            'source': '11912124425',
+            'destination': '11991251242'
+        })
+
+        self.start_record_list.append({
+            'id': 3,
+            'timestamp':
+                START_TIME_1.strftime(TIMESTAMP_FORMAT),
+            'call_id': 5,
             'source': '11912124425',
             'destination': '11991251242'
         })
@@ -375,6 +398,15 @@ class CreateNewStartRecordTest(TestCase):
             'type': RecordType.START.value,
             'source': '11912124425',
             'destination': ''
+        })
+
+        self.start_record_list.append({
+            'id': 7,
+            'timestamp':
+                START_TIME_1.strftime(TIMESTAMP_FORMAT),
+            'call_id': 5,
+            'type': RecordType.START.value,
+            'source': '11912124425'
         })
 
     def test_create_valid_start_record(self):
