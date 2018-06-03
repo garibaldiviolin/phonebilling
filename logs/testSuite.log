@@ -1,0 +1,94 @@
+2018-06-03 19:37:03,689 - root - DEBUG - settings : 142 - 1
+2018-06-03 19:37:04,179 - root - INFO - settings : 143 - 2
+2018-06-03 19:37:04,499 - root - WARNING - settings : 144 - 3
+2018-06-03 19:37:05,016 - root - ERROR - settings : 145 - 4
+2018-06-03 19:37:06,229 - root - CRITICAL - settings : 146 - 5
+2018-06-03 22:37:06,388 - PIL.Image - DEBUG - Image : 389 - Importing BmpImagePlugin
+2018-06-03 22:37:06,391 - PIL.Image - DEBUG - Image : 389 - Importing BufrStubImagePlugin
+2018-06-03 22:37:06,391 - PIL.Image - DEBUG - Image : 389 - Importing CurImagePlugin
+2018-06-03 22:37:06,392 - PIL.Image - DEBUG - Image : 389 - Importing DcxImagePlugin
+2018-06-03 22:37:06,393 - PIL.Image - DEBUG - Image : 389 - Importing EpsImagePlugin
+2018-06-03 22:37:06,394 - PIL.Image - DEBUG - Image : 389 - Importing FitsStubImagePlugin
+2018-06-03 22:37:06,395 - PIL.Image - DEBUG - Image : 389 - Importing FliImagePlugin
+2018-06-03 22:37:06,395 - PIL.Image - DEBUG - Image : 389 - Importing FpxImagePlugin
+2018-06-03 22:37:06,397 - PIL.Image - DEBUG - Image : 389 - Importing GbrImagePlugin
+2018-06-03 22:37:06,397 - PIL.Image - DEBUG - Image : 389 - Importing GifImagePlugin
+2018-06-03 22:37:06,399 - PIL.Image - DEBUG - Image : 389 - Importing GribStubImagePlugin
+2018-06-03 22:37:06,400 - PIL.Image - DEBUG - Image : 389 - Importing Hdf5StubImagePlugin
+2018-06-03 22:37:06,400 - PIL.Image - DEBUG - Image : 389 - Importing IcnsImagePlugin
+2018-06-03 22:37:06,402 - PIL.Image - DEBUG - Image : 389 - Importing IcoImagePlugin
+2018-06-03 22:37:06,403 - PIL.Image - DEBUG - Image : 389 - Importing ImImagePlugin
+2018-06-03 22:37:06,404 - PIL.Image - DEBUG - Image : 389 - Importing ImtImagePlugin
+2018-06-03 22:37:06,405 - PIL.Image - DEBUG - Image : 389 - Importing IptcImagePlugin
+2018-06-03 22:37:06,405 - PIL.Image - DEBUG - Image : 389 - Importing JpegImagePlugin
+2018-06-03 22:37:06,413 - PIL.Image - DEBUG - Image : 389 - Importing Jpeg2KImagePlugin
+2018-06-03 22:37:06,413 - PIL.Image - DEBUG - Image : 389 - Importing McIdasImagePlugin
+2018-06-03 22:37:06,414 - PIL.Image - DEBUG - Image : 389 - Importing MicImagePlugin
+2018-06-03 22:37:06,414 - PIL.Image - DEBUG - Image : 389 - Importing MpegImagePlugin
+2018-06-03 22:37:06,415 - PIL.Image - DEBUG - Image : 389 - Importing MpoImagePlugin
+2018-06-03 22:37:06,415 - PIL.Image - DEBUG - Image : 389 - Importing MspImagePlugin
+2018-06-03 22:37:06,416 - PIL.Image - DEBUG - Image : 389 - Importing PalmImagePlugin
+2018-06-03 22:37:06,417 - PIL.Image - DEBUG - Image : 389 - Importing PcdImagePlugin
+2018-06-03 22:37:06,418 - PIL.Image - DEBUG - Image : 389 - Importing PcxImagePlugin
+2018-06-03 22:37:06,418 - PIL.Image - DEBUG - Image : 389 - Importing PdfImagePlugin
+2018-06-03 22:37:06,418 - PIL.Image - DEBUG - Image : 389 - Importing PixarImagePlugin
+2018-06-03 22:37:06,419 - PIL.Image - DEBUG - Image : 389 - Importing PngImagePlugin
+2018-06-03 22:37:06,419 - PIL.Image - DEBUG - Image : 389 - Importing PpmImagePlugin
+2018-06-03 22:37:06,420 - PIL.Image - DEBUG - Image : 389 - Importing PsdImagePlugin
+2018-06-03 22:37:06,420 - PIL.Image - DEBUG - Image : 389 - Importing SgiImagePlugin
+2018-06-03 22:37:06,421 - PIL.Image - DEBUG - Image : 389 - Importing SpiderImagePlugin
+2018-06-03 22:37:06,421 - PIL.Image - DEBUG - Image : 389 - Importing SunImagePlugin
+2018-06-03 22:37:06,422 - PIL.Image - DEBUG - Image : 389 - Importing TgaImagePlugin
+2018-06-03 22:37:06,422 - PIL.Image - DEBUG - Image : 389 - Importing TiffImagePlugin
+2018-06-03 22:37:06,422 - PIL.Image - DEBUG - Image : 389 - Importing WebPImagePlugin
+2018-06-03 22:37:06,423 - PIL.Image - DEBUG - Image : 389 - Importing WmfImagePlugin
+2018-06-03 22:37:06,424 - PIL.Image - DEBUG - Image : 389 - Importing XbmImagePlugin
+2018-06-03 22:37:06,426 - PIL.Image - DEBUG - Image : 389 - Importing XpmImagePlugin
+2018-06-03 22:37:06,427 - PIL.Image - DEBUG - Image : 389 - Importing XVThumbImagePlugin
+2018-06-03 22:37:10,207 - root - DEBUG - settings : 140 - 1
+2018-06-03 22:37:10,207 - root - INFO - settings : 140 - 2
+2018-06-03 22:37:10,207 - root - WARNING - settings : 140 - 3
+2018-06-03 22:37:10,208 - root - ERROR - settings : 140 - 4
+2018-06-03 22:37:10,208 - root - CRITICAL - settings : 140 - 5
+2018-06-03 22:37:10,361 - PIL.Image - DEBUG - Image : 389 - Importing BmpImagePlugin
+2018-06-03 22:37:10,364 - PIL.Image - DEBUG - Image : 389 - Importing BufrStubImagePlugin
+2018-06-03 22:37:10,364 - PIL.Image - DEBUG - Image : 389 - Importing CurImagePlugin
+2018-06-03 22:37:10,365 - PIL.Image - DEBUG - Image : 389 - Importing DcxImagePlugin
+2018-06-03 22:37:10,365 - PIL.Image - DEBUG - Image : 389 - Importing EpsImagePlugin
+2018-06-03 22:37:10,367 - PIL.Image - DEBUG - Image : 389 - Importing FitsStubImagePlugin
+2018-06-03 22:37:10,367 - PIL.Image - DEBUG - Image : 389 - Importing FliImagePlugin
+2018-06-03 22:37:10,368 - PIL.Image - DEBUG - Image : 389 - Importing FpxImagePlugin
+2018-06-03 22:37:10,370 - PIL.Image - DEBUG - Image : 389 - Importing GbrImagePlugin
+2018-06-03 22:37:10,370 - PIL.Image - DEBUG - Image : 389 - Importing GifImagePlugin
+2018-06-03 22:37:10,372 - PIL.Image - DEBUG - Image : 389 - Importing GribStubImagePlugin
+2018-06-03 22:37:10,373 - PIL.Image - DEBUG - Image : 389 - Importing Hdf5StubImagePlugin
+2018-06-03 22:37:10,373 - PIL.Image - DEBUG - Image : 389 - Importing IcnsImagePlugin
+2018-06-03 22:37:10,375 - PIL.Image - DEBUG - Image : 389 - Importing IcoImagePlugin
+2018-06-03 22:37:10,376 - PIL.Image - DEBUG - Image : 389 - Importing ImImagePlugin
+2018-06-03 22:37:10,377 - PIL.Image - DEBUG - Image : 389 - Importing ImtImagePlugin
+2018-06-03 22:37:10,378 - PIL.Image - DEBUG - Image : 389 - Importing IptcImagePlugin
+2018-06-03 22:37:10,378 - PIL.Image - DEBUG - Image : 389 - Importing JpegImagePlugin
+2018-06-03 22:37:10,385 - PIL.Image - DEBUG - Image : 389 - Importing Jpeg2KImagePlugin
+2018-06-03 22:37:10,386 - PIL.Image - DEBUG - Image : 389 - Importing McIdasImagePlugin
+2018-06-03 22:37:10,387 - PIL.Image - DEBUG - Image : 389 - Importing MicImagePlugin
+2018-06-03 22:37:10,387 - PIL.Image - DEBUG - Image : 389 - Importing MpegImagePlugin
+2018-06-03 22:37:10,388 - PIL.Image - DEBUG - Image : 389 - Importing MpoImagePlugin
+2018-06-03 22:37:10,388 - PIL.Image - DEBUG - Image : 389 - Importing MspImagePlugin
+2018-06-03 22:37:10,389 - PIL.Image - DEBUG - Image : 389 - Importing PalmImagePlugin
+2018-06-03 22:37:10,390 - PIL.Image - DEBUG - Image : 389 - Importing PcdImagePlugin
+2018-06-03 22:37:10,391 - PIL.Image - DEBUG - Image : 389 - Importing PcxImagePlugin
+2018-06-03 22:37:10,391 - PIL.Image - DEBUG - Image : 389 - Importing PdfImagePlugin
+2018-06-03 22:37:10,391 - PIL.Image - DEBUG - Image : 389 - Importing PixarImagePlugin
+2018-06-03 22:37:10,392 - PIL.Image - DEBUG - Image : 389 - Importing PngImagePlugin
+2018-06-03 22:37:10,392 - PIL.Image - DEBUG - Image : 389 - Importing PpmImagePlugin
+2018-06-03 22:37:10,392 - PIL.Image - DEBUG - Image : 389 - Importing PsdImagePlugin
+2018-06-03 22:37:10,393 - PIL.Image - DEBUG - Image : 389 - Importing SgiImagePlugin
+2018-06-03 22:37:10,393 - PIL.Image - DEBUG - Image : 389 - Importing SpiderImagePlugin
+2018-06-03 22:37:10,394 - PIL.Image - DEBUG - Image : 389 - Importing SunImagePlugin
+2018-06-03 22:37:10,395 - PIL.Image - DEBUG - Image : 389 - Importing TgaImagePlugin
+2018-06-03 22:37:10,395 - PIL.Image - DEBUG - Image : 389 - Importing TiffImagePlugin
+2018-06-03 22:37:10,395 - PIL.Image - DEBUG - Image : 389 - Importing WebPImagePlugin
+2018-06-03 22:37:10,396 - PIL.Image - DEBUG - Image : 389 - Importing WmfImagePlugin
+2018-06-03 22:37:10,397 - PIL.Image - DEBUG - Image : 389 - Importing XbmImagePlugin
+2018-06-03 22:37:10,399 - PIL.Image - DEBUG - Image : 389 - Importing XpmImagePlugin
+2018-06-03 22:37:10,400 - PIL.Image - DEBUG - Image : 389 - Importing XVThumbImagePlugin
