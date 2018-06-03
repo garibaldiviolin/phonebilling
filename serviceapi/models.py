@@ -6,7 +6,7 @@ from serviceapi.utils import RecordType
 
 
 class StartRecord(models.Model):
-    ''' Represents the start call record received from the REST API'''
+    ''' Represents the call start record received from the REST API'''
     id = models.BigIntegerField(primary_key=True, unique=True)
     timestamp = models.DateTimeField()
     call_id = models.BigIntegerField(unique=True)
@@ -19,7 +19,7 @@ class StartRecord(models.Model):
 
 
 class EndRecord(models.Model):
-    ''' Represents the end call record received from the REST API.
+    ''' Represents the call end record received from the REST API.
     It also stores the call's cost
     '''
     id = models.BigIntegerField(primary_key=True, unique=True)
