@@ -43,7 +43,11 @@ class CallRecordSerializer(serializers.Serializer):
             })'''
 
         if data['type'] == RecordType.START.value:
-            if data['source'].isdigit() is False:
+            if 'source' not in data:
+                raise serializers.ValidationError({
+                    "source": "Start record must have a source field"
+                })
+            elif data['source'].isdigit() is False:
                 raise serializers.ValidationError({
                     "source": "Source must have only numbers"
                 })
@@ -52,7 +56,11 @@ class CallRecordSerializer(serializers.Serializer):
                     "source": "Source must have 10 or 11 digits"
                 })
 
-            if data['destination'].isdigit() is False:
+            if 'destination' not in data:
+                raise serializers.ValidationError({
+                    "destination": "Start record must have a destination field"
+                })
+            elif data['destination'].isdigit() is False:
                 raise serializers.ValidationError({
                     "destination": "Destination must have only numbers"
                 })
