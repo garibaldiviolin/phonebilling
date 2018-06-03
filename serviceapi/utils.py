@@ -3,7 +3,6 @@ from __future__ import unicode_literals
 
 import datetime
 from enum import Enum
-import pdb
 
 from phonebilling.settings import TIMESTAMP_FORMAT
 
@@ -109,7 +108,6 @@ def calculate_call_cost(start_time, end_time):
 
 
 def validate_datetime(date_text):
-    pdb.set_trace()
     try:
         datetime.datetime.strptime(date_text, TIMESTAMP_FORMAT)
         value = True

@@ -3,7 +3,6 @@ from __future__ import unicode_literals
 
 import datetime
 import json
-import pdb
 
 from django.core import serializers
 from django.test import TestCase, Client
@@ -764,8 +763,6 @@ class GetPhoneBillTest(TestCase):
                               SOURCE_NUMBER + "&period=12/2017")
 
         serializer_list = PhoneBillSerializer(self.bill_list, many=True)
-
-        pdb.set_trace()
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 

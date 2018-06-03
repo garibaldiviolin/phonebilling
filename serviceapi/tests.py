@@ -3,7 +3,6 @@ from __future__ import unicode_literals
 
 import datetime
 import json
-import pdb
 
 from django.test import TestCase, Client
 from django.utils import timezone
@@ -197,7 +196,9 @@ class GetSingleInvalidStartRecordTest(TestCase):
         self.serialized_list = list()
         self.serialized_list.append({
             'id': self.start_record.id,
-            'timestamp': self.start_record.timestamp.strftime(TIMESTAMP_FORMAT),
+            'timestamp': self.start_record.timestamp.strftime(
+                TIMESTAMP_FORMAT
+            ),
             'call_id': self.start_record.call_id,
             'type': RecordType.START.value,
             'source': self.start_record.source,

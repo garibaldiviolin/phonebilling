@@ -1,3 +1,5 @@
+Pendências
+
 - Tirar todos os pdb.set_trace() do projeto
 - A data e hora não consigo mostrar no formato yyyy-mm-ddThh:mm-ssZ. Mesmo forçando o formato no serializer. Seria o model o problem?
 - mudar os endpoints endrecord e startrecord para um só. Parece que o pedido no README.md é esse.
@@ -16,7 +18,7 @@
 
 
 
-
+Rafael
 
 - Tem uma ideia melhor para calcular o valor desses períodos?
 - Responder {} quando não foi encontrado um registro é uma boa? Ou seria melhor retornar um ret_code com um valor para o client?
@@ -38,5 +40,6 @@
 
 Ao entregar
 
-- desabilitar debug no settings.py
--
+- Desabilitar debug no settings.py
+- Trocar 
+- Tirar todos os pdb.set_trace() do projeto
