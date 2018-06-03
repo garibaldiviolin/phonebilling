@@ -417,7 +417,7 @@ class UpdateSingleStartRecordTest(TestCase):
         self.valid_start_record = {
             'id': 1,
             'timestamp': START_TIME_1.strftime(TIMESTAMP_FORMAT),
-            'call_id': 73,
+            'call_id': CALL_ID_4,
             'type': RecordType.START.value,
             'source': SOURCE_NUMBER,
             'destination': DESTINATION_NUMBER
@@ -644,7 +644,7 @@ class CreateNewEndRecordTest(TestCase):
             'id': 1,
             'timestamp':
                 END_TIME_1.strftime(TIMESTAMP_FORMAT),
-            'call_id': 70,
+            'call_id': CALL_ID_1,
             'type': RecordType.END.value
         }
 
@@ -654,7 +654,7 @@ class CreateNewEndRecordTest(TestCase):
             'id': 'A',
             'timestamp':
                 END_TIME_1.strftime(TIMESTAMP_FORMAT),
-            'call_id': 70,
+            'call_id': CALL_ID_1,
             'type': RecordType.END.value
         })
 
@@ -662,21 +662,21 @@ class CreateNewEndRecordTest(TestCase):
             'id': '',
             'timestamp':
                 END_TIME_1.strftime(TIMESTAMP_FORMAT),
-            'call_id': 70,
+            'call_id': CALL_ID_1,
             'type': RecordType.END.value
         })
 
         self.end_record_list.append({
             'id': 1,
             'timestamp': '9999-99-99T99:99:99Z',
-            'call_id': 70,
+            'call_id': CALL_ID_1,
             'type': RecordType.END.value
         })
 
         self.end_record_list.append({
             'id': 1,
             'timestamp': '',
-            'call_id': 70,
+            'call_id': CALL_ID_1,
             'type': RecordType.END.value
         })
 
@@ -700,7 +700,7 @@ class CreateNewEndRecordTest(TestCase):
             'id': 1,
             'timestamp':
                 END_TIME_1.strftime(TIMESTAMP_FORMAT),
-            'call_id': 70,
+            'call_id': CALL_ID_1,
             'type': ''
         })
 
@@ -708,7 +708,7 @@ class CreateNewEndRecordTest(TestCase):
             'id': 1,
             'timestamp':
                 END_TIME_1.strftime(TIMESTAMP_FORMAT),
-            'call_id': 70,
+            'call_id': CALL_ID_1,
             'type': 'B'
         })
 
@@ -763,7 +763,7 @@ class UpdateSingleEndRecordTest(TestCase):
         self.valid_end_record = {
             'id': 1,
             'timestamp': END_TIME_1.strftime(TIMESTAMP_FORMAT),
-            'call_id': 70,
+            'call_id': CALL_ID_1,
             'type': RecordType.END.value
         }
 
@@ -832,37 +832,37 @@ class GetPhoneBillTest(TestCase):
         self.list_start = list()
 
         self.list_start.append({
-            'id': 2, 'timestamp': START_TIME_2, 'call_id': 71,
+            'id': 2, 'timestamp': START_TIME_2, 'call_id': CALL_ID_2,
             'type': RecordType.START.value, 'source': SOURCE_NUMBER,
             'destination': DESTINATION_NUMBER
         })
 
         self.list_start.append({
-            'id': 3, 'timestamp': START_TIME_3, 'call_id': 72,
+            'id': 3, 'timestamp': START_TIME_3, 'call_id': CALL_ID_3,
             'type': RecordType.START.value, 'source': SOURCE_NUMBER,
             'destination': DESTINATION_NUMBER
         })
 
         self.list_start.append({
-            'id': 4, 'timestamp': START_TIME_4, 'call_id': 73,
+            'id': 4, 'timestamp': START_TIME_4, 'call_id': CALL_ID_4,
             'type': RecordType.START.value, 'source': SOURCE_NUMBER,
             'destination': DESTINATION_NUMBER
         })
 
         self.list_start.append({
-            'id': 5, 'timestamp': START_TIME_5, 'call_id': 74,
+            'id': 5, 'timestamp': START_TIME_5, 'call_id': CALL_ID_5,
             'type': RecordType.START.value, 'source': SOURCE_NUMBER,
             'destination': DESTINATION_NUMBER
         })
 
         self.list_start.append({
-            'id': 6, 'timestamp': START_TIME_6, 'call_id': 75,
+            'id': 6, 'timestamp': START_TIME_6, 'call_id': CALL_ID_6,
             'type': RecordType.START.value, 'source': SOURCE_NUMBER,
             'destination': DESTINATION_NUMBER
         })
 
         self.list_start.append({
-            'id': 7, 'timestamp': START_TIME_7, 'call_id': 76,
+            'id': 7, 'timestamp': START_TIME_7, 'call_id': CALL_ID_7,
             'type': RecordType.START.value, 'source': SOURCE_NUMBER,
             'destination': DESTINATION_NUMBER
         })
@@ -871,32 +871,32 @@ class GetPhoneBillTest(TestCase):
         self.list_end = list()
 
         self.list_end.append({
-            'id': 2, 'timestamp': END_TIME_2, 'call_id': 71,
+            'id': 2, 'timestamp': END_TIME_2, 'call_id': CALL_ID_2,
             'type': RecordType.END.value, 'cost': 0.99
         })
 
         self.list_end.append({
-            'id': 3, 'timestamp': END_TIME_3, 'call_id': 72,
+            'id': 3, 'timestamp': END_TIME_3, 'call_id': CALL_ID_3,
             'type': RecordType.END.value, 'cost': 0.36
         })
 
         self.list_end.append({
-            'id': 4, 'timestamp': END_TIME_4, 'call_id': 73,
+            'id': 4, 'timestamp': END_TIME_4, 'call_id': CALL_ID_4,
             'type': RecordType.END.value, 'cost': 0.54
         })
 
         self.list_end.append({
-            'id': 5, 'timestamp': END_TIME_5, 'call_id': 74,
+            'id': 5, 'timestamp': END_TIME_5, 'call_id': CALL_ID_5,
             'type': RecordType.END.value, 'cost': 1.26
         })
 
         self.list_end.append({
-            'id': 6, 'timestamp': END_TIME_6, 'call_id': 75,
+            'id': 6, 'timestamp': END_TIME_6, 'call_id': CALL_ID_6,
             'type': RecordType.END.value, 'cost': 86.94
         })
 
         self.list_end.append({
-            'id': 7, 'timestamp': END_TIME_7, 'call_id': 76,
+            'id': 7, 'timestamp': END_TIME_7, 'call_id': CALL_ID_7,
             'type': RecordType.END.value, 'cost': 0.72
         })
 
