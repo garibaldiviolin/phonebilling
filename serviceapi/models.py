@@ -20,7 +20,7 @@ class StartRecord(models.Model):
 
 class EndRecord(models.Model):
     ''' Represents the end call record received from the REST API.
-    It also stores the calculated cost of the call
+    It also stores the call's cost
     '''
     id = models.BigIntegerField(primary_key=True, unique=True)
     timestamp = models.DateTimeField()
