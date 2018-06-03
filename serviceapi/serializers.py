@@ -6,13 +6,16 @@ from rest_framework import serializers
 
 from serviceapi.models import StartRecord, EndRecord
 from serviceapi.utils import *
+from phonebilling.settings import TIMESTAMP_FORMAT
 
 
 class CallRecordSerializer(serializers.Serializer):
     ''' Represents the serializer for the call start record '''
 
     id = serializers.IntegerField()
-    timestamp = serializers.DateTimeField()
+    timestamp = serializers.DateTimeField(
+        format=TIMESTAMP_FORMAT, input_formats=(TIMESTAMP_FORMAT,)
+    )
     call_id = serializers.IntegerField()
     type = serializers.IntegerField()
     source = serializers.CharField(required=False)
@@ -33,11 +36,11 @@ class CallRecordSerializer(serializers.Serializer):
                 data['type'] != RecordType.END.value:
             raise serializers.ValidationError({'type': 'Type must be 1 or 2'})
 
-        if validate_datetime(data['timestamp']) is False:
+        '''if validate_datetime(str(data['timestamp'])) is False:
             raise serializers.ValidationError({
                 "timestamp":
-                "Incorrect data format, should be yyyy/mm/ddThh:MM:ssZ"
-            })
+                "Incorrect data format, should be yyyy-mm-ddThh:MM:ssZ"
+            })'''
 
         if data['type'] == RecordType.START.value:
             if data['source'].isdigit() is False:

@@ -44,28 +44,78 @@ JSON expected formats
 - Start Record
 ```
 {
-  "id":  // Record unique identificator (must be an integer value);
-  "type":  // indicate if the data is a start record ("type": 1) or end record ("type": 2);
-  "timestamp":  // The timestamp of when the call started (the format must be yyyy/mm/ddThh:mm:ssZ');
-  "call_id":  // Unique for each call record pair (must be an integer value);
-  "source":  // The subscriber phone number that originated the call (the number must have 10 or 11
-             // digits, the first two digits are the );
-  "destination":  // The phone number receiving the call. It must have the same format as the source
-                  // phone number, but must have a different number
+    "id":  // Record unique identificator (must be an integer value);
+    "type":  // indicate if the data is a start record ("type": 1) or end record ("type": 2);
+    "timestamp":  // The timestamp of when the call started (the format must be YYYY-MM-DDThh:mmTZ,
+                  //where T and Z are fixed letters);
+    "call_id":  // Unique for each call record pair (must be an integer value);
+    "source":  // The subscriber phone number that originated the call (must have 10 or 11
+               // digits, where the first two digits are the area code, and the other ones
+               // are the phone number);
+    "destination":  // The phone number receiving the call. It must have the same format as the source
+                  // phone number, but must have a different number.
+}
+```
+
+Example:
+```
+{
+    "id": 1,
+    "type": 1,
+    "timestamp": "2018-10-25 14:30:59Z",
+    "call_id": 1,
+    "source": "11997870978",
+    "destination": "11996295422"
 }
 ```
 
 - End Record
 ```
 {
-   "id":  // Record unique identificator (must be an integer value);
-   "type":  // indicate if the data is a start record ("type": 1) or end record ("type": 2);
-   "timestamp":  // The timestamp of when the call started (the format must be yyyy/mm/ddThh:mm:ssZ');
-   "call_id":  // Unique for each call record pair (must be an integer value).
+    "id":  // Record unique identificator (must be an integer value);
+    "type":  // indicate if the data is a start record ("type": 1) or end record ("type": 2);
+    "timestamp":  // The timestamp of when the call ended (the format is the same as the
+                  // start record's timestamp, but must be greater);
+    "call_id":  // Unique for each call record pair (must be an integer value).
+}
+```
+
+Example:
+```
+{
+    "id": 1,
+    "type": 2,
+    "timestamp": "2018-10-25 14:31:59Z",
+    "call_id": 1
 }
 ```
 
  - `/phonebill/` - responds a detailed phone bill based on the source phone number and / or period given in this URL. The source phone number must always be informed (same format as detailed above), but the period is optional (mm/yyyy format, where mm is the month, and yyyy is the year). If the period is not informed, the application will consider that it's the last month's period (based on the request's current date). Example: /phonebill?source=11999999999&period=10/2018
+
+JSON returned format:
+```
+{
+    "destination": // the same informed in the start record;
+    "start_date": // the date part of the timestamp informed in the start record;
+    "start_time": // the time part of the timestamp informed in the start record;
+    "duration": // call's duration, that is, the difference between the start record's
+                // and end record's timestamp (format is 99h99m99s);
+    "price": // the call's price, based on the time of the day and duration
+}
+```
+
+Example:
+```
+[
+    {
+        "destination": "11988884444",
+        "start_date": "25/10/2018",
+        "start_time": "14:30:59",
+        "duration": "0h01m00s",
+        "price": "R$ 0,45"
+    }
+]
+```
 
 ### Development Environment
 

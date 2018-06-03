@@ -1,3 +1,5 @@
+- Tirar todos os pdb.set_trace() do projeto
+- A data e hora não consigo mostrar no formato yyyy-mm-ddThh:mm-ssZ. Mesmo forçando o formato no serializer. Seria o model o problem?
 - mudar os endpoints endrecord e startrecord para um só. Parece que o pedido no README.md é esse.
 - verifica se o get_queryset no views esta elegante
 - adicionar log na aplicacao

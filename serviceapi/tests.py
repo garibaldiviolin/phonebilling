@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 import datetime
 import json
+import pdb
 
 from django.test import TestCase, Client
 from django.utils import timezone
@@ -12,6 +13,7 @@ from serviceapi.models import StartRecord, EndRecord
 from serviceapi.serializers import CallRecordSerializer, \
     PhoneBillSerializer
 from serviceapi.utils import RecordType
+from phonebilling.settings import TIMESTAMP_FORMAT
 
 client = Client()
 
@@ -106,7 +108,7 @@ class GetAllStartRecordsTest(TestCase):
         for start_record in self.list_start:
             self.serialized_list.append({
                 'id': start_record.id,
-                'timestamp': str(start_record.timestamp),
+                'timestamp': start_record.timestamp.strftime(TIMESTAMP_FORMAT),
                 'call_id': start_record.call_id,
                 'type': RecordType.START.value,
                 'source': start_record.source,
@@ -140,7 +142,9 @@ class GetSingleValidStartRecordTest(TestCase):
         self.serialized_list = list()
         self.serialized_list.append({
             'id': self.start_record.id,
-            'timestamp': str(self.start_record.timestamp),
+            'timestamp': self.start_record.timestamp.strftime(
+                TIMESTAMP_FORMAT
+            ),
             'call_id': self.start_record.call_id,
             'type': RecordType.START.value,
             'source': self.start_record.source,
@@ -175,7 +179,7 @@ class GetSingleInvalidStartRecordTest(TestCase):
         self.serialized_list = list()
         self.serialized_list.append({
             'id': self.start_record.id,
-            'timestamp': str(self.start_record.timestamp),
+            'timestamp': self.start_record.timestamp.strftime(TIMESTAMP_FORMAT),
             'call_id': self.start_record.call_id,
             'type': RecordType.START.value,
             'source': self.start_record.source,
@@ -197,7 +201,7 @@ class CreateNewStartRecordTest(TestCase):
         self.valid_startrecord = {
             'id': 10,
             'timestamp':
-                str(START_TIME_1),
+                START_TIME_1.strftime(TIMESTAMP_FORMAT),
             'call_id': 5,
             'type': RecordType.START.value,
             'source': '11912124425',
@@ -209,7 +213,7 @@ class CreateNewStartRecordTest(TestCase):
         self.start_record_list.append({
             'id': 'A',
             'timestamp':
-                str(START_TIME_1),
+                START_TIME_1.strftime(TIMESTAMP_FORMAT),
             'call_id': 5,
             'type': RecordType.START.value,
             'source': '11912124425',
@@ -219,7 +223,7 @@ class CreateNewStartRecordTest(TestCase):
         self.start_record_list.append({
             'id': '',
             'timestamp':
-                str(START_TIME_1),
+                START_TIME_1.strftime(TIMESTAMP_FORMAT),
             'call_id': 5,
             'type': RecordType.START.value,
             'source': '11912124425',
@@ -247,7 +251,7 @@ class CreateNewStartRecordTest(TestCase):
         self.start_record_list.append({
             'id': 3,
             'timestamp':
-                str(START_TIME_1),
+                START_TIME_1.strftime(TIMESTAMP_FORMAT),
             'call_id': 'B',
             'type': RecordType.START.value,
             'source': '11912124425',
@@ -257,7 +261,7 @@ class CreateNewStartRecordTest(TestCase):
         self.start_record_list.append({
             'id': 3,
             'timestamp':
-                str(START_TIME_1),
+                START_TIME_1.strftime(TIMESTAMP_FORMAT),
             'call_id': '',
             'type': RecordType.START.value,
             'source': '11912124425',
@@ -267,7 +271,7 @@ class CreateNewStartRecordTest(TestCase):
         self.start_record_list.append({
             'id': 3,
             'timestamp':
-                str(START_TIME_1),
+                START_TIME_1.strftime(TIMESTAMP_FORMAT),
             'call_id': 5,
             'type': '',
             'source': '11912124425',
@@ -277,7 +281,7 @@ class CreateNewStartRecordTest(TestCase):
         self.start_record_list.append({
             'id': 3,
             'timestamp':
-                str(START_TIME_1),
+                START_TIME_1.strftime(TIMESTAMP_FORMAT),
             'call_id': 5,
             'type': 'B',
             'source': '11912124425',
@@ -287,7 +291,7 @@ class CreateNewStartRecordTest(TestCase):
         self.start_record_list.append({
             'id': 4,
             'timestamp':
-                str(START_TIME_1),
+                START_TIME_1.strftime(TIMESTAMP_FORMAT),
             'call_id': 5,
             'type': RecordType.START.value,
             'source': '119121244',
@@ -297,7 +301,7 @@ class CreateNewStartRecordTest(TestCase):
         self.start_record_list.append({
             'id': 4,
             'timestamp':
-                str(START_TIME_1),
+                START_TIME_1.strftime(TIMESTAMP_FORMAT),
             'call_id': 5,
             'type': RecordType.START.value,
             'source': '',
@@ -307,7 +311,7 @@ class CreateNewStartRecordTest(TestCase):
         self.start_record_list.append({
             'id': 5,
             'timestamp':
-                str(START_TIME_1),
+                START_TIME_1.strftime(TIMESTAMP_FORMAT),
             'call_id': 5,
             'type': RecordType.START.value,
             'source': 'A1912124425',
@@ -317,7 +321,7 @@ class CreateNewStartRecordTest(TestCase):
         self.start_record_list.append({
             'id': 5,
             'timestamp':
-                str(START_TIME_1),
+                START_TIME_1.strftime(TIMESTAMP_FORMAT),
             'call_id': 5,
             'type': RecordType.START.value,
             'source': '',
@@ -327,7 +331,7 @@ class CreateNewStartRecordTest(TestCase):
         self.start_record_list.append({
             'id': 6,
             'timestamp':
-                str(START_TIME_1),
+                START_TIME_1.strftime(TIMESTAMP_FORMAT),
             'call_id': 5,
             'type': RecordType.START.value,
             'source': '11912124425',
@@ -337,7 +341,7 @@ class CreateNewStartRecordTest(TestCase):
         self.start_record_list.append({
             'id': 7,
             'timestamp':
-                str(START_TIME_1),
+                START_TIME_1.strftime(TIMESTAMP_FORMAT),
             'call_id': 5,
             'type': RecordType.START.value,
             'source': '11912124425',
@@ -347,7 +351,7 @@ class CreateNewStartRecordTest(TestCase):
         self.start_record_list.append({
             'id': 7,
             'timestamp':
-                str(START_TIME_1),
+                START_TIME_1.strftime(TIMESTAMP_FORMAT),
             'call_id': 5,
             'type': RecordType.START.value,
             'source': '11912124425',
@@ -394,7 +398,7 @@ class UpdateSingleStartRecordTest(TestCase):
 
         self.valid_start_record = {
             'id': 1,
-            'timestamp': str(START_TIME_1),
+            'timestamp': START_TIME_1.strftime(TIMESTAMP_FORMAT),
             'call_id': 73,
             'type': RecordType.START.value,
             'source': SOURCE_NUMBER,
@@ -403,7 +407,7 @@ class UpdateSingleStartRecordTest(TestCase):
 
         self.invalid_start_record = {
             'id': 2,
-            'timestamp': str(START_TIME_1),
+            'timestamp': START_TIME_1.strftime(TIMESTAMP_FORMAT),
             'call_id': '',
             'type': RecordType.START.value,
             'source': SOURCE_NUMBER,
@@ -501,7 +505,7 @@ class GetAllEndRecordsTest(TestCase):
         for end_record in self.list_end:
             self.serialized_list.append({
                 'id': end_record.id,
-                'timestamp': str(end_record.timestamp),
+                'timestamp': end_record.timestamp.strftime(TIMESTAMP_FORMAT),
                 'call_id': end_record.start_id,
                 'type': RecordType.END.value
             })
@@ -512,6 +516,8 @@ class GetAllEndRecordsTest(TestCase):
         response = client.get("/callrecord/")
 
         serializer = CallRecordSerializer(self.serialized_list, many=True)
+
+        pdb.set_trace()
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEquals(response.data, serializer.data)
@@ -532,7 +538,7 @@ class GetSingleValidEndRecordTest(TestCase):
 
         self.serialized_list.append({
             'id': self.end_record.id,
-            'timestamp': str(self.end_record.timestamp),
+            'timestamp': self.end_record.timestamp.strftime(TIMESTAMP_FORMAT),
             'call_id': self.end_record.start_id,
             'type': RecordType.END.value
         })
@@ -562,7 +568,7 @@ class GetSingleInvalidEndRecordTest(TestCase):
         self.serialized_list = list()
         self.serialized_list.append({
             'id': self.end_record.id,
-            'timestamp': str(self.end_record.timestamp),
+            'timestamp': self.end_record.timestamp.strftime(TIMESTAMP_FORMAT),
             'call_id': self.end_record.start_id,
             'type': RecordType.END.value
         })
@@ -621,7 +627,7 @@ class CreateNewEndRecordTest(TestCase):
         self.valid_endrecord = {
             'id': 1,
             'timestamp':
-                str(END_TIME_1),
+                END_TIME_1.strftime(TIMESTAMP_FORMAT),
             'call_id': 70,
             'type': RecordType.END.value
         }
@@ -631,7 +637,7 @@ class CreateNewEndRecordTest(TestCase):
         self.end_record_list.append({
             'id': 'A',
             'timestamp':
-                str(END_TIME_1),
+                END_TIME_1.strftime(TIMESTAMP_FORMAT),
             'call_id': 70,
             'type': RecordType.END.value
         })
@@ -639,7 +645,7 @@ class CreateNewEndRecordTest(TestCase):
         self.end_record_list.append({
             'id': '',
             'timestamp':
-                str(END_TIME_1),
+                END_TIME_1.strftime(TIMESTAMP_FORMAT),
             'call_id': 70,
             'type': RecordType.END.value
         })
@@ -661,7 +667,7 @@ class CreateNewEndRecordTest(TestCase):
         self.end_record_list.append({
             'id': 1,
             'timestamp':
-                str(END_TIME_1),
+                END_TIME_1.strftime(TIMESTAMP_FORMAT),
             'call_id': 'B',
             'type': RecordType.END.value
         })
@@ -669,7 +675,7 @@ class CreateNewEndRecordTest(TestCase):
         self.end_record_list.append({
             'id': 1,
             'timestamp':
-                str(END_TIME_1),
+                END_TIME_1.strftime(TIMESTAMP_FORMAT),
             'call_id': '',
             'type': RecordType.END.value
         })
@@ -677,7 +683,7 @@ class CreateNewEndRecordTest(TestCase):
         self.end_record_list.append({
             'id': 1,
             'timestamp':
-                str(END_TIME_1),
+                END_TIME_1.strftime(TIMESTAMP_FORMAT),
             'call_id': 70,
             'type': ''
         })
@@ -685,16 +691,15 @@ class CreateNewEndRecordTest(TestCase):
         self.end_record_list.append({
             'id': 1,
             'timestamp':
-                str(END_TIME_1),
+                END_TIME_1.strftime(TIMESTAMP_FORMAT),
             'call_id': 70,
             'type': 'B'
         })
 
     def test_create_valid_end_record(self):
-        a = json.dumps(self.valid_endrecord)
         response = client.post(
             '/callrecord/',
-            data=a,
+            data=json.dumps(self.valid_endrecord),
             content_type='application/json'
         )
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -741,14 +746,14 @@ class UpdateSingleEndRecordTest(TestCase):
 
         self.valid_end_record = {
             'id': 1,
-            'timestamp': str(END_TIME_1),
+            'timestamp': END_TIME_1.strftime(TIMESTAMP_FORMAT),
             'call_id': 70,
             'type': RecordType.END.value
         }
 
         self.invalid_end_record = {
             'id': 2,
-            'timestamp': str(END_TIME_1),
+            'timestamp': END_TIME_1.strftime(TIMESTAMP_FORMAT),
             'call_id': '',
             'type': RecordType.END.value
         }
@@ -906,10 +911,10 @@ class GetPhoneBillTest(TestCase):
             ))
 
         for item in self.list_start:
-            item['timestamp'] = str(item['timestamp'])
+            item['timestamp'] = item['timestamp'].strftime(TIMESTAMP_FORMAT)
 
         for item in self.list_end:
-            item['timestamp'] = str(item['timestamp'])
+            item['timestamp'] = item['timestamp'].strftime(TIMESTAMP_FORMAT)
 
     def test_get_phone_bill(self):
         ''' This test sends (POST) a list of start and end phone calls,

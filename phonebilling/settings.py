@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+# from django.conf.global_settings import DATETIME_INPUT_FORMATS
+
 """
 Django settings for phonebilling project.
 
@@ -30,6 +32,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+TIMESTAMP_FORMAT = '%Y-%m-%d %H:%M:%S+00:00'
 
 # Application definition
 
@@ -47,7 +50,7 @@ INSTALLED_APPS = [
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.AllowAny',),
-    'DATETIME_FORMAT': "iso-8601",
+    'DATETIME_FORMAT': TIMESTAMP_FORMAT,
 }
 
 MIDDLEWARE = [
@@ -124,6 +127,7 @@ USE_L10N = True
 
 USE_TZ = True
 
+# DATETIME_INPUT_FORMATS = ('%Y-%m-%dT%H:%M:%SZ')
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
