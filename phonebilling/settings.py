@@ -18,6 +18,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 import os
 import logging
 import logging.config
+from pathlib import Path
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -138,4 +139,11 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-logging.config.fileConfig("logging.conf")
+LOGGING_CONF_FILE = 'logging.conf'
+
+# When it is necessary to log information, rename logging_file.conf to
+# logging.conf on the root directory
+log_file = Path(BASE_DIR + '/' + LOGGING_CONF_FILE)
+
+if log_file.exists():
+    logging.config.fileConfig(LOGGING_CONF_FILE)
