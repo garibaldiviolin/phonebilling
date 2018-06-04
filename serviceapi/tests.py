@@ -78,7 +78,7 @@ class PhoneBill:
 
 
 class GetAllStartRecordsTest(TestCase):
-    """ Test module for GET all puppies API """
+    """ Test module for getting all start records API """
 
     def setUp(self):
 
@@ -134,7 +134,7 @@ class GetAllStartRecordsTest(TestCase):
             start_record.save()
 
     def test_get_all_start_records(self):
-        # get API response
+
         response = client.get("/callrecord/")
 
         serializer = CallRecordSerializer(self.serialized_list, many=True)
@@ -144,7 +144,7 @@ class GetAllStartRecordsTest(TestCase):
 
 
 class GetSingleValidStartRecordTest(TestCase):
-    """ Test module for GET single start record """
+    """ Test module for getting single start record """
 
     def setUp(self):
 
@@ -170,7 +170,6 @@ class GetSingleValidStartRecordTest(TestCase):
         self.start_record.save()
 
     def test_get_single_valid_start_record(self):
-        # get API response
 
         response = client.get('/callrecord/' + str(self.start_record.id) + '/')
 
@@ -181,7 +180,7 @@ class GetSingleValidStartRecordTest(TestCase):
 
 
 class GetSingleInvalidStartRecordTest(TestCase):
-    """ Test module for GET single start record """
+    """ Test module for getting single invalid start record """
 
     def setUp(self):
 
@@ -194,7 +193,7 @@ class GetSingleInvalidStartRecordTest(TestCase):
         self.start_record.save()
 
     def test_get_single_invalid_start_record(self):
-        # get API response
+
         response = client.get("/callrecord/9999/")
 
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
@@ -559,7 +558,7 @@ class DeleteSingleStartRecordTest(TestCase):
 
 
 class GetAllEndRecordsTest(TestCase):
-    """ Test module for GET all puppies API """
+    """ Test module for getting all end records API """
 
     def setUp(self):
 
@@ -605,7 +604,7 @@ class GetAllEndRecordsTest(TestCase):
             end_record.save()
 
     def test_get_all_end_records(self):
-        # get API response
+
         response = client.get("/callrecord/")
 
         serializer = CallRecordSerializer(self.serialized_list, many=True)
@@ -615,7 +614,7 @@ class GetAllEndRecordsTest(TestCase):
 
 
 class GetSingleValidEndRecordTest(TestCase):
-    """ Test module for GET single end record """
+    """ Test module for getting single end record """
 
     def setUp(self):
 
@@ -635,7 +634,7 @@ class GetSingleValidEndRecordTest(TestCase):
         })
 
     def test_get_single_valid_end_record(self):
-        # get API response
+
         response = client.get('/callrecord/' + str(self.end_record.id) + '/')
 
         serializer = CallRecordSerializer(self.serialized_list, many=True)
@@ -645,7 +644,7 @@ class GetSingleValidEndRecordTest(TestCase):
 
 
 class GetSingleInvalidEndRecordTest(TestCase):
-    """ Test module for GET single end record """
+    """ Test module for getting single invalid end record """
 
     def setUp(self):
 
@@ -666,7 +665,7 @@ class GetSingleInvalidEndRecordTest(TestCase):
         self.end_record.save()
 
     def test_get_single_invalid_end_record(self):
-        # get API response
+
         response = client.get("/callrecord/9999/")
 
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
@@ -899,7 +898,7 @@ class DeleteSingleEndRecordTest(TestCase):
 
 
 class GetPhoneBillTest(TestCase):
-    """ Test module for GET single end record """
+    """ Test module for getting phone bill """
 
     def setUp(self):
 
