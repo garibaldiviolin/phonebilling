@@ -678,6 +678,7 @@ class CreateNewEndRecordTest(TestCase):
 
         self.list_start = list()
 
+        # saves all start records
         self.list_start.append(StartRecord(
             id=ID_1, timestamp=START_TIME_1, call_id=CALL_ID_1,
             source=SOURCE_NUMBER, destination=DESTINATION_NUMBER
@@ -711,6 +712,7 @@ class CreateNewEndRecordTest(TestCase):
             source=SOURCE_NUMBER, destination=DESTINATION_NUMBER
         ))
 
+        # saves all start records
         for start_record in self.list_start:
             start_record.save()
 
@@ -724,6 +726,7 @@ class CreateNewEndRecordTest(TestCase):
 
         self.end_record_list = list()
 
+        # test with id field (invalid)
         self.end_record_list.append({
             'id': 'A',
             'timestamp':
@@ -732,6 +735,7 @@ class CreateNewEndRecordTest(TestCase):
             'type': RecordType.END.value
         })
 
+        # test with id field (empty)
         self.end_record_list.append({
             'id': '',
             'timestamp':
@@ -740,6 +744,15 @@ class CreateNewEndRecordTest(TestCase):
             'type': RecordType.END.value
         })
 
+        # test with id field (removed)
+        self.end_record_list.append({
+            'timestamp':
+                END_TIME_1.strftime(TIMESTAMP_FORMAT),
+            'call_id': CALL_ID_1,
+            'type': RecordType.END.value
+        })
+
+        # test with timestamp field (invalid format)
         self.end_record_list.append({
             'id': 1,
             'timestamp': '9999-99-99T99:99:99Z',
@@ -747,6 +760,7 @@ class CreateNewEndRecordTest(TestCase):
             'type': RecordType.END.value
         })
 
+        # test with timestamp field (empty)
         self.end_record_list.append({
             'id': 1,
             'timestamp': '',
@@ -754,6 +768,14 @@ class CreateNewEndRecordTest(TestCase):
             'type': RecordType.END.value
         })
 
+        # test with timestamp field (removed)
+        self.end_record_list.append({
+            'id': 1,
+            'call_id': CALL_ID_1,
+            'type': RecordType.END.value
+        })
+
+        # test with call_id field (invalid)
         self.end_record_list.append({
             'id': 1,
             'timestamp':
@@ -762,6 +784,7 @@ class CreateNewEndRecordTest(TestCase):
             'type': RecordType.END.value
         })
 
+        # test with call_id field (empty)
         self.end_record_list.append({
             'id': 1,
             'timestamp':
@@ -770,6 +793,15 @@ class CreateNewEndRecordTest(TestCase):
             'type': RecordType.END.value
         })
 
+        # test with call_id field (removed)
+        self.end_record_list.append({
+            'id': 1,
+            'timestamp':
+                END_TIME_1.strftime(TIMESTAMP_FORMAT),
+            'type': RecordType.END.value
+        })
+
+        # test with type field (empty)
         self.end_record_list.append({
             'id': 1,
             'timestamp':
@@ -778,12 +810,21 @@ class CreateNewEndRecordTest(TestCase):
             'type': ''
         })
 
+        # test with type field (invalid)
         self.end_record_list.append({
             'id': 1,
             'timestamp':
                 END_TIME_1.strftime(TIMESTAMP_FORMAT),
             'call_id': CALL_ID_1,
             'type': 'B'
+        })
+
+        # test with type field (removed)
+        self.end_record_list.append({
+            'id': 1,
+            'timestamp':
+                END_TIME_1.strftime(TIMESTAMP_FORMAT),
+            'call_id': CALL_ID_1
         })
 
     def test_create_valid_end_record(self):
@@ -992,6 +1033,7 @@ class GetPhoneBillTest(TestCase):
             formatted_price = ('R$ %0.2f' % self.list_end[
                                i]['cost']).replace('.', ',')
 
+            # formatted list that will be serialized later
             self.bill_list.append(PhoneBill(
                 destination=destination,
                 start_date=record_start_time.strftime('%d/%m/%Y'),
@@ -1000,9 +1042,11 @@ class GetPhoneBillTest(TestCase):
                 price=formatted_price,
             ))
 
+        # transforms timestamp to string format (list_start)
         for item in self.list_start:
             item['timestamp'] = item['timestamp'].strftime(TIMESTAMP_FORMAT)
 
+        # transforms timestamp to string format (list_end)
         for item in self.list_end:
             item['timestamp'] = item['timestamp'].strftime(TIMESTAMP_FORMAT)
 
