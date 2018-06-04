@@ -201,7 +201,7 @@ class GetSingleInvalidStartRecordTest(TestCase):
 
 
 class CreateNewStartRecordTest(TestCase):
-    """ Test module for inserting a new puppy """
+    """ Test module for inserting a new start record """
 
     def setUp(self):
         self.valid_startrecord = {
@@ -216,6 +216,7 @@ class CreateNewStartRecordTest(TestCase):
 
         self.start_record_list = list()
 
+        # test with id field (invalid)
         self.start_record_list.append({
             'id': 'A',
             'timestamp':
@@ -226,6 +227,7 @@ class CreateNewStartRecordTest(TestCase):
             'destination': '11991251242'
         })
 
+        # test with id field (empty)
         self.start_record_list.append({
             'id': '',
             'timestamp':
@@ -236,6 +238,7 @@ class CreateNewStartRecordTest(TestCase):
             'destination': '11991251242'
         })
 
+        # test with id field (removed)
         self.start_record_list.append({
             'timestamp':
                 START_TIME_1.strftime(TIMESTAMP_FORMAT),
@@ -245,6 +248,7 @@ class CreateNewStartRecordTest(TestCase):
             'destination': '11991251242'
         })
 
+        # test with timestamp field (invalid)
         self.start_record_list.append({
             'id': 2,
             'timestamp': '9999-99-99T99:99:99Z',
@@ -254,6 +258,7 @@ class CreateNewStartRecordTest(TestCase):
             'destination': '11991251242'
         })
 
+        # test with timestamp field (empty)
         self.start_record_list.append({
             'id': 2,
             'timestamp': '',
@@ -263,6 +268,7 @@ class CreateNewStartRecordTest(TestCase):
             'destination': '11991251242'
         })
 
+        # test with timestamp field (removed)
         self.start_record_list.append({
             'id': 2,
             'call_id': 5,
@@ -271,25 +277,7 @@ class CreateNewStartRecordTest(TestCase):
             'destination': '11991251242'
         })
 
-        self.start_record_list.append({
-            'id': 3,
-            'timestamp':
-                START_TIME_1.strftime(TIMESTAMP_FORMAT),
-            'call_id': 5,
-            'type': 0,
-            'source': '11912124425',
-            'destination': '11991251242'
-        })
-
-        self.start_record_list.append({
-            'id': 3,
-            'timestamp':
-                START_TIME_1.strftime(TIMESTAMP_FORMAT),
-            'call_id': 5,
-            'source': '11912124425',
-            'destination': '11991251242'
-        })
-
+        # test with call_id field (invalid)
         self.start_record_list.append({
             'id': 3,
             'timestamp':
@@ -300,6 +288,7 @@ class CreateNewStartRecordTest(TestCase):
             'destination': '11991251242'
         })
 
+        # test with call_id field (empty)
         self.start_record_list.append({
             'id': 3,
             'timestamp':
@@ -310,6 +299,40 @@ class CreateNewStartRecordTest(TestCase):
             'destination': '11991251242'
         })
 
+        # test with call_id field (removed)
+        self.start_record_list.append({
+            'id': 3,
+            'timestamp':
+                START_TIME_1.strftime(TIMESTAMP_FORMAT),
+            'call_id': 5,
+            'type': RecordType.START.value,
+            'source': '11912124425',
+            'destination': '11991251242'
+        })
+
+        # test with type field (invalid)
+        self.start_record_list.append({
+            'id': 3,
+            'timestamp':
+                START_TIME_1.strftime(TIMESTAMP_FORMAT),
+            'call_id': 5,
+            'type': 0,
+            'source': '11912124425',
+            'destination': '11991251242'
+        })
+
+        # test with type field (invalid)
+        self.start_record_list.append({
+            'id': 3,
+            'timestamp':
+                START_TIME_1.strftime(TIMESTAMP_FORMAT),
+            'call_id': 5,
+            'type': 'A',
+            'source': '11912124425',
+            'destination': '11991251242'
+        })
+
+        # test with type field (empty)
         self.start_record_list.append({
             'id': 3,
             'timestamp':
@@ -320,16 +343,17 @@ class CreateNewStartRecordTest(TestCase):
             'destination': '11991251242'
         })
 
+        # test with type field (removed)
         self.start_record_list.append({
             'id': 3,
             'timestamp':
                 START_TIME_1.strftime(TIMESTAMP_FORMAT),
             'call_id': 5,
-            'type': 'B',
             'source': '11912124425',
             'destination': '11991251242'
         })
 
+        # test with source field (length - 9)
         self.start_record_list.append({
             'id': 4,
             'timestamp':
@@ -340,16 +364,18 @@ class CreateNewStartRecordTest(TestCase):
             'destination': '11991251242'
         })
 
+        # test with source field (length - 12)
         self.start_record_list.append({
             'id': 4,
             'timestamp':
                 START_TIME_1.strftime(TIMESTAMP_FORMAT),
             'call_id': 5,
             'type': RecordType.START.value,
-            'source': '',
+            'source': '119121244123',
             'destination': '11991251242'
         })
 
+        # test with source field (invalid)
         self.start_record_list.append({
             'id': 5,
             'timestamp':
@@ -360,6 +386,7 @@ class CreateNewStartRecordTest(TestCase):
             'destination': '11991251242'
         })
 
+        # test with source field (empty)
         self.start_record_list.append({
             'id': 5,
             'timestamp':
@@ -370,6 +397,7 @@ class CreateNewStartRecordTest(TestCase):
             'destination': '11991251242'
         })
 
+        # test with destination field (length - 9)
         self.start_record_list.append({
             'id': 6,
             'timestamp':
@@ -380,6 +408,18 @@ class CreateNewStartRecordTest(TestCase):
             'destination': '119912512'
         })
 
+        # test with destination field (length - 12)
+        self.start_record_list.append({
+            'id': 6,
+            'timestamp':
+                START_TIME_1.strftime(TIMESTAMP_FORMAT),
+            'call_id': 5,
+            'type': RecordType.START.value,
+            'source': '11912124425',
+            'destination': '119912512111'
+        })
+
+        # test with destionation field (invalid)
         self.start_record_list.append({
             'id': 7,
             'timestamp':
@@ -390,6 +430,7 @@ class CreateNewStartRecordTest(TestCase):
             'destination': 'B1991251242'
         })
 
+        # test with destination field (empty)
         self.start_record_list.append({
             'id': 7,
             'timestamp':
@@ -400,6 +441,7 @@ class CreateNewStartRecordTest(TestCase):
             'destination': ''
         })
 
+        # test with destination field (removed)
         self.start_record_list.append({
             'id': 7,
             'timestamp':
@@ -428,7 +470,7 @@ class CreateNewStartRecordTest(TestCase):
 
 
 class UpdateSingleStartRecordTest(TestCase):
-    """ Test module for updating an existing puppy record """
+    """ Test module for updating an existing start record record """
 
     def setUp(self):
 
@@ -482,7 +524,7 @@ class UpdateSingleStartRecordTest(TestCase):
 
 
 class DeleteSingleStartRecordTest(TestCase):
-    """ Test module for deleting an existing puppy record """
+    """ Test module for deleting an existing start record """
 
     def setUp(self):
         self.list_start = list()
@@ -631,7 +673,7 @@ class GetSingleInvalidEndRecordTest(TestCase):
 
 
 class CreateNewEndRecordTest(TestCase):
-    """ Test module for inserting a new puppy """
+    """ Test module for inserting a new end record """
 
     def setUp(self):
 
@@ -764,7 +806,7 @@ class CreateNewEndRecordTest(TestCase):
 
 
 class UpdateSingleEndRecordTest(TestCase):
-    """ Test module for updating an existing puppy record """
+    """ Test module for updating an existing end record """
 
     def setUp(self):
 
@@ -824,7 +866,7 @@ class UpdateSingleEndRecordTest(TestCase):
 
 
 class DeleteSingleEndRecordTest(TestCase):
-    """ Test module for deleting an existing puppy record """
+    """ Test module for deleting an existing end record """
 
     def setUp(self):
         self.list_end = list()
