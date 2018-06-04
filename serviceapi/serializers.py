@@ -27,22 +27,19 @@ class CallRecordSerializer(serializers.Serializer):
         return exclusions + ['source'] + ['destination']
 
     def validate(self, data):
-        ''' Validate if source and destination are numbers, check
-        their length (must be 10 or 11 digits), and also if they are
-        two different phone numbers.
-        '''
 
+        # First, check if type is START (1) or END (2)
         if data['type'] != RecordType.START.value and \
                 data['type'] != RecordType.END.value:
             raise serializers.ValidationError({'type': 'Type must be 1 or 2'})
 
-        '''if validate_datetime(str(data['timestamp'])) is False:
-            raise serializers.ValidationError({
-                "timestamp":
-                "Incorrect data format, should be yyyy-mm-ddThh:MM:ssZ"
-            })'''
-
+        # StartRecord fields validation
         if data['type'] == RecordType.START.value:
+
+            # source and destination fields must exist for StartRecord
+            # Both of then should have 10 or 11 digits (the first two
+            # digits are the area code, and the other ones are the phone
+            # number), and they must have different values
             if 'source' not in data:
                 raise serializers.ValidationError({
                     "source": "Start record must have a source field"
@@ -75,7 +72,10 @@ class CallRecordSerializer(serializers.Serializer):
                     "source":
                     "Source and destination must have different values"
                 })
-        else:  # end record
+        else:  # EndRecord fields validation
+
+            # StartRecord with the call_id informed must exist
+            # before saving EndRecord
             queryset = StartRecord.objects.filter(call_id=data['call_id'])
 
             if len(queryset) < 1:
