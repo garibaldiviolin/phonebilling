@@ -28,6 +28,7 @@ PERIOD_COST = 0.09  # currently, the base period cost is R$ 0,09
 
 
 class RecordType(Enum):
+    '''The accepted values for the type field'''
     START = 1
     END = 2
 

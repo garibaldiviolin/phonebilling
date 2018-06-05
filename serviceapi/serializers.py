@@ -10,7 +10,9 @@ from phonebilling.settings import TIMESTAMP_FORMAT
 
 
 class CallRecordSerializer(serializers.Serializer):
-    ''' Represents the serializer for the call start record '''
+    ''' Represents the serializer for the start and end record
+    The type field indicates if is 
+    '''
 
     id = serializers.IntegerField()
     timestamp = serializers.DateTimeField(
