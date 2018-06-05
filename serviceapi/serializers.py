@@ -10,8 +10,8 @@ from phonebilling.settings import TIMESTAMP_FORMAT
 
 
 class CallRecordSerializer(serializers.Serializer):
-    ''' Represents the serializer for the start and end record
-    The type field indicates if is 
+    ''' Represents the serializer for the start and end record.
+    The type field value indicates if it is a start or end record.
     '''
 
     id = serializers.IntegerField()
@@ -20,9 +20,10 @@ class CallRecordSerializer(serializers.Serializer):
     )
     call_id = serializers.IntegerField()
     type = serializers.IntegerField()
-    source = serializers.CharField(required=False)
-    destination = serializers.CharField(required=False)
+    source = serializers.CharField(required=False)  # start record (only)
+    destination = serializers.CharField(required=False)  # start record (only)
 
+    # removes the need for the source and destination fields
     def get_validation_exclusions(self):
         exclusions = super(FavoriteListSerializer, self). \
             get_validation_exclusions()
@@ -87,6 +88,7 @@ class CallRecordSerializer(serializers.Serializer):
 
             start_record = queryset[0]
 
+            # replace the default timezone (it is not needed)
             end_timestamp = data['timestamp'].replace(tzinfo=timezone.utc)
 
             if start_record.timestamp >= end_timestamp:
@@ -99,6 +101,7 @@ class CallRecordSerializer(serializers.Serializer):
 
     def create(self, validated_data):
 
+        # if the type is START, then save a StartRecord model
         if validated_data['type'] == RecordType.START.value:
 
             start_record = StartRecord()
