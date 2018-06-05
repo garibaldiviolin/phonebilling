@@ -13,7 +13,7 @@ Pendências
 - Renomear as chaves estrangeiras dos models
 - Estilizar o código
 - Montar o requirements.txt (pipreqs /path/to/project)
--
+- Remover o StartRecord e EndRecord dos serializers e views (não serão mais usados)
 
 
 
