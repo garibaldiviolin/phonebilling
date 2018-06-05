@@ -33,15 +33,17 @@ class RecordType(Enum):
     END = 2
 
 
-def subtract_one_month(date):
-    dt1 = date.replace(day=1)
+def subtract_one_month(datetime_field):
+    '''Subtracts one month from the datetime field'''
+    dt1 = datetime_field.replace(day=1)
     dt2 = dt1 - datetime.timedelta(days=1)
     dt3 = dt2.replace(day=1)
     return dt3
 
 
-def add_one_month(date):
-    dt1 = date + datetime.timedelta(days=31)
+def add_one_month(datetime_field):
+    '''Adds one month to the datetime field'''
+    dt1 = datetime_field + datetime.timedelta(days=31)
     dt2 = dt1.replace(day=1)
     return dt2
 
