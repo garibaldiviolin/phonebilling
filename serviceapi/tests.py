@@ -303,7 +303,6 @@ class CreateNewStartRecordTest(TestCase):
             'id': 3,
             'timestamp':
                 START_TIME_1.strftime(TIMESTAMP_FORMAT),
-            'call_id': 5,
             'type': RecordType.START.value,
             'source': '11912124425',
             'destination': '11991251242'
