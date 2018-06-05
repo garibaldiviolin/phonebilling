@@ -4,24 +4,22 @@ from __future__ import unicode_literals
 import datetime
 from enum import Enum
 
-from phonebilling.settings import TIMESTAMP_FORMAT
-
 PERIOD_FORMAT_ERROR = "The period must have the following format: mm/yyyy"
 MONTH_PERIOD_FORMAT_ERROR = "The month's period sent is not valid"
 YEAR_PERIOD_FORMAT_ERROR = "The year's period sent is not valid"
 
-BILL_PERIOD_MASK = '99/9999'
+BILL_PERIOD_MASK = '99/9999'  # period format accepted in /phonebill/ URL
 
-STANDING_CALL_CHARGE = 0.36
-STANDARD_MINUTE_CALL_CHARGE = 0.09
+STANDING_CALL_CHARGE = 0.36  # fixed charge (per call)
+STANDARD_MINUTE_CALL_CHARGE = 0.09  # call minute charge (during charge period)
 
-FREE_PERIOD_START_HOUR = 22
-FREE_PERIOD_START_MINUTE = 0
-FREE_PERIOD_START_SECOND = 0
+FREE_PERIOD_START_HOUR = 22  # free period's starting hour
+FREE_PERIOD_START_MINUTE = 0  # free period's starting minute
+FREE_PERIOD_START_SECOND = 0  # free period's starting second
 
-FREE_PERIOD_END_HOUR = 6
-FREE_PERIOD_END_MINUTE = 0
-FREE_PERIOD_END_SECOND = 0
+FREE_PERIOD_END_HOUR = 6  # free period's ending hour
+FREE_PERIOD_END_MINUTE = 0  # free period's ending minute
+FREE_PERIOD_END_SECOND = 0  # free period's ending second
 
 BASE_PERIOD = 60  # currently, the base period is 1 minute (60 seconds)
 PERIOD_COST = 0.09  # currently, the base period cost is R$ 0,09
