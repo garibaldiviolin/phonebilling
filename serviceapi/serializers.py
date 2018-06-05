@@ -101,7 +101,8 @@ class CallRecordSerializer(serializers.Serializer):
 
     def create(self, validated_data):
 
-        # if the type is START, then save a StartRecord model
+        # if the type is START, then save a start record
+        # otherwise, it is a end record
         if validated_data['type'] == RecordType.START.value:
 
             start_record = StartRecord()
