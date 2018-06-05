@@ -106,13 +106,3 @@ def calculate_call_cost(start_time, end_time):
         aux_time = aux_time + datetime.timedelta(seconds=aux_seconds)
 
     return call_cost
-
-
-def validate_datetime(date_text):
-    try:
-        datetime.datetime.strptime(date_text, TIMESTAMP_FORMAT)
-        value = True
-    except ValueError:
-        value = False
-
-    return value
