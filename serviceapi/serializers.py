@@ -105,7 +105,15 @@ class CallRecordSerializer(serializers.Serializer):
         # otherwise, it is a end record
         if validated_data['type'] == RecordType.START.value:
 
-            start_record = StartRecord()
+            # Validate if object already exists
+            queryset_record = StartRecord.objects.filter(
+                call_id=validated_data['call_id']
+            )
+            if len(queryset_record) > 0:
+                start_record = queryset_record[0]
+            else:
+                start_record = StartRecord()
+
             start_record.id = validated_data['id']
             start_record.timestamp = validated_data['timestamp']. \
                 replace(tzinfo=timezone.utc)
@@ -118,10 +126,18 @@ class CallRecordSerializer(serializers.Serializer):
 
         else:  # RecordType.END
 
+            # Validate if object already exists
+            queryset_record = EndRecord.objects.filter(
+                start_id=validated_data['call_id']
+            )
+            if len(queryset_record) > 0:
+                end_record = queryset_record[0]
+            else:
+                end_record = EndRecord()
+
             id = validated_data['id']
             timestamp = validated_data['timestamp']
             call_id = validated_data['call_id']
-            end_record = EndRecord()
             end_record.id = id
             end_record.timestamp = timestamp
 
