@@ -45,35 +45,35 @@ class CallRecordSerializer(serializers.Serializer):
             # number), and they must have different values
             if 'source' not in data:
                 raise serializers.ValidationError({
-                    "source": "Start record must have a source field"
+                    'source': 'Start record must have a source field'
                 })
             elif data['source'].isdigit() is False:
                 raise serializers.ValidationError({
-                    "source": "Source must have only numbers"
+                    'source': 'Source must have only numbers'
                 })
             elif len(data['source']) != 10 and len(data['source']) != 11:
                 raise serializers.ValidationError({
-                    "source": "Source must have 10 or 11 digits"
+                    'source': 'Source must have 10 or 11 digits'
                 })
 
             if 'destination' not in data:
                 raise serializers.ValidationError({
-                    "destination": "Start record must have a destination field"
+                    'destination': 'Start record must have a destination field'
                 })
             elif data['destination'].isdigit() is False:
                 raise serializers.ValidationError({
-                    "destination": "Destination must have only numbers"
+                    'destination': 'Destination must have only numbers'
                 })
             elif len(data['destination']) != 10 and \
                     len(data['destination']) != 11:
                 raise serializers.ValidationError({
-                    "destination": "Destination must have 10 or 11 digits"
+                    'destination': 'Destination must have 10 or 11 digits'
                 })
 
             if data['source'] == data['destination']:
                 raise serializers.ValidationError({
-                    "source":
-                    "Source and destination must have different values"
+                    'source':
+                    'Source and destination must have different values'
                 })
         else:  # EndRecord fields validation
 
@@ -83,7 +83,7 @@ class CallRecordSerializer(serializers.Serializer):
 
             if len(queryset) < 1:
                 raise serializers.ValidationError({
-                    "start": "Please send the call record start before the end"
+                    'start': 'Please send the call record start before the end'
                 })
 
             start_record = queryset[0]
@@ -93,8 +93,8 @@ class CallRecordSerializer(serializers.Serializer):
 
             if start_record.timestamp >= end_timestamp:
                 raise serializers.ValidationError({
-                    "timestamp": "The call end timestamp must be"
-                    " greater than call start timestamp"
+                    'timestamp': 'The call end timestamp must be'
+                    ' greater than call start timestamp'
                 })
 
         return data
@@ -173,21 +173,21 @@ class StartRecordSerializer(serializers.HyperlinkedModelSerializer):
         '''
 
         if data['source'].isdigit() is False:
-            raise serializers.ValidationError("Source must have only numbers")
+            raise serializers.ValidationError('Source must have only numbers')
         elif len(data['source']) != 10 and len(data['source']) != 11:
             raise serializers. \
-                ValidationError("Source must have 10 or 11 digits")
+                ValidationError('Source must have 10 or 11 digits')
 
         if data['destination'].isdigit() is False:
             raise serializers. \
-                ValidationError("Destination must have only numbers")
+                ValidationError('Destination must have only numbers')
         elif len(data['destination']) != 10 and len(data['destination']) != 11:
             raise serializers. \
-                ValidationError("Destination must have 10 or 11 digits")
+                ValidationError('Destination must have 10 or 11 digits')
 
         if data['source'] == data['destination']:
             raise serializers.ValidationError(
-                "Source and destination must have different values")
+                'Source and destination must have different values')
 
         return data
 
@@ -224,11 +224,11 @@ class EndRecordSerializer(serializers.HyperlinkedModelSerializer):
         end_timestamp = data['timestamp'].replace(tzinfo=timezone.utc)
         if start_record is None:
             raise serializers. \
-                ValidationError("Please insert the call start before the end")
+                ValidationError('Please insert the call start before the end')
         elif start_record.timestamp >= end_timestamp:
             raise serializers.ValidationError(
-                "The call end timestamp must be"
-                "greater than call start timestamp"
+                'The call end timestamp must be'
+                'greater than call start timestamp'
             )
 
         return data

@@ -16,8 +16,8 @@ from phonebilling.settings import TIMESTAMP_FORMAT
 
 client = Client()
 
-SOURCE_NUMBER = "99988526423"
-DESTINATION_NUMBER = "9993468278"
+SOURCE_NUMBER = '99988526423'
+DESTINATION_NUMBER = '9993468278'
 
 ID_1 = 1
 ID_2 = 2
@@ -135,7 +135,7 @@ class GetAllStartRecordsTest(TestCase):
 
     def test_get_all_start_records(self):
 
-        response = client.get("/callrecord/")
+        response = client.get('/callrecord/')
 
         serializer = CallRecordSerializer(self.serialized_list, many=True)
 
@@ -194,7 +194,7 @@ class GetSingleInvalidStartRecordTest(TestCase):
 
     def test_get_single_invalid_start_record(self):
 
-        response = client.get("/callrecord/9999/")
+        response = client.get('/callrecord/9999/')
 
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
@@ -604,7 +604,7 @@ class GetAllEndRecordsTest(TestCase):
 
     def test_get_all_end_records(self):
 
-        response = client.get("/callrecord/")
+        response = client.get('/callrecord/')
 
         serializer = CallRecordSerializer(self.serialized_list, many=True)
 
@@ -665,7 +665,7 @@ class GetSingleInvalidEndRecordTest(TestCase):
 
     def test_get_single_invalid_end_record(self):
 
-        response = client.get("/callrecord/9999/")
+        response = client.get('/callrecord/9999/')
 
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
@@ -1074,8 +1074,8 @@ class GetPhoneBillTest(TestCase):
             self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
         # Now get the detailed phone bill and match the response
-        response = client.get("/phonebill/?source=" +
-                              SOURCE_NUMBER + "&period=12/2017")
+        response = client.get('/phonebill/?source=' +
+                              SOURCE_NUMBER + '&period=12/2017')
 
         serializer_list = PhoneBillSerializer(self.bill_list, many=True)
 
