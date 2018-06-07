@@ -11,6 +11,7 @@ from serviceapi.models import StartRecord, EndRecord
 from serviceapi.serializers import StartRecordSerializer, \
     EndRecordSerializer, PhoneBillSerializer, CallRecordSerializer
 from serviceapi.utils import *
+from phonebilling.settings import TIMESTAMP_FORMAT
 
 
 class CallRecordViewSet(viewsets.ViewSet):
@@ -32,7 +33,9 @@ class CallRecordViewSet(viewsets.ViewSet):
             # Appends the REST fields to the result
             results.append({
                 'id': end_record.id,
-                'timestamp': str(end_record.timestamp),
+                'timestamp': end_record.timestamp.strftime(
+                    TIMESTAMP_FORMAT
+                ),
                 'call_id': end_record.call_id,
                 'type': RecordType.END.value
             })
@@ -42,7 +45,9 @@ class CallRecordViewSet(viewsets.ViewSet):
             # Appends the REST fields to the result
             results.append({
                 'id': start_record.id,
-                'timestamp': str(start_record.timestamp),
+                'timestamp': start_record.timestamp.strftime(
+                    TIMESTAMP_FORMAT
+                ),
                 'call_id': start_record.call_id,
                 'type': RecordType.START.value,
                 'source': start_record.source,
@@ -69,7 +74,7 @@ class CallRecordViewSet(viewsets.ViewSet):
             # Appends the REST fields to the result
             results.append({
                 'id': end_record.id,
-                'timestamp': str(end_record.timestamp),
+                'timestamp': end_record.timestamp.strftime(TIMESTAMP_FORMAT),
                 'call_id': end_record.call_id,
                 'type': RecordType.END.value
             })
@@ -79,7 +84,9 @@ class CallRecordViewSet(viewsets.ViewSet):
             # Appends the REST fields to the result
             results.append({
                 'id': start_record.id,
-                'timestamp': str(start_record.timestamp),
+                'timestamp': start_record.timestamp.strftime(
+                    TIMESTAMP_FORMAT
+                ),
                 'call_id': start_record.call_id,
                 'type': RecordType.START.value,
                 'source': start_record.source,

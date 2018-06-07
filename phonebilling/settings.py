@@ -35,7 +35,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-TIMESTAMP_FORMAT = '%Y-%m-%d %H:%M:%S+00:00'
+TIMESTAMP_FORMAT = '%Y-%m-%dT%H:%M:%SZ'
 
 # Application definition
 

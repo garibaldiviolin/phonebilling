@@ -6,9 +6,6 @@ Pendências
 - mudar os endpoints endrecord e startrecord para um só. Parece que o pedido no README.md é esse.
 - verifica se o get_queryset no views esta elegante
 - adicionar log na aplicacao
-- Organizar os imports
-- Gerar readme
-- Gerar aplicação com uma só tabela em vez de três, e confirmar com a empresa se é permitido
 - Remover todos os comentários e organizar o código
 - Renomear as chaves estrangeiras dos models
 - Estilizar o código
