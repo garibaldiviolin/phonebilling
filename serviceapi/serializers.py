@@ -10,9 +10,9 @@ from phonebilling.settings import TIMESTAMP_FORMAT
 
 
 class CallRecordSerializer(serializers.Serializer):
-    ''' Represents the serializer for the start and end record.
+    """ Represents the serializer for the start and end record.
     The type field value indicates if it is a start or end record.
-    '''
+    """
 
     id = serializers.IntegerField()
     timestamp = serializers.DateTimeField(
@@ -154,7 +154,7 @@ class CallRecordSerializer(serializers.Serializer):
 
 
 class StartRecordSerializer(serializers.HyperlinkedModelSerializer):
-    ''' Represents the serializer for the call start record '''
+    """ Represents the serializer for the call start record """
 
     id = serializers.IntegerField()
     timestamp = serializers.DateTimeField()
@@ -167,10 +167,10 @@ class StartRecordSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('id', 'timestamp', 'call_id', 'source', 'destination')
 
     def validate(self, data):
-        ''' Validate if source and destination are numbers, check
+        """ Validate if source and destination are numbers, check
         their length (must be 10 or 11 digits), and also if they are
         two different phone numbers.
-        '''
+        """
 
         if data['source'].isdigit() is False:
             raise serializers.ValidationError('Source must have only numbers')
@@ -204,7 +204,7 @@ class StartRecordSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class EndRecordSerializer(serializers.HyperlinkedModelSerializer):
-    ''' Represents the serializer for the call end record '''
+    """ Represents the serializer for the call end record """
 
     id = serializers.IntegerField()
     timestamp = serializers.DateTimeField()
@@ -215,10 +215,10 @@ class EndRecordSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('id', 'timestamp', 'call_id_id')
 
     def validate(self, data):
-        ''' Validate if the start record exist before saving the end
+        """ Validate if the start record exist before saving the end
         record. It also checks if the end record's timestamp is later
         than the start record's timestamp
-        '''
+        """
 
         start_record = StartRecord.objects.get(call_id=data['call_id_id'])
         end_timestamp = data['timestamp'].replace(tzinfo=timezone.utc)
@@ -269,7 +269,7 @@ class EndRecordSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class PhoneBillSerializer(serializers.Serializer):
-    ''' Represents the serializer that returns the detailed bill '''
+    """ Represents the serializer that returns the detailed bill """
 
     destination = serializers.CharField(max_length=100)
     start_date = serializers.CharField(max_length=100)
