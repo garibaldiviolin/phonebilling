@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import pdb
+
 from django.utils import timezone
 from rest_framework import serializers
 
@@ -31,10 +33,15 @@ class CallRecordSerializer(serializers.Serializer):
 
     def validate(self, data):
 
+        pdb.set_trace()
+
         # First, check if type is START (1) or END (2)
         if data['type'] != RecordType.START.value and \
                 data['type'] != RecordType.END.value:
             raise serializers.ValidationError({'type': 'Type must be 1 or 2'})
+
+        if self.partial is True:
+            return data
 
         # StartRecord fields validation
         if data['type'] == RecordType.START.value:
@@ -101,13 +108,25 @@ class CallRecordSerializer(serializers.Serializer):
 
     def create(self, validated_data):
 
+        pdb.set_trace()
+
+        guest, created = EndRecord.objects.get_or_create(
+            id=validated_data['id'],
+            cost=0.00,
+            defaults={
+                'timestamp': validated_data.get('timestamp', None),
+                'start_id': validated_data.get('call_id', None)
+            }
+        )
+        return guest
+
         # if the type is START, then save a start record
         # otherwise, it is a end record
         if validated_data['type'] == RecordType.START.value:
 
             # Validate if object already exists
             queryset_record = StartRecord.objects.filter(
-                call_id=validated_data['call_id']
+                id=validated_data['id']
             )
             if len(queryset_record) > 0:
                 start_record = queryset_record[0]
@@ -128,7 +147,7 @@ class CallRecordSerializer(serializers.Serializer):
 
             # Validate if object already exists
             queryset_record = EndRecord.objects.filter(
-                start_id=validated_data['call_id']
+                id=validated_data['id']
             )
             if len(queryset_record) > 0:
                 end_record = queryset_record[0]
