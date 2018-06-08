@@ -106,18 +106,15 @@ class CallRecordSerializer(serializers.Serializer):
 
         return data
 
+    def save(self, **kwargs):
+        # Will be done on every save
+        kwargs['last_changed'] = timezone.now()
+        return super().save(**kwargs)
+
     def create(self, validated_data):
 
         pdb.set_trace()
 
-        guest, created = EndRecord.objects.get_or_create(
-            id=validated_data['id'],
-            cost=0.00,
-            defaults={
-                'timestamp': validated_data.get('timestamp', None),
-                'start_id': validated_data.get('call_id', None)
-            }
-        )
         return guest
 
         # if the type is START, then save a start record

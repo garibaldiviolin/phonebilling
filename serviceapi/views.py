@@ -124,12 +124,10 @@ class CallRecordViewSet(viewsets.ViewSet):
 
         pdb.set_trace()
 
-        results = {}
-
         serializer = CallRecordSerializer(data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
-            return Response(results, status=status.HTTP_200_OK)
+            return Response(status=status.HTTP_202_ACCEPTED)
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
