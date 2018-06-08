@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-import pdb
-
 from django.utils import timezone
 from rest_framework import serializers
 
@@ -32,8 +30,6 @@ class CallRecordSerializer(serializers.Serializer):
         return exclusions + ['source'] + ['destination']
 
     def validate(self, data):
-
-        pdb.set_trace()
 
         # First, check if type is START (1) or END (2)
         if data['type'] != RecordType.START.value and \
@@ -113,10 +109,6 @@ class CallRecordSerializer(serializers.Serializer):
 
     def create(self, validated_data):
 
-        pdb.set_trace()
-
-        return guest
-
         # if the type is START, then save a start record
         # otherwise, it is a end record
         if validated_data['type'] == RecordType.START.value:
@@ -130,12 +122,19 @@ class CallRecordSerializer(serializers.Serializer):
             else:
                 start_record = StartRecord()
 
-            start_record.id = validated_data['id']
-            start_record.timestamp = validated_data['timestamp']. \
+            start_record.id = validated_data.get('id', start_record.id)
+            start_record.timestamp = validated_data. \
+                get('timestamp', start_record.timestamp). \
                 replace(tzinfo=timezone.utc)
-            start_record.call_id = validated_data['call_id']
-            start_record.source = validated_data['source']
-            start_record.destination = validated_data['destination']
+            start_record.call_id = validated_data.get(
+                'call_id', start_record.call_id
+            )
+            start_record.source = validated_data.get(
+                'source', start_record.source
+            )
+            start_record.destination = validated_data.get(
+                'destination', start_record.destination
+            )
             start_record.save()
 
             return start_record
@@ -151,13 +150,15 @@ class CallRecordSerializer(serializers.Serializer):
             else:
                 end_record = EndRecord()
 
-            id = validated_data['id']
-            timestamp = validated_data['timestamp']
-            call_id = validated_data['call_id']
-            end_record.id = id
-            end_record.timestamp = timestamp
+            end_record.id = validated_data.get('id', end_record.id)
+            end_record.timestamp = validated_data. \
+                get('timestamp', end_record.timestamp). \
+                replace(tzinfo=timezone.utc)
+            end_record.start_id = validated_data.get(
+                'call_id', end_record.start_id
+            )
 
-            start_record = StartRecord.objects.get(call_id=call_id)
+            start_record = StartRecord.objects.get(call_id=end_record.start_id)
             end_record.start = start_record
 
             end_record.cost = calculate_call_cost(

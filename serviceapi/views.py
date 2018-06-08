@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-import pdb
-
 from django.utils import timezone
 from rest_framework.generics import ListAPIView
 from rest_framework import viewsets
@@ -122,12 +120,10 @@ class CallRecordViewSet(viewsets.ViewSet):
     def partial_update(self, request, pk):
         ''' Returns the call records (start and end types) '''
 
-        pdb.set_trace()
-
         serializer = CallRecordSerializer(data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
-            return Response(status=status.HTTP_202_ACCEPTED)
+            return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
