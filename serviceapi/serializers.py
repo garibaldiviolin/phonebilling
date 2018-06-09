@@ -36,7 +36,22 @@ class CallRecordSerializer(serializers.Serializer):
                 data['type'] != RecordType.END.value:
             raise serializers.ValidationError({'type': 'Type must be 1 or 2'})
 
+        # if the request is a partial update, then the record must exist
         if self.partial is True:
+            if data['type'] != RecordType.START.value:
+                queryset_start_record = StartRecord.objects. \
+                    filter(id=data['id'])
+                if len(queryset_start_record) < 1:
+                    raise serializers.ValidationError({
+                        'start_record': 'Start record does not exist'
+                    })
+            else:  # end record
+                queryset_end_record = EndRecord.objects. \
+                    filter(id=data['id'])
+                if len(queryset_end_record) < 1:
+                    raise serializers.ValidationError({
+                        'end_record': 'EndStart record does not exist'
+                    })
             return data
 
         # StartRecord fields validation

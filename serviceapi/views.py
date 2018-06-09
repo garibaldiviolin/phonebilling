@@ -103,7 +103,9 @@ class CallRecordViewSet(viewsets.ViewSet):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                serializer.errors, status=status.HTTP_400_BAD_REQUEST
+            )
 
     def update(self, request, pk):
         ''' Returns the call records (start and end types) '''
@@ -115,7 +117,9 @@ class CallRecordViewSet(viewsets.ViewSet):
             serializer.save()
             return Response(results, status=status.HTTP_200_OK)
         else:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                serializer.errors, status=status.HTTP_400_BAD_REQUEST
+            )
 
     def partial_update(self, request, pk):
         ''' Returns the call records (start and end types) '''
@@ -125,7 +129,9 @@ class CallRecordViewSet(viewsets.ViewSet):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
         else:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                serializer.errors, status=status.HTTP_400_BAD_REQUEST
+            )
 
     def destroy(self, request, pk):
 
