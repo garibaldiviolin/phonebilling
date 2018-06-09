@@ -31,6 +31,21 @@ class CallRecordSerializer(serializers.Serializer):
 
     def validate(self, data):
 
+        if 'id' not in data:
+            raise serializers.ValidationError({
+                'id': 'id field is required'
+            })
+
+        if 'type' not in data:
+            raise serializers.ValidationError({
+                'type': 'type field is required'
+            })
+
+        if 'call_id' not in data:
+            raise serializers.ValidationError({
+                'call_id': 'call_id field is required'
+            })
+
         # First, check if type is START (1) or END (2)
         if data['type'] != RecordType.START.value and \
                 data['type'] != RecordType.END.value:
@@ -38,7 +53,7 @@ class CallRecordSerializer(serializers.Serializer):
 
         # if the request is a partial update, then the record must exist
         if self.partial is True:
-            if data['type'] != RecordType.START.value:
+            if data['type'] == RecordType.START.value:
                 queryset_start_record = StartRecord.objects. \
                     filter(id=data['id'])
                 if len(queryset_start_record) < 1:

@@ -521,6 +521,55 @@ class UpdateSingleStartRecordTest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
 
+class PartialUpdateSingleStartRecordTest(TestCase):
+    """ Test module for partially updating an existing start record record """
+
+    def setUp(self):
+
+        self.list_start = list()
+        self.list_start.append(StartRecord(
+            id=ID_1, timestamp=START_TIME_1,
+            call_id=CALL_ID_1, source=SOURCE_NUMBER,
+            destination=DESTINATION_NUMBER
+        ))
+        self.list_start.append(StartRecord(
+            id=ID_2, timestamp=START_TIME_2,
+            call_id=CALL_ID_2, source=SOURCE_NUMBER,
+            destination=DESTINATION_NUMBER
+        ))
+
+        for self.start_record in self.list_start:
+            self.start_record.save()
+
+        self.valid_start_record = {
+            'id': ID_1,
+            'timestamp': START_TIME_1.strftime(TIMESTAMP_FORMAT),
+            'call_id': CALL_ID_4,
+            'type': RecordType.START.value
+        }
+
+        self.invalid_start_record = {
+            'timestamp': START_TIME_1.strftime(TIMESTAMP_FORMAT),
+            'call_id': '',
+            'type': RecordType.START.value
+        }
+
+    def test_valid_partial_update_start_record(self):
+        response = client.patch(
+            '/callrecord/' + str(self.valid_start_record['id']) + '/',
+            data=json.dumps(self.valid_start_record),
+            content_type='application/json'
+        )
+        self.assertEqual(response.status_code, status.HTTP_202_ACCEPTED)
+
+    def test_invalid_partial_update_start_record(self):
+        response = client.patch(
+            '/callrecord/' + str(ID_1) + '/',
+            data=json.dumps(self.invalid_start_record),
+            content_type='application/json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+
 class DeleteSingleStartRecordTest(TestCase):
     """ Test module for deleting an existing start record """
 
@@ -899,6 +948,64 @@ class UpdateSingleEndRecordTest(TestCase):
     def test_invalid_update_end_record(self):
         response = client.put(
             '/callrecord/' + str(self.invalid_end_record['id']) + '/',
+            data=json.dumps(self.invalid_end_record),
+            content_type='application/json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+
+class PartialUpdateSingleEndRecordTest(TestCase):
+    """ Test module for partially updating an existing end record """
+
+    def setUp(self):
+
+        self.list_start = list()
+
+        self.list_start.append(StartRecord(
+            id=ID_1, timestamp=START_TIME_1, call_id=CALL_ID_1,
+            source=SOURCE_NUMBER, destination=DESTINATION_NUMBER
+        ))
+        self.list_start.append(StartRecord(
+            id=ID_2, timestamp=START_TIME_2, call_id=CALL_ID_2,
+            source=SOURCE_NUMBER, destination=DESTINATION_NUMBER
+        ))
+
+        for start_record in self.list_start:
+            start_record.save()
+
+        self.list_end = list()
+        self.list_end.append(EndRecord(
+            id=ID_1, timestamp=END_TIME_1, start_id=CALL_ID_1, cost=0.22
+        ))
+        self.list_end.append(EndRecord(
+            id=ID_2, timestamp=END_TIME_2, start_id=CALL_ID_2, cost=0.22
+        ))
+
+        for self.end_record in self.list_end:
+            self.end_record.save()
+
+        self.valid_end_record = {
+            'id': 1,
+            'call_id': CALL_ID_1,
+            'type': RecordType.END.value
+        }
+
+        self.invalid_end_record = {
+            'timestamp': END_TIME_1.strftime(TIMESTAMP_FORMAT),
+            'call_id': CALL_ID_1,
+            'type': RecordType.END.value
+        }
+
+    def test_valid_patch_update_end_record(self):
+        response = client.patch(
+            '/callrecord/' + str(self.valid_end_record['id']) + '/',
+            data=json.dumps(self.valid_end_record),
+            content_type='application/json'
+        )
+        self.assertEqual(response.status_code, status.HTTP_202_ACCEPTED)
+
+    def test_invalid_patch_update_end_record(self):
+        response = client.patch(
+            '/callrecord/' + str(ID_1) + '/',
             data=json.dumps(self.invalid_end_record),
             content_type='application/json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
