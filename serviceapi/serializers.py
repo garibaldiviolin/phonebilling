@@ -41,11 +41,6 @@ class CallRecordSerializer(serializers.Serializer):
                 'type': 'type field is required'
             })
 
-        if 'call_id' not in data:
-            raise serializers.ValidationError({
-                'call_id': 'call_id field is required'
-            })
-
         # First, check if type is START (1) or END (2)
         if data['type'] != RecordType.START.value and \
                 data['type'] != RecordType.END.value:
