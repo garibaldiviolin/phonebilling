@@ -142,8 +142,10 @@ class CallRecordViewSet(viewsets.ViewSet):
         if len(queryset_a) < 1 and len(queryset_b) < 1:
             return Response(status=status.HTTP_404_NOT_FOUND)
         else:
-            queryset_a.delete()
+            # First, delete the end record because it depends on
+            # the start record
             queryset_b.delete()
+            queryset_a.delete()
             return Response(results, status=status.HTTP_204_NO_CONTENT)
 
 

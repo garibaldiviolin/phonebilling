@@ -29,7 +29,8 @@ class EndRecord(models.Model):
     id = models.BigIntegerField(primary_key=True, unique=True)
     timestamp = models.DateTimeField()
     start = models.OneToOneField(
-        StartRecord, to_field='call_id', on_delete=models.CASCADE
+        StartRecord, to_field='call_id', on_delete=models.CASCADE,
+        unique=True
     )
     cost = models.FloatField()
 
@@ -41,7 +42,7 @@ class EndRecord(models.Model):
     def call_id(self):
         return self.start_id
 
-    @receiver(pre_save)
+    '''@receiver(pre_save)
     def pre_save_end_record(sender, instance, *args, **kwargs):
 
         pdb.set_trace()
@@ -60,4 +61,4 @@ class EndRecord(models.Model):
             start_record.save()
 
         # User object updated
-        return instance
+        return instance'''

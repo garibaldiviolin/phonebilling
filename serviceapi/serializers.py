@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import pdb
+
 from django.utils import timezone
 from rest_framework import serializers
 
@@ -49,6 +51,7 @@ class CallRecordSerializer(serializers.Serializer):
         # if the request is a partial update, then the record must exist
         if self.partial is True:
             if data['type'] == RecordType.START.value:
+                pdb.set_trace()
                 queryset_start_record = StartRecord.objects. \
                     filter(id=data['id'])
                 if len(queryset_start_record) < 1:
@@ -127,12 +130,9 @@ class CallRecordSerializer(serializers.Serializer):
 
         return data
 
-    def save(self, **kwargs):
-        # Will be done on every save
-        kwargs['last_changed'] = timezone.now()
-        return super().save(**kwargs)
-
     def create(self, validated_data):
+
+        pdb.set_trace()
 
         # if the type is START, then save a start record
         # otherwise, it is a end record
@@ -180,7 +180,7 @@ class CallRecordSerializer(serializers.Serializer):
                 get('timestamp', end_record.timestamp). \
                 replace(tzinfo=timezone.utc)
             end_record.start_id = validated_data.get(
-                'call_id', end_record.start_id
+                'start_id', end_record.start_id
             )
 
             start_record = StartRecord.objects.get(call_id=end_record.start_id)
