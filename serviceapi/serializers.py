@@ -65,7 +65,6 @@ class CallRecordSerializer(serializers.Serializer):
                     raise serializers.ValidationError({
                         'end_record': 'EndStart record does not exist'
                     })
-            return data
 
         # StartRecord fields validation
         if data['type'] == RecordType.START.value:
@@ -74,34 +73,37 @@ class CallRecordSerializer(serializers.Serializer):
             # Both of then should have 10 or 11 digits (the first two
             # digits are the area code, and the other ones are the phone
             # number), and they must have different values
-            if 'source' not in data:
+            if self.partial is False and 'source' not in data:
                 raise serializers.ValidationError({
                     'source': 'Start record must have a source field'
                 })
-            elif data['source'].isdigit() is False:
+            elif 'source' in data and data['source'].isdigit() is False:
                 raise serializers.ValidationError({
                     'source': 'Source must have only numbers'
                 })
-            elif len(data['source']) != 10 and len(data['source']) != 11:
+            elif 'source' in data and len(data['source']) != 10 \
+                    and len(data['source']) != 11:
                 raise serializers.ValidationError({
                     'source': 'Source must have 10 or 11 digits'
                 })
 
-            if 'destination' not in data:
+            if self.partial is False and 'destination' not in data:
                 raise serializers.ValidationError({
                     'destination': 'Start record must have a destination field'
                 })
-            elif data['destination'].isdigit() is False:
+            elif 'destination' in data and data['destination'].isdigit() \
+                    is False:
                 raise serializers.ValidationError({
                     'destination': 'Destination must have only numbers'
                 })
-            elif len(data['destination']) != 10 and \
+            elif 'destination' in data and len(data['destination']) != 10 and \
                     len(data['destination']) != 11:
                 raise serializers.ValidationError({
                     'destination': 'Destination must have 10 or 11 digits'
                 })
 
-            if data['source'] == data['destination']:
+            if 'source' in data and 'destination' in data and \
+                    data['source'] == data['destination']:
                 raise serializers.ValidationError({
                     'source':
                     'Source and destination must have different values'
@@ -182,6 +184,8 @@ class CallRecordSerializer(serializers.Serializer):
             end_record.start_id = validated_data.get(
                 'start_id', end_record.start_id
             )
+
+            
 
             start_record = StartRecord.objects.get(call_id=end_record.start_id)
             end_record.start = start_record
