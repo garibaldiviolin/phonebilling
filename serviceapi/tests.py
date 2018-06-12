@@ -60,6 +60,70 @@ END_TIME_10 = datetime.datetime(2016, 2, 29, 12, 0, 0, 1, timezone.utc)
 list_start = list()
 list_end = list()
 
+# Remove all records
+EndRecord.objects.all().delete()
+StartRecord.objects.all().delete()
+
+# Add the default records
+StartRecord.objects.create(
+    id=ID_1, timestamp=START_TIME_1, call_id=CALL_ID_1,
+    source=SOURCE_NUMBER, destination=DESTINATION_NUMBER
+)
+StartRecord.objects.create(
+    id=ID_2, timestamp=START_TIME_2, call_id=CALL_ID_2,
+    source=SOURCE_NUMBER, destination=DESTINATION_NUMBER
+)
+StartRecord.objects.create(
+    id=ID_3, timestamp=START_TIME_3, call_id=CALL_ID_3,
+    source=SOURCE_NUMBER, destination=DESTINATION_NUMBER
+)
+StartRecord.objects.create(
+    id=ID_4, timestamp=START_TIME_4, call_id=CALL_ID_4,
+    source=SOURCE_NUMBER, destination=DESTINATION_NUMBER
+)
+StartRecord.objects.create(
+    id=ID_5, timestamp=START_TIME_5, call_id=CALL_ID_5,
+    source=SOURCE_NUMBER, destination=DESTINATION_NUMBER
+)
+StartRecord.objects.create(
+    id=ID_6, timestamp=START_TIME_6, call_id=CALL_ID_6,
+    source=SOURCE_NUMBER, destination=DESTINATION_NUMBER
+)
+StartRecord.objects.create(
+    id=ID_7, timestamp=START_TIME_7, call_id=CALL_ID_7,
+    source=SOURCE_NUMBER, destination=DESTINATION_NUMBER
+)
+StartRecord.objects.create(
+    id=ID_8, timestamp=START_TIME_8, call_id=CALL_ID_8,
+    source=SOURCE_NUMBER, destination=DESTINATION_NUMBER
+)
+
+EndRecord.objects.create(
+    id=ID_1, timestamp=END_TIME_1, start_id=CALL_ID_1, cost=11.16
+)
+EndRecord.objects.create(
+    id=ID_2, timestamp=END_TIME_2, start_id=CALL_ID_2, cost=0.99
+)
+EndRecord.objects.create(
+    id=ID_3, timestamp=END_TIME_3, start_id=CALL_ID_3, cost=0.36
+)
+EndRecord.objects.create(
+    id=ID_4, timestamp=END_TIME_4, start_id=CALL_ID_4, cost=0.54
+)
+EndRecord.objects.create(
+    id=ID_5, timestamp=END_TIME_5, start_id=CALL_ID_5, cost=1.26
+)
+EndRecord.objects.create(
+    id=ID_6, timestamp=END_TIME_6, start_id=CALL_ID_6, cost=86.94
+)
+EndRecord.objects.create(
+    id=ID_7, timestamp=END_TIME_7, start_id=CALL_ID_7, cost=0.72
+)
+EndRecord.objects.create(
+    id=ID_8, timestamp=END_TIME_8, start_id=CALL_ID_8, cost=86.94
+)
+
+
 # ************************************
 # ************************************
 # Start Record Tests
