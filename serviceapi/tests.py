@@ -1117,37 +1117,37 @@ class GetPhoneBillTest(TestCase):
         self.list_start = list()
 
         self.list_start.append({
-            'id': 2, 'timestamp': START_TIME_2, 'call_id': CALL_ID_2,
+            'id': ID_2, 'timestamp': START_TIME_2, 'call_id': CALL_ID_2,
             'type': RecordType.START.value, 'source': SOURCE_NUMBER,
             'destination': DESTINATION_NUMBER
         })
 
         self.list_start.append({
-            'id': 3, 'timestamp': START_TIME_3, 'call_id': CALL_ID_3,
+            'id': ID_3, 'timestamp': START_TIME_3, 'call_id': CALL_ID_3,
             'type': RecordType.START.value, 'source': SOURCE_NUMBER,
             'destination': DESTINATION_NUMBER
         })
 
         self.list_start.append({
-            'id': 4, 'timestamp': START_TIME_4, 'call_id': CALL_ID_4,
+            'id': ID_4, 'timestamp': START_TIME_4, 'call_id': CALL_ID_4,
             'type': RecordType.START.value, 'source': SOURCE_NUMBER,
             'destination': DESTINATION_NUMBER
         })
 
         self.list_start.append({
-            'id': 5, 'timestamp': START_TIME_5, 'call_id': CALL_ID_5,
+            'id': ID_5, 'timestamp': START_TIME_5, 'call_id': CALL_ID_5,
             'type': RecordType.START.value, 'source': SOURCE_NUMBER,
             'destination': DESTINATION_NUMBER
         })
 
         self.list_start.append({
-            'id': 6, 'timestamp': START_TIME_6, 'call_id': CALL_ID_6,
+            'id': ID_6, 'timestamp': START_TIME_6, 'call_id': CALL_ID_6,
             'type': RecordType.START.value, 'source': SOURCE_NUMBER,
             'destination': DESTINATION_NUMBER
         })
 
         self.list_start.append({
-            'id': 7, 'timestamp': START_TIME_7, 'call_id': CALL_ID_7,
+            'id': ID_7, 'timestamp': START_TIME_7, 'call_id': CALL_ID_7,
             'type': RecordType.START.value, 'source': SOURCE_NUMBER,
             'destination': DESTINATION_NUMBER
         })
@@ -1156,32 +1156,32 @@ class GetPhoneBillTest(TestCase):
         self.list_end = list()
 
         self.list_end.append({
-            'id': 2, 'timestamp': END_TIME_2, 'call_id': CALL_ID_2,
+            'id': ID_2, 'timestamp': END_TIME_2, 'call_id': CALL_ID_2,
             'type': RecordType.END.value, 'cost': 0.99
         })
 
         self.list_end.append({
-            'id': 3, 'timestamp': END_TIME_3, 'call_id': CALL_ID_3,
+            'id': ID_3, 'timestamp': END_TIME_3, 'call_id': CALL_ID_3,
             'type': RecordType.END.value, 'cost': 0.36
         })
 
         self.list_end.append({
-            'id': 4, 'timestamp': END_TIME_4, 'call_id': CALL_ID_4,
+            'id': ID_4, 'timestamp': END_TIME_4, 'call_id': CALL_ID_4,
             'type': RecordType.END.value, 'cost': 0.54
         })
 
         self.list_end.append({
-            'id': 5, 'timestamp': END_TIME_5, 'call_id': CALL_ID_5,
+            'id': ID_5, 'timestamp': END_TIME_5, 'call_id': CALL_ID_5,
             'type': RecordType.END.value, 'cost': 1.26
         })
 
         self.list_end.append({
-            'id': 6, 'timestamp': END_TIME_6, 'call_id': CALL_ID_6,
+            'id': ID_6, 'timestamp': END_TIME_6, 'call_id': CALL_ID_6,
             'type': RecordType.END.value, 'cost': 86.94
         })
 
         self.list_end.append({
-            'id': 7, 'timestamp': END_TIME_7, 'call_id': CALL_ID_7,
+            'id': ID_7, 'timestamp': END_TIME_7, 'call_id': CALL_ID_7,
             'type': RecordType.END.value, 'cost': 0.72
         })
 
