@@ -33,7 +33,7 @@ SECRET_KEY = 'p7zf_v)&4y(k5y7euj+!)bc%-7m%zx@1s#y)%a9*^o8b&18)c)'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 TIMESTAMP_FORMAT = '%Y-%m-%dT%H:%M:%SZ'
 
@@ -138,6 +138,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
 
 LOGGING_CONF_FILE = 'logging.conf'
 
