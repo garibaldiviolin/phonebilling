@@ -18,9 +18,6 @@ class CallRecordViewSet(viewsets.ViewSet):
     serializer_class = CallRecordSerializer
 
     def list(self, request):
-        ''' Returns the call records (start and end types) '''
-
-        results = {}
 
         queryset_a = StartRecord.objects.all().order_by('-call_id')
         queryset_b = EndRecord.objects.all().order_by('-start')
@@ -56,9 +53,6 @@ class CallRecordViewSet(viewsets.ViewSet):
         return Response(results)
 
     def retrieve(self, request, pk):
-        ''' Returns the call records (start and end types) '''
-
-        results = {}
 
         queryset_a = StartRecord.objects.filter(id=pk).order_by('call_id')
         queryset_b = EndRecord.objects.filter(id=pk).order_by('start')
@@ -80,7 +74,6 @@ class CallRecordViewSet(viewsets.ViewSet):
 
         for start_record in queryset_a:
 
-            # Appends the REST fields to the result
             results.append({
                 'id': start_record.id,
                 'timestamp': start_record.timestamp.strftime(
@@ -95,7 +88,6 @@ class CallRecordViewSet(viewsets.ViewSet):
         return Response(results)
 
     def create(self, request):
-        ''' Returns the call records (start and end types) '''
 
         serializer = CallRecordSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
@@ -107,21 +99,17 @@ class CallRecordViewSet(viewsets.ViewSet):
             )
 
     def update(self, request, pk):
-        ''' Returns the call records (start and end types) '''
-
-        results = {}
 
         serializer = CallRecordSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(results, status=status.HTTP_200_OK)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             return Response(
                 serializer.errors, status=status.HTTP_400_BAD_REQUEST
             )
 
     def partial_update(self, request, pk):
-        ''' Returns the call records (start and end types) '''
 
         serializer = CallRecordSerializer(data=request.data, partial=True)
         if serializer.is_valid():
