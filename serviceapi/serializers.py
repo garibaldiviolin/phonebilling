@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import json
+import logging
+
 from django.utils import timezone
 from rest_framework import serializers
 
@@ -13,6 +16,8 @@ class CallRecordSerializer(serializers.Serializer):
     """ Represents the serializer for the start and end record.
     The type field value indicates if it is a start or end record.
     """
+
+    logger = logging.getLogger(__name__)
 
     id = serializers.IntegerField()
     timestamp = serializers.DateTimeField(
@@ -30,6 +35,8 @@ class CallRecordSerializer(serializers.Serializer):
         return exclusions + ['source'] + ['destination']
 
     def validate(self, data):
+
+        # self.logger.debug('validate - data=' + json.dumps(data))
 
         if 'id' not in data:
             raise serializers.ValidationError({
@@ -203,6 +210,10 @@ class CallRecordSerializer(serializers.Serializer):
         return data
 
     def create(self, validated_data):
+
+        # self.logger.debug(
+        #     'create - validated_data=' + json.dumps(validated_data)
+        # )
 
         # if the type is START, then save a start record
         # otherwise, it is a end record

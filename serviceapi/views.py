@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import json
+import logging
+
 from django.utils import timezone
 from rest_framework.generics import ListAPIView
 from rest_framework import viewsets
@@ -16,6 +19,8 @@ from phonebilling.settings import TIMESTAMP_FORMAT
 class CallRecordViewSet(viewsets.ViewSet):
 
     serializer_class = CallRecordSerializer
+
+    logger = logging.getLogger(__name__)
 
     def list(self, request):
 
@@ -50,9 +55,13 @@ class CallRecordViewSet(viewsets.ViewSet):
                 'destination': start_record.destination
             })
 
+        self.logger.debug('list - results=' + json.dumps(results))
+
         return Response(results)
 
     def retrieve(self, request, pk):
+
+        self.logger.debug('retrieve - pk=' + pk)
 
         queryset_a = StartRecord.objects.filter(id=pk).order_by('call_id')
         queryset_b = EndRecord.objects.filter(id=pk).order_by('start')
@@ -85,54 +94,86 @@ class CallRecordViewSet(viewsets.ViewSet):
                 'destination': start_record.destination
             })
 
+        self.logger.debug('retrieve - results=' + json.dumps(results))
+
         return Response(results)
 
     def create(self, request):
 
+        self.logger.debug('create - request.data=' + json.dumps(request.data))
+
         serializer = CallRecordSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
+            self.logger.debug('create - response 201')
+            self.logger.debug(
+                'create - serializer.data %s response 201',
+                serializer.data
+            )
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
+            self.logger.debug('create - response 400')
             return Response(
                 serializer.errors, status=status.HTTP_400_BAD_REQUEST
             )
 
     def update(self, request, pk):
 
+        self.logger.debug(
+            'update - pk %s request.data=%s' % (pk, json.dumps(request.data))
+        )
+
         serializer = CallRecordSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
+            self.logger.debug(
+                'update - serializer.data %s response 201',
+                json.dumps(serializer.data)
+            )
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
+            self.logger.debug('update - response 400')
             return Response(
                 serializer.errors, status=status.HTTP_400_BAD_REQUEST
             )
 
     def partial_update(self, request, pk):
 
+        self.logger.debug(
+            'partial_update - pk %s request.data=%s' %
+            (pk, json.dumps(request.data))
+        )
+
         serializer = CallRecordSerializer(data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
+            self.logger.debug(
+                'partial_update - serializer.data %s response 201',
+                json.dumps(serializer.data)
+            )
             return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
         else:
+            self.logger.debug('partial_update - response 400')
             return Response(
                 serializer.errors, status=status.HTTP_400_BAD_REQUEST
             )
 
     def destroy(self, request, pk):
 
-        results = {}
-
         queryset_a = StartRecord.objects.filter(id=pk)
         queryset_b = EndRecord.objects.filter(id=pk)
         if len(queryset_a) < 1 and len(queryset_b) < 1:
+            self.logger.debug('partial_update - response 404')
             return Response(status=status.HTTP_404_NOT_FOUND)
         else:
             # First, delete the end record because it depends on
             # the start record
             queryset_b.delete()
             queryset_a.delete()
+            results = {}
+            self.logger.debug(
+                'partial_update - results %s response 204', json.dumps(results)
+            )
             return Response(results, status=status.HTTP_204_NO_CONTENT)
 
 
@@ -140,6 +181,8 @@ class PhoneBillViewSet(viewsets.ViewSetMixin, ListAPIView):
 
     queryset = EndRecord.objects.all()
     serializer_class = PhoneBillSerializer
+
+    logger = logging.getLogger(__name__)
 
     def list(self, request):
         ''' Returns the bill based on the parameters sent in the URL
@@ -150,6 +193,10 @@ class PhoneBillViewSet(viewsets.ViewSetMixin, ListAPIView):
 
         source = self.request.query_params.get('source')
         period = self.request.query_params.get('period')
+
+        self.logger.debug(
+            'PhoneBillViewSet - source=%s, period=%s' % (source, period)
+        )
 
         results = list()
 
@@ -254,4 +301,6 @@ class PhoneBillViewSet(viewsets.ViewSetMixin, ListAPIView):
                 'price': formatted_price
             })
 
-        return Response(results, status=status.HTTP_200_OK)
+        self.logger.debug('PhoneBillViewSet - response=' + json.dumps(results))
+
+        return Response(json.dumps(results), status=status.HTTP_200_OK)
