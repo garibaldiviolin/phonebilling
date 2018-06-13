@@ -1,3 +1,8 @@
 *.pyc
 phonebilling.log
 serviceapi/migrations/*
+README_olist.md
+pendencias.txt
+logging.conf
+teste_json.sh
+startrecord.json
