@@ -235,9 +235,9 @@ class PhoneBillViewSet(viewsets.ViewSetMixin, ListAPIView):
             record_start_time = end_record.start.timestamp
             record_end_time = end_record.timestamp
             delta = record_end_time - record_start_time
-            h = delta.seconds / 3600  # hours
-            m = delta.seconds / 60  # minutes
-            s = delta.seconds % 60  # seconds
+            h = delta.total_seconds() // 3600  # hours
+            m = (delta.total_seconds() // 60) % 60  # minutes
+            s = delta.total_seconds() % 60  # seconds
             duration = '%dh%02dm%02ds' % (h, m, s)
 
             formatted_price = ('R$ %0.2f' % end_record.cost). \
