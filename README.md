@@ -1,6 +1,6 @@
 # Phone Billing Service API
 
-A REST API that receives start and end phone call records, and returns detailed bill based on the source phone number and / or period informed.
+A REST API that receives start and end phone call records, and returns detailed bills based on the source phone number and / or period informed.
 
 
 ## Software Requirements
@@ -15,10 +15,6 @@ A REST API that receives start and end phone call records, and returns detailed 
 ### Installing Dependencies
 
 ```bash
-# Create a virtualenv to install the python requirements
-$ mkvirtualenv --python="python3.5_dir_path" deep-test
-# Activate it
-$ workon deep-test
 # Install the requirements
 $ pip install -r requirements.txt
 ```
@@ -37,7 +33,7 @@ $ python manage.py runserver
 
 Endpoints:
 
- - `/callrecord/` - receives the call record (start and end) from the client. The client must send the pair (start and end) so the other endpoint (phonebill) can include the call in the bill
+ - `/callrecord/` - receives call records (start and end) from the client. The client must send the pair (start and end) with the same call_id so the call can be included in the bill
 
 JSON expected formats
 
@@ -47,9 +43,9 @@ JSON expected formats
     "id":  // Record unique identificator (must be an integer value);
     "type":  // indicate if the data is a start record ("type": 1) or end record ("type": 2);
     "timestamp":  // The timestamp of when the call started (the format must be YYYY-MM-DDThh:mm:ssZ,
-                  //where T and Z are fixed letters);
+                  // where T and Z are fixed letters);
     "call_id":  // Unique for each call record pair (must be an integer value);
-    "source":  // The subscriber phone number that originated the call (must have 10 or 11
+    "source":  // The subscriber phone number that originated the call (must be a string with 10 or 11
                // digits, where the first two digits are the area code, and the other ones
                // are the phone number);
     "destination":  // The phone number receiving the call. It must have the same format as the source
@@ -90,7 +86,7 @@ Example:
 }
 ```
 
- - `/phonebill/` - responds a detailed phone bill based on the source phone number and / or period given in this URL. The source phone number must always be informed (same format as detailed above), but the period is optional (mm/yyyy format, where mm is the month, and yyyy is the year). If the period is not informed, the application will consider that it's the last month's period (based on the request's current date). Example: /phonebill?source=11999999999&period=10/2018
+ - `/phonebill/` - responds a detailed phone bill based on the source phone number and / or period given in this URL. The source phone number must always be informed (same format as detailed above), but the period is optional (mm/yyyy format, where mm is the month, and yyyy is the year). If the period is not informed, the application will consider as the last month's period (based on the request's current date). Example: /phonebill?source=11999999999&period=10/2018
 
 JSON returned format:
 ```
@@ -125,3 +121,19 @@ Example:
 - Sublime Text 3.1.1 with Anaconda (Python package)
 - Xubuntu GNU/Linux Operating System
 - SQLite DBMS
+
+### Running django unit tests
+
+```bash
+# Execute tests
+$ python manage.py test
+```
+
+- If the tests were executed with no errors, then the command shell should show the following messages (the time period may have a different value on different computers):
+
+```bash
+Ran 23 tests in 0.455s
+
+OK
+Destroying test database for alias 'default'
+```
