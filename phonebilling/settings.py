@@ -149,4 +149,4 @@ LOGGING_CONF_FILE = 'logging.conf'
 log_file = Path(BASE_DIR + '/' + LOGGING_CONF_FILE)
 
 if log_file.exists():
-    logging.config.fileConfig(LOGGING_CONF_FILE)
+    logging.config.fileConfig(LOGGING_CONF_FILE, disable_existing_loggers=True)
