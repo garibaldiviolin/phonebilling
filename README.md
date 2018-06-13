@@ -46,7 +46,7 @@ JSON expected formats
 {
     "id":  // Record unique identificator (must be an integer value);
     "type":  // indicate if the data is a start record ("type": 1) or end record ("type": 2);
-    "timestamp":  // The timestamp of when the call started (the format must be YYYY-MM-DDThh:mmTZ,
+    "timestamp":  // The timestamp of when the call started (the format must be YYYY-MM-DDThh:mm:ssZ,
                   //where T and Z are fixed letters);
     "call_id":  // Unique for each call record pair (must be an integer value);
     "source":  // The subscriber phone number that originated the call (must have 10 or 11
