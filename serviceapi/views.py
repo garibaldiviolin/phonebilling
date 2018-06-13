@@ -178,7 +178,8 @@ class PhoneBillViewSet(viewsets.ViewSetMixin, ListAPIView):
 
             if len(period) != len(BILL_PERIOD_MASK) or period[2] != '/':
                 results.append({
-                    'period': PERIOD_FORMAT_ERROR
+                    'period':
+                    'The period must have the following format: mm/yyyy'
                 })
                 return Response(results, status=status.HTTP_400_BAD_REQUEST)
 
@@ -187,13 +188,14 @@ class PhoneBillViewSet(viewsets.ViewSetMixin, ListAPIView):
 
             if month_period.isdigit() is False:
                 results.append({
-                    'month_period': MONTH_PERIOD_FORMAT_ERROR
+                    'month_period': "The month's period sent is not valid"
                 })
                 return Response(results, status=status.HTTP_400_BAD_REQUEST)
 
             if year_period.isdigit() is False:
                 results.append({
-                    'year_period': YEAR_PERIOD_FORMAT_ERROR
+                    'year_period':
+                    "The year's period sent is not valid"
                 })
                 return Response(results, status=status.HTTP_400_BAD_REQUEST)
 
