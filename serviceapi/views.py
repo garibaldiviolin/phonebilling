@@ -303,4 +303,4 @@ class PhoneBillViewSet(viewsets.ViewSetMixin, ListAPIView):
 
         self.logger.debug('PhoneBillViewSet - response=' + json.dumps(results))
 
-        return Response(json.dumps(results), status=status.HTTP_200_OK)
+        return Response(results, status=status.HTTP_200_OK)
