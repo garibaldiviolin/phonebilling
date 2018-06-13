@@ -4,10 +4,6 @@ from __future__ import unicode_literals
 import datetime
 from enum import Enum
 
-PERIOD_FORMAT_ERROR = 'The period must have the following format: mm/yyyy'
-MONTH_PERIOD_FORMAT_ERROR = "The month's period sent is not valid"
-YEAR_PERIOD_FORMAT_ERROR = "The year's period sent is not valid"
-
 BILL_PERIOD_MASK = '99/9999'  # period format accepted in /phonebill/ URL
 
 STANDING_CALL_CHARGE = 0.36  # fixed charge (per call)
