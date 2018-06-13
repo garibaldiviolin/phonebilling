@@ -8,8 +8,6 @@ from serviceapi import views
 
 router = routers.DefaultRouter()
 router.register(r'callrecord', views.CallRecordViewSet, base_name='callrecord')
-router.register(r'startrecord', views.StartRecordViewSet)
-router.register(r'endrecord', views.EndRecordViewSet)
 router.register(r'phonebill', views.PhoneBillViewSet)
 
 urlpatterns = [

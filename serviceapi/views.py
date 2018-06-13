@@ -8,8 +8,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from serviceapi.models import StartRecord, EndRecord
-from serviceapi.serializers import StartRecordSerializer, \
-    EndRecordSerializer, PhoneBillSerializer, CallRecordSerializer
+from serviceapi.serializers import PhoneBillSerializer, CallRecordSerializer
 from serviceapi.utils import *
 from phonebilling.settings import TIMESTAMP_FORMAT
 
@@ -147,18 +146,6 @@ class CallRecordViewSet(viewsets.ViewSet):
             queryset_b.delete()
             queryset_a.delete()
             return Response(results, status=status.HTTP_204_NO_CONTENT)
-
-
-class StartRecordViewSet(viewsets.ModelViewSet):
-
-    queryset = StartRecord.objects.all().order_by('-call_id')
-    serializer_class = StartRecordSerializer
-
-
-class EndRecordViewSet(viewsets.ModelViewSet):
-
-    queryset = EndRecord.objects.all().order_by('-call_id')
-    serializer_class = EndRecordSerializer
 
 
 class PhoneBillViewSet(viewsets.ViewSetMixin, ListAPIView):
