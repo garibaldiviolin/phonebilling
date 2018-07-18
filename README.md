@@ -120,7 +120,7 @@ Example:
 - Django Rest Framewok 3.7.3
 - Sublime Text 3.1.1 with Anaconda (Python package)
 - Xubuntu GNU/Linux Operating System
-- SQLite DBMS
+- SQLite DBMS (for production use, MySQL or PostgreSQL is recommended instead)
 
 ### Running django unit tests
 
