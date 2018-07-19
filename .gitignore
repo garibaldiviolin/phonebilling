@@ -6,3 +6,4 @@ pendencias.txt
 logging.conf
 teste_json.sh
 startrecord.json
+db.sqlite3
